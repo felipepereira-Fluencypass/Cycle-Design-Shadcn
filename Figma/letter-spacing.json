@@ -1,0 +1,71 @@
+{
+  "tracking-tighter": {
+    "$type": "number",
+    "$value": -0.800000011920929,
+    "$extensions": {
+      "com.figma.variableId": "VariableID:4489:2476",
+      "com.figma.scopes": [
+        "LETTER_SPACING"
+      ],
+      "com.figma.isOverride": true
+    }
+  },
+  "tracking-tight": {
+    "$type": "number",
+    "$value": -0.4000000059604645,
+    "$extensions": {
+      "com.figma.variableId": "VariableID:4489:2477",
+      "com.figma.scopes": [
+        "LETTER_SPACING"
+      ],
+      "com.figma.isOverride": true
+    }
+  },
+  "tracking-normal": {
+    "$type": "number",
+    "$value": 0,
+    "$extensions": {
+      "com.figma.variableId": "VariableID:4157:366",
+      "com.figma.scopes": [
+        "LETTER_SPACING"
+      ],
+      "com.figma.isOverride": true
+    }
+  },
+  "tracking-wide": {
+    "$type": "number",
+    "$value": 0.4000000059604645,
+    "$extensions": {
+      "com.figma.variableId": "VariableID:4489:2478",
+      "com.figma.scopes": [
+        "LETTER_SPACING"
+      ],
+      "com.figma.isOverride": true
+    }
+  },
+  "tracking-wider": {
+    "$type": "number",
+    "$value": 0.800000011920929,
+    "$extensions": {
+      "com.figma.variableId": "VariableID:4489:2479",
+      "com.figma.scopes": [
+        "LETTER_SPACING"
+      ],
+      "com.figma.isOverride": true
+    }
+  },
+  "tracking-widest": {
+    "$type": "number",
+    "$value": 1.600000023841858,
+    "$extensions": {
+      "com.figma.variableId": "VariableID:4489:2480",
+      "com.figma.scopes": [
+        "LETTER_SPACING"
+      ],
+      "com.figma.isOverride": true
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Mode 1"
+  }
+}

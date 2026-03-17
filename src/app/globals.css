@@ -42,6 +42,33 @@
   --radius-xl: calc(var(--radius) + 4px);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* ============================================
+   * TYPOGRAPHY - Font Size overrides (Figma)
+   * ============================================ */
+  --text-2xs: 0.625rem;       /* 10px — custom, não existe no Tailwind */
+  --text-4xl: 2.5rem;         /* 40px — Figma override (Tailwind padrão: 36px) */
+  --text-6xl: 4rem;           /* 64px — Figma override (Tailwind padrão: 60px) */
+
+  /* ============================================
+   * TYPOGRAPHY - Line Height custom values (Figma)
+   * ============================================ */
+  --leading-3_5: 0.875rem;    /* 14px */
+  --leading-4_5: 1.125rem;    /* 18px */
+  --leading-7_5: 1.875rem;    /* 30px */
+  --leading-15: 3.75rem;      /* 60px */
+  --leading-20_5: 5.125rem;   /* 82px */
+  --leading-22_5: 5.625rem;   /* 90px */
+
+  /* ============================================
+   * TYPOGRAPHY - Letter Spacing overrides (Figma)
+   * ============================================ */
+  --tracking-tighter: -0.05em;  /* ~-0.8px at 16px */
+  --tracking-tight: -0.025em;   /* ~-0.4px at 16px */
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;     /* ~+0.4px at 16px */
+  --tracking-wider: 0.05em;     /* ~+0.8px at 16px */
+  --tracking-widest: 0.1em;     /* ~+1.6px at 16px */
 }
 
 /*
@@ -134,4 +161,197 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ============================================
+ * CYCLE TYPOGRAPHY - Composite Styles
+ * ============================================
+ * Estilos tipográficos compostos extraídos do Figma.
+ * Cada classe aplica font-size, font-weight,
+ * line-height e letter-spacing de uma vez.
+ *
+ * Uso: <p class="body-md"> ou <h2 class="heading-xl">
+ * ============================================
+ */
+
+/* --- Body --- */
+@utility body-xs {
+  font-family: var(--font-sans);
+  font-size: 0.625rem;     /* 10px */
+  font-weight: 400;
+  line-height: 1rem;        /* 16px */
+  letter-spacing: 0em;
+}
+
+@utility body-sm {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;      /* 12px */
+  font-weight: 400;
+  line-height: 1.125rem;    /* 18px */
+  letter-spacing: 0em;
+}
+
+@utility body-md {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;     /* 14px */
+  font-weight: 400;
+  line-height: 1.25rem;     /* 20px */
+  letter-spacing: 0em;
+}
+
+@utility body-lg {
+  font-family: var(--font-sans);
+  font-size: 1rem;         /* 16px */
+  font-weight: 400;
+  line-height: 1.5rem;      /* 24px */
+  letter-spacing: 0em;
+}
+
+/* --- Heading --- */
+@utility heading-xs {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;     /* 14px */
+  font-weight: 600;
+  line-height: 1.25rem;     /* 20px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-sm {
+  font-family: var(--font-sans);
+  font-size: 1rem;         /* 16px */
+  font-weight: 600;
+  line-height: 1.5rem;      /* 24px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-md {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;     /* 18px */
+  font-weight: 600;
+  line-height: 1.75rem;     /* 28px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-lg {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;      /* 20px */
+  font-weight: 600;
+  line-height: 1.875rem;    /* 30px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-xl {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;       /* 24px */
+  font-weight: 600;
+  line-height: 2rem;         /* 32px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-2xl {
+  font-family: var(--font-sans);
+  font-size: 2rem;         /* 32px */
+  font-weight: 700;
+  line-height: 2.5rem;      /* 40px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-3xl {
+  font-family: var(--font-sans);
+  font-size: 2.5rem;       /* 40px */
+  font-weight: 700;
+  line-height: 3rem;         /* 48px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-4xl {
+  font-family: var(--font-sans);
+  font-size: 3rem;         /* 48px */
+  font-weight: 700;
+  line-height: 3.75rem;     /* 60px */
+  letter-spacing: -0.05em;
+}
+
+/* --- Display --- */
+@utility display-md {
+  font-family: var(--font-sans);
+  font-size: 4rem;         /* 64px */
+  font-weight: 700;
+  line-height: 5.125rem;    /* 82px */
+  letter-spacing: -0.05em;
+}
+
+@utility display-md-light {
+  font-family: var(--font-sans);
+  font-size: 4rem;         /* 64px */
+  font-weight: 300;
+  line-height: 5.125rem;    /* 82px */
+  letter-spacing: -0.05em;
+}
+
+@utility display-lg {
+  font-family: var(--font-sans);
+  font-size: 4.5rem;       /* 72px */
+  font-weight: 700;
+  line-height: 5.625rem;    /* 90px */
+  letter-spacing: -0.05em;
+}
+
+@utility display-lg-light {
+  font-family: var(--font-sans);
+  font-size: 4.5rem;       /* 72px */
+  font-weight: 300;
+  line-height: 5.625rem;    /* 90px */
+  letter-spacing: -0.05em;
+}
+
+/* --- Button --- */
+@utility button-sm {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;      /* 12px */
+  font-weight: 500;
+  line-height: 0.75rem;     /* 12px — 1:1 ratio */
+  letter-spacing: 0em;
+}
+
+@utility button-md {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;     /* 14px */
+  font-weight: 500;
+  line-height: 0.875rem;    /* 14px — 1:1 ratio */
+  letter-spacing: 0em;
+}
+
+@utility button-lg {
+  font-family: var(--font-sans);
+  font-size: 1rem;         /* 16px */
+  font-weight: 500;
+  line-height: 1rem;         /* 16px — 1:1 ratio */
+  letter-spacing: 0em;
+}
+
+/* --- UI --- */
+@utility ui-label {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;     /* 14px */
+  font-weight: 500;
+  line-height: 0.875rem;    /* 14px */
+  letter-spacing: 0em;
+}
+
+@utility ui-caption {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;      /* 12px */
+  font-weight: 400;
+  line-height: 1rem;         /* 16px */
+  letter-spacing: 0em;
+}
+
+@utility ui-overline {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;      /* 12px */
+  font-weight: 500;
+  line-height: 1rem;         /* 16px */
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
 }

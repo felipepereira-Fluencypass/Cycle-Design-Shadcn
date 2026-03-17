@@ -1,0 +1,29 @@
+{
+  "font-sans": {
+    "$type": "string",
+    "$value": "Geist Sans",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:4141:735",
+      "com.figma.scopes": [
+        "FONT_FAMILY"
+      ],
+      "com.figma.type": "string",
+      "com.figma.isOverride": true
+    }
+  },
+  "font-mono": {
+    "$type": "string",
+    "$value": "Geist Mono",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:4141:736",
+      "com.figma.scopes": [
+        "FONT_FAMILY"
+      ],
+      "com.figma.type": "string",
+      "com.figma.isOverride": true
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Mode 1"
+  }
+}
