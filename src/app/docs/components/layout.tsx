@@ -7,9 +7,17 @@ import { cn } from "@/lib/utils"
 const sidebarItems = [
   { label: "Introducao", href: "/docs/components" },
   { type: "separator" as const, label: "Primitives" },
+  { label: "Accordion", href: "/docs/components/accordion" },
+  { label: "Badge", href: "/docs/components/badge" },
   { label: "Button", href: "/docs/components/button" },
   { label: "Input", href: "/docs/components/input" },
+  { label: "Progress", href: "/docs/components/progress" },
+  { label: "Scroll Area", href: "/docs/components/scroll-area" },
+  { label: "Sheet", href: "/docs/components/sheet" },
   { label: "Tabs", href: "/docs/components/tabs" },
+  { label: "Video Player", href: "/docs/components/video-player" },
+  { type: "separator" as const, label: "Composites" },
+  { label: "Headers", href: "/docs/components/headers" },
   { type: "separator" as const, label: "Brand" },
   { label: "Logos", href: "/docs/components/logos" },
 ]

@@ -1,0 +1,516 @@
+"use client"
+
+import * as React from "react"
+import {
+  MediaPlayer,
+  MediaProvider,
+  Poster,
+  Controls,
+  Gesture,
+  TimeSlider,
+  VolumeSlider,
+  Time,
+  PlayButton,
+  MuteButton,
+  FullscreenButton,
+  CaptionButton,
+  PIPButton,
+  SeekButton,
+  Captions,
+  useMediaState,
+  useMediaRemote,
+  useVideoQualityOptions,
+  type MediaPlayerInstance,
+} from "@vidstack/react"
+import "@vidstack/react/player/styles/base.css"
+import {
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Volume1,
+  Maximize,
+  Minimize,
+  Captions as CaptionsIcon,
+  CaptionsOff,
+  PictureInPicture2,
+  RotateCcw,
+  RotateCw,
+  Gauge,
+  Settings,
+  Check,
+} from "lucide-react"
+import { CycleIcon } from "@/components/icons"
+import { cn } from "@/lib/utils"
+
+/* ─── Types ─── */
+
+export interface VideoPlayerProps {
+  /** URL do video (mp4, webm, m3u8 para HLS) */
+  src: string
+  /** URL da imagem de poster */
+  poster?: string
+  /** Alt text do poster */
+  posterAlt?: string
+  /** URL do arquivo de thumbnails (VTT sprite sheet) */
+  thumbnails?: string
+  /** Iniciar automaticamente */
+  autoPlay?: boolean
+  /** Iniciar mutado */
+  muted?: boolean
+  /** Repetir ao terminar */
+  loop?: boolean
+  className?: string
+}
+
+/* ─── Shared styles ─── */
+
+const controlBtnClass =
+  "group inline-flex size-9 cursor-pointer items-center justify-center rounded-md text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/50"
+
+/** Play, Pause e Volume usam icones filled (solid) no player — igual YouTube */
+const filledIconClass = "text-white fill-current !stroke-transparent"
+
+/* ─── Sub-components (controles customizados) ─── */
+
+function PlayOverlay() {
+  const isPaused = useMediaState("paused")
+  const hasStarted = useMediaState("started")
+
+  if (!isPaused && hasStarted) return null
+
+  return (
+    <PlayButton className="absolute inset-0 z-30 flex cursor-pointer items-center justify-center bg-black/30 transition-opacity">
+      <div className="flex size-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-transform hover:scale-110">
+        <CycleIcon icon={Play} size="lg" decorative className={cn(filledIconClass, "ml-1")} />
+      </div>
+    </PlayButton>
+  )
+}
+
+function PlayControl() {
+  const isPaused = useMediaState("paused")
+  return (
+    <PlayButton className={controlBtnClass}>
+      {isPaused ? (
+        <CycleIcon icon={Play} size="sm" decorative className={filledIconClass} />
+      ) : (
+        <CycleIcon icon={Pause} size="sm" decorative className={filledIconClass} />
+      )}
+    </PlayButton>
+  )
+}
+
+function SeekBackwardControl() {
+  return (
+    <SeekButton className={controlBtnClass} seconds={-10}>
+      <CycleIcon icon={RotateCcw} size="sm" decorative className="text-white" />
+    </SeekButton>
+  )
+}
+
+function SeekForwardControl() {
+  return (
+    <SeekButton className={controlBtnClass} seconds={10}>
+      <CycleIcon icon={RotateCw} size="sm" decorative className="text-white" />
+    </SeekButton>
+  )
+}
+
+function MuteControl() {
+  const volume = useMediaState("volume")
+  const isMuted = useMediaState("muted")
+
+  const Icon = isMuted || volume === 0 ? VolumeX : volume < 0.5 ? Volume1 : Volume2
+
+  return (
+    <MuteButton className={controlBtnClass}>
+      <CycleIcon icon={Icon} size="sm" decorative className={filledIconClass} />
+    </MuteButton>
+  )
+}
+
+function VolumeControl() {
+  return (
+    <VolumeSlider.Root className="group relative inline-flex h-9 w-20 cursor-pointer touch-none select-none items-center outline-none">
+      <VolumeSlider.Track className="relative h-[4px] w-full rounded-full bg-white/30">
+        <VolumeSlider.TrackFill className="absolute h-full w-[var(--slider-fill)] rounded-full bg-white" />
+      </VolumeSlider.Track>
+      <VolumeSlider.Thumb className="absolute left-[var(--slider-fill)] top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-0 transition-opacity group-data-[active]:opacity-100 group-data-[dragging]:opacity-100" />
+    </VolumeSlider.Root>
+  )
+}
+
+function SeekBar({ thumbnails }: { thumbnails?: string }) {
+  return (
+    <TimeSlider.Root className="group relative inline-flex h-9 w-full cursor-pointer touch-none select-none items-center outline-none">
+      <TimeSlider.Track className="relative h-[4px] w-full rounded-full bg-white/30">
+        <TimeSlider.Progress className="absolute h-full w-[var(--slider-progress)] rounded-full bg-white/50" />
+        <TimeSlider.TrackFill className="absolute h-full w-[var(--slider-fill)] rounded-full bg-white" />
+      </TimeSlider.Track>
+      <TimeSlider.Thumb className="absolute left-[var(--slider-fill)] top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-0 transition-opacity group-data-[active]:opacity-100 group-data-[dragging]:opacity-100" />
+
+      {/* Thumbnail preview on hover */}
+      {thumbnails && (
+        <TimeSlider.Preview className="pointer-events-none flex flex-col items-center gap-1 opacity-0 transition-opacity duration-200 data-[visible]:opacity-100">
+          <TimeSlider.Thumbnail.Root
+            src={thumbnails}
+            className="block h-[var(--thumbnail-height)] max-h-[160px] min-h-[80px] w-[var(--thumbnail-width)] min-w-[120px] max-w-[200px] overflow-hidden rounded-md border-2 border-white bg-black"
+          >
+            <TimeSlider.Thumbnail.Img />
+          </TimeSlider.Thumbnail.Root>
+          <TimeSlider.Value className="rounded bg-black/80 px-1.5 py-0.5 text-[11px] font-mono text-white" />
+        </TimeSlider.Preview>
+      )}
+
+      {/* Time preview (no thumbnails) */}
+      {!thumbnails && (
+        <TimeSlider.Preview className="pointer-events-none flex flex-col items-center opacity-0 transition-opacity duration-200 data-[visible]:opacity-100">
+          <TimeSlider.Value className="rounded bg-black/80 px-1.5 py-0.5 text-[11px] font-mono text-white" />
+        </TimeSlider.Preview>
+      )}
+    </TimeSlider.Root>
+  )
+}
+
+function TimeDisplay() {
+  return (
+    <div className="flex items-center gap-1 text-xs font-mono text-white/80 tabular-nums">
+      <Time type="current" />
+      <span>/</span>
+      <Time type="duration" />
+    </div>
+  )
+}
+
+function CaptionControl() {
+  const track = useMediaState("textTrack")
+  const hasTrack = track !== null
+  return (
+    <CaptionButton className={cn(controlBtnClass, !hasTrack && "opacity-50 pointer-events-none")}>
+      {track ? (
+        <CycleIcon icon={CaptionsIcon} size="sm" decorative className="text-white" />
+      ) : (
+        <CycleIcon icon={CaptionsOff} size="sm" decorative className="text-white" />
+      )}
+    </CaptionButton>
+  )
+}
+
+function PIPControl() {
+  const isPIP = useMediaState("pictureInPicture")
+  return (
+    <PIPButton className={controlBtnClass}>
+      <CycleIcon icon={PictureInPicture2} size="sm" decorative className={cn("text-white", isPIP && "text-white/100")} />
+    </PIPButton>
+  )
+}
+
+function SpeedControl() {
+  const playbackRate = useMediaState("playbackRate")
+  const remote = useMediaRemote()
+  const [open, setOpen] = React.useState(false)
+
+  const rates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className={controlBtnClass}
+      >
+        {playbackRate === 1 ? (
+          <CycleIcon icon={Gauge} size="sm" decorative className="text-white" />
+        ) : (
+          <span className="text-xs font-mono font-semibold text-white">{playbackRate}x</span>
+        )}
+      </button>
+
+      {open && (
+        <>
+          {/* Backdrop to close */}
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+
+          <div className="absolute bottom-full right-0 z-50 mb-2 min-w-[120px] rounded-lg border border-white/10 bg-black/90 backdrop-blur-md p-1 shadow-xl">
+            {rates.map((rate) => (
+              <button
+                key={rate}
+                type="button"
+                onClick={() => {
+                  remote.changePlaybackRate(rate)
+                  setOpen(false)
+                }}
+                className={cn(
+                  "flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white",
+                  playbackRate === rate && "text-white font-medium"
+                )}
+              >
+                <span className="size-4 flex items-center justify-center">
+                  {playbackRate === rate && <CycleIcon icon={Check} size="2xs" decorative className="text-white" />}
+                </span>
+                <span className="font-mono">{rate === 1 ? "Normal" : `${rate}x`}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+function QualityControl() {
+  const options = useVideoQualityOptions({ auto: true, sort: "descending" })
+  const [open, setOpen] = React.useState(false)
+
+  const currentLabel = options.selectedValue === "auto"
+    ? `Auto${options.selectedQuality ? ` (${options.selectedQuality.height}p)` : ""}`
+    : options.selectedQuality
+      ? `${options.selectedQuality.height}p`
+      : "Auto"
+
+  if (options.disabled) return null
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className={controlBtnClass}
+      >
+        <CycleIcon icon={Settings} size="sm" decorative className="text-white" />
+      </button>
+
+      {open && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+
+          <div className="absolute bottom-full right-0 z-50 mb-2 min-w-[140px] rounded-lg border border-white/10 bg-black/90 backdrop-blur-md p-1 shadow-xl">
+            <p className="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white/50">
+              Qualidade
+            </p>
+            {options.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => {
+                  option.select()
+                  setOpen(false)
+                }}
+                className={cn(
+                  "flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white",
+                  option.selected && "text-white font-medium"
+                )}
+              >
+                <span className="size-4 flex items-center justify-center">
+                  {option.selected && <CycleIcon icon={Check} size="2xs" decorative className="text-white" />}
+                </span>
+                <span className="font-mono">{option.label}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+function FullscreenControl() {
+  const isFullscreen = useMediaState("fullscreen")
+  return (
+    <FullscreenButton className={controlBtnClass}>
+      {isFullscreen ? (
+        <CycleIcon icon={Minimize} size="sm" decorative className="text-white" />
+      ) : (
+        <CycleIcon icon={Maximize} size="sm" decorative className="text-white" />
+      )}
+    </FullscreenButton>
+  )
+}
+
+/* ─── Seek gesture zone with feedback ─── */
+
+type SeekDirection = "backward" | "forward"
+
+const DOUBLE_TAP_THRESHOLD = 300
+
+function SeekGestureZone({
+  side,
+  onSeekFeedback,
+}: {
+  side: "left" | "right"
+  onSeekFeedback: (direction: SeekDirection) => void
+}) {
+  const remote = useMediaRemote()
+  const currentTime = useMediaState("currentTime")
+  const lastTapRef = React.useRef(0)
+
+  const handlePointerUp = React.useCallback(
+    (e: React.PointerEvent) => {
+      const now = Date.now()
+      const delta = now - lastTapRef.current
+      lastTapRef.current = now
+
+      if (delta < DOUBLE_TAP_THRESHOLD) {
+        // Double tap detected — seek and show feedback
+        e.stopPropagation()
+        const seconds = side === "left" ? -10 : 10
+        remote.seek(currentTime + seconds)
+        onSeekFeedback(side === "left" ? "backward" : "forward")
+      }
+    },
+    [remote, currentTime, side, onSeekFeedback]
+  )
+
+  return (
+    <div
+      className={cn(
+        "absolute top-0 z-10 block h-full w-1/5",
+        side === "left" ? "left-0" : "right-0"
+      )}
+      onPointerUp={handlePointerUp}
+    />
+  )
+}
+
+function SeekFeedbackOverlay({
+  direction,
+  visible,
+}: {
+  direction: SeekDirection
+  visible: boolean
+}) {
+  const isBackward = direction === "backward"
+
+  return (
+    <div
+      className={cn(
+        "pointer-events-none absolute top-0 z-[25] flex h-full w-2/5 items-center transition-opacity duration-200",
+        isBackward ? "left-0 justify-center" : "right-0 justify-center",
+        visible ? "opacity-100" : "opacity-0"
+      )}
+    >
+      <div
+        className={cn(
+          "flex flex-col items-center gap-1 transition-transform duration-300",
+          visible ? "scale-100" : "scale-75"
+        )}
+      >
+        <div className="flex size-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+          <CycleIcon
+            icon={isBackward ? RotateCcw : RotateCw}
+            size="sm"
+            decorative
+            className="text-white"
+          />
+        </div>
+        <span className="text-xs font-semibold text-white drop-shadow-md">
+          10s
+        </span>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Main component ─── */
+
+export function VideoPlayer({
+  src,
+  poster,
+  posterAlt = "",
+  thumbnails,
+  autoPlay = false,
+  muted = false,
+  loop = false,
+  className,
+}: VideoPlayerProps) {
+  const player = React.useRef<MediaPlayerInstance>(null)
+
+  // Seek feedback state
+  const [seekFeedback, setSeekFeedback] = React.useState<SeekDirection | null>(null)
+  const feedbackTimeout = React.useRef<ReturnType<typeof setTimeout>>(undefined)
+
+  const handleSeekFeedback = React.useCallback((direction: SeekDirection) => {
+    clearTimeout(feedbackTimeout.current)
+    setSeekFeedback(direction)
+    feedbackTimeout.current = setTimeout(() => setSeekFeedback(null), 700)
+  }, [])
+
+  React.useEffect(() => {
+    return () => clearTimeout(feedbackTimeout.current)
+  }, [])
+
+  return (
+    <MediaPlayer
+      ref={player}
+      src={src}
+      autoPlay={autoPlay}
+      muted={muted}
+      loop={loop}
+      playsInline
+      crossOrigin=""
+      className={cn(
+        "group relative aspect-video w-full overflow-hidden rounded-[16px] bg-black text-white",
+        className
+      )}
+    >
+      <MediaProvider>
+        {poster && (
+          <Poster
+            className="absolute inset-0 block h-full w-full rounded-[16px] object-cover opacity-0 transition-opacity data-[visible]:opacity-100"
+            src={poster}
+            alt={posterAlt}
+          />
+        )}
+      </MediaProvider>
+
+      {/* Captions overlay */}
+      <Captions className="absolute inset-0 bottom-[80px] z-10 select-none break-words text-center text-sm media-preview:opacity-0 [&>[data-part=cue]]:inline [&>[data-part=cue]]:bg-black/70 [&>[data-part=cue]]:px-2 [&>[data-part=cue]]:py-0.5 [&>[data-part=cue]]:text-white" />
+
+      {/* Play overlay (paused + hover) */}
+      <PlayOverlay />
+
+      {/* Seek feedback indicators */}
+      <SeekFeedbackOverlay direction="backward" visible={seekFeedback === "backward"} />
+      <SeekFeedbackOverlay direction="forward" visible={seekFeedback === "forward"} />
+
+      {/* Gestures */}
+      <Gesture className="absolute inset-0 z-0 block h-full w-full" event="pointerup" action="toggle:paused" />
+      <Gesture className="absolute inset-0 z-0 block h-full w-full" event="dblpointerup" action="toggle:fullscreen" />
+
+      {/* Custom seek gesture zones with visual feedback (replace Gesture seek) */}
+      <SeekGestureZone side="left" onSeekFeedback={handleSeekFeedback} />
+      <SeekGestureZone side="right" onSeekFeedback={handleSeekFeedback} />
+
+      {/* Controls overlay */}
+      <Controls.Root className="absolute inset-0 z-20 flex h-full w-full flex-col bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-data-[started]:group-hover:opacity-100 group-data-[paused]:opacity-100">
+        <div className="flex-1" />
+
+        {/* Seek bar */}
+        <Controls.Group className="flex w-full items-center px-3">
+          <SeekBar thumbnails={thumbnails} />
+        </Controls.Group>
+
+        {/* Bottom bar */}
+        <Controls.Group className="flex w-full items-center gap-1 px-2 pb-2">
+          {/* Left controls */}
+          <PlayControl />
+          <SeekBackwardControl />
+          <SeekForwardControl />
+          <MuteControl />
+          <VolumeControl />
+          <TimeDisplay />
+
+          <div className="flex-1" />
+
+          {/* Right controls */}
+          <CaptionControl />
+          <SpeedControl />
+          <QualityControl />
+          <PIPControl />
+          <FullscreenControl />
+        </Controls.Group>
+      </Controls.Root>
+    </MediaPlayer>
+  )
+}

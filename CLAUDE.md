@@ -133,9 +133,15 @@ npm run lint     # ESLint
 
 | Componente | Status | Arquivo | Observações |
 |------------|--------|---------|-------------|
-| Button | Instalado | `button.tsx` | 6 variants, 8 sizes (xs=24px, sm=32px, md=40px, lg=48px + icon-*). Ícones: xs=12px, sm=16px, md/lg=24px. Suporta `.theme-*`. |
+| Button | Instalado | `button.tsx` | 6 variants, 8 sizes (xs=24px, sm=32px, md=40px, lg=48px + icon-*). Ícones com strokeWidth automático via CSS. Suporta `.theme-*`. |
 | Input | Instalado | `input.tsx` | 3 sizes (sm=32px, default=40px, lg=48px). Estados: default, focused, disabled, error (aria-invalid). |
-| Tabs | Instalado | `tabs.tsx` | Componente auxiliar usado na documentação (DocsTabs). |
+| Sheet | Instalado | `sheet.tsx` | Overlay lateral/bottom. Sides: top, right, bottom, left. Usado no HeaderClass mobile. |
+| Tabs | Instalado | `tabs.tsx` | 2 variants (default, line), orientação horizontal e vertical. |
+| Video Player | Instalado | `video-player.tsx` | Player com controles customizados (Vidstack). Suporta MP4, WebM, HLS. Icones via CycleIcon. |
+| Accordion | Instalado | `accordion.tsx` | Secoes colapsaveis com animacao. Suporta single e multiple. |
+| Badge | Instalado | `badge.tsx` | 8 variants (default, secondary, destructive, outline, ghost, link, muted, success), 3 sizes (sm, default, lg). Suporta `.theme-*`. |
+| Progress | Instalado | `progress.tsx` | 4 sizes (xs, sm, default, lg), 4 variants (default, secondary, destructive, muted). Barra de progresso responde a `.theme-*`, track permanece `bg-muted`. |
+| Scroll Area | Instalado | `scroll-area.tsx` | Area de scroll customizada com scrollbar estilizado. Vertical e horizontal. |
 
 > **Próximo a instalar**: Label, Textarea
 
@@ -149,7 +155,7 @@ npm run lint     # ESLint
 
 | Componente | Status | Arquivo | Observações |
 |------------|--------|---------|-------------|
-| — | — | — | Nenhum composite criado ainda |
+| HeaderClass | Criado | `header-class.tsx` | Header do produto Class. Responsivo (740px breakpoint). Props: courseName, isSidebarOpen, onToggleSidebar, onNavigateHome. Mobile usa bottom sheet. |
 
 ### Hooks (`src/hooks/`)
 

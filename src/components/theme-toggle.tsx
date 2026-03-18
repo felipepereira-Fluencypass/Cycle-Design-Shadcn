@@ -2,16 +2,23 @@
 
 import { useTheme } from "next-themes"
 import { Moon, Sun } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button, type ButtonProps } from "@/components/ui/button"
 import { CycleIcon } from "@/components/icons"
 
-export function ThemeToggle() {
+interface ThemeToggleProps {
+  variant?: ButtonProps["variant"]
+  size?: ButtonProps["size"]
+  className?: string
+}
+
+export function ThemeToggle({ variant = "ghost", size = "icon-sm", className }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme()
 
   return (
     <Button
-      variant="ghost"
-      size="icon-sm"
+      variant={variant}
+      size={size}
+      className={className}
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       aria-label="Alternar tema"
     >

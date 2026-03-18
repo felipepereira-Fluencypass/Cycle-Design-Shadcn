@@ -220,7 +220,7 @@
   --primary: #D45558;
   --primary-foreground: #FFFFFF;
   --secondary: #FFE8E8;
-  --secondary-foreground: #B33E41;
+  --secondary-foreground: #0a0a0a;
   --border: #D45558;
   --input: #ED6A6D;
   --ring: #B33E41;
@@ -240,7 +240,7 @@
   --primary: #1A5FE0;
   --primary-foreground: #FFFFFF;
   --secondary: #E0EBFF;
-  --secondary-foreground: #0F4BBC;
+  --secondary-foreground: #0a0a0a;
   --border: #1A5FE0;
   --input: #2E74FF;
   --ring: #0F4BBC;
@@ -260,7 +260,7 @@
   --primary: #E56530;
   --primary-foreground: #FFFFFF;
   --secondary: #FFEDE0;
-  --secondary-foreground: #BF4D20;
+  --secondary-foreground: #0a0a0a;
   --border: #E56530;
   --input: #FF8041;
   --ring: #BF4D20;
@@ -278,9 +278,9 @@
   --accent: #47FF8A;
   --accent-foreground: #004D14;
   --primary: #00C234;
-  --primary-foreground: #FFFFFF;
+  --primary-foreground: #0a0a0a;
   --secondary: #E0FFE9;
-  --secondary-foreground: #009929;
+  --secondary-foreground: #0a0a0a;
   --border: #00C234;
   --input: #00E73E;
   --ring: #009929;
@@ -300,7 +300,7 @@
   --primary: #7D0DD4;
   --primary-foreground: #FFFFFF;
   --secondary: #F7E0FF;
-  --secondary-foreground: #6209A8;
+  --secondary-foreground: #0a0a0a;
   --border: #7D0DD4;
   --input: #9810FA;
   --ring: #6209A8;
@@ -320,7 +320,7 @@
   --primary: #098A5E;
   --primary-foreground: #FFFFFF;
   --secondary: #E0FAF0;
-  --secondary-foreground: #07704C;
+  --secondary-foreground: #0a0a0a;
   --border: #098A5E;
   --input: #0BA370;
   --ring: #07704C;
@@ -340,7 +340,7 @@
   --primary: #D48E00;
   --primary-foreground: #FFFFFF;
   --secondary: #FFF5D9;
-  --secondary-foreground: #AA7200;
+  --secondary-foreground: #0a0a0a;
   --border: #D48E00;
   --input: #F5A800;
   --ring: #AA7200;
@@ -360,7 +360,7 @@
   --primary: #B32020;
   --primary-foreground: #FFFFFF;
   --secondary: #FFE8E8;
-  --secondary-foreground: #8F1717;
+  --secondary-foreground: #0a0a0a;
   --border: #B32020;
   --input: #D42B2B;
   --ring: #8F1717;
@@ -389,7 +389,7 @@
   --primary: #ED6A6D;
   --primary-foreground: #FFFFFF;
   --secondary: rgba(237, 106, 109, 0.1);
-  --secondary-foreground: #FFD0D1;
+  --secondary-foreground: #ffffff;
   --border: #ED6A6D;
   --input: #F57B7E;
   --ring: #F57B7E;
@@ -410,7 +410,7 @@
   --primary: #2E74FF;
   --primary-foreground: #FFFFFF;
   --secondary: rgba(46, 116, 255, 0.1);
-  --secondary-foreground: #C2D6FF;
+  --secondary-foreground: #ffffff;
   --border: #2E74FF;
   --input: #4D8AFF;
   --ring: #4D8AFF;
@@ -431,7 +431,7 @@
   --primary: #FF8041;
   --primary-foreground: #FFFFFF;
   --secondary: rgba(255, 128, 65, 0.1);
-  --secondary-foreground: #FFD9C2;
+  --secondary-foreground: #ffffff;
   --border: #FF8041;
   --input: #FF9158;
   --ring: #FF9158;
@@ -450,9 +450,9 @@
   --accent: rgba(0, 231, 62, 0.3);
   --accent-foreground: #E0FFE9;
   --primary: #00E73E;
-  --primary-foreground: #FFFFFF;
+  --primary-foreground: #0a0a0a;
   --secondary: rgba(0, 231, 62, 0.1);
-  --secondary-foreground: #B8FFD0;
+  --secondary-foreground: #ffffff;
   --border: #00E73E;
   --input: #1AFF61;
   --ring: #1AFF61;
@@ -473,7 +473,7 @@
   --primary: #9810FA;
   --primary-foreground: #FFFFFF;
   --secondary: rgba(152, 16, 250, 0.1);
-  --secondary-foreground: #EFC2FF;
+  --secondary-foreground: #ffffff;
   --border: #9810FA;
   --input: #B844FF;
   --ring: #B844FF;
@@ -494,7 +494,7 @@
   --primary: #0BA370;
   --primary-foreground: #FFFFFF;
   --secondary: rgba(11, 163, 112, 0.1);
-  --secondary-foreground: #B8F2D9;
+  --secondary-foreground: #ffffff;
   --border: #0BA370;
   --input: #1EC485;
   --ring: #1EC485;
@@ -515,7 +515,7 @@
   --primary: #F5A800;
   --primary-foreground: #FFFFFF;
   --secondary: rgba(245, 168, 0, 0.1);
-  --secondary-foreground: #FEEAB0;
+  --secondary-foreground: #ffffff;
   --border: #F5A800;
   --input: #FDC028;
   --ring: #FDC028;
@@ -536,7 +536,7 @@
   --primary: #D42B2B;
   --primary-foreground: #FFFFFF;
   --secondary: rgba(212, 43, 43, 0.1);
-  --secondary-foreground: #FFD0D0;
+  --secondary-foreground: #ffffff;
   --border: #D42B2B;
   --input: #ED5555;
   --ring: #ED5555;

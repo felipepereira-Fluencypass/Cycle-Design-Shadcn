@@ -15,10 +15,11 @@ const REGISTRY_PATH = path.join(ROOT, "public", "registry.json")
 const OUTPUT_DIR = path.join(ROOT, "public", "r")
 
 // Mapeamento de path no registry -> arquivo real no projeto
-function resolveFilePath(registryPath: string): string {
-  // "registry/button.tsx" -> "src/components/ui/button.tsx"
-  const filename = registryPath.replace("registry/", "")
-  return path.join(ROOT, "src", "components", "ui", filename)
+// Usa o target para descobrir o arquivo fonte:
+//   "components/ui/button.tsx"           -> "src/components/ui/button.tsx"
+//   "components/composites/header.tsx"   -> "src/components/composites/header.tsx"
+function resolveFilePath(target: string): string {
+  return path.join(ROOT, "src", target)
 }
 
 function main() {
@@ -36,7 +37,7 @@ function main() {
     // Ler conteudo de cada arquivo do componente
     const files = item.files.map(
       (file: { path: string; type: string; target: string }) => {
-        const srcPath = resolveFilePath(file.path)
+        const srcPath = resolveFilePath(file.target)
         const content = fs.readFileSync(srcPath, "utf-8")
         return {
           path: file.target,
