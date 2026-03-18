@@ -43,7 +43,7 @@ export default function DocsLayout({
       </header>
 
       {/* Content */}
-      <main className="mx-auto max-w-5xl px-6 py-12">{children}</main>
+      <main className="mx-auto max-w-6xl px-6 py-12">{children}</main>
     </div>
   );
 }
