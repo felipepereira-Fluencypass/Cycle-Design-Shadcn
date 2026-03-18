@@ -1,0 +1,21 @@
+// AUTO-GENERATED — não edite manualmente
+// Fonte: src/icons/_source → npm run build:icons
+import React from "react"
+import { BaseIcon } from '../BaseIcon'
+import type { IconProps } from '../types'
+
+/**
+ * @example
+ * // Decorativo (ícone puramente visual)
+ * <Feedback size="sm" decorative />
+ *
+ * // Semântico (requer aria-label)
+ * <Feedback size="sm" aria-label="descrição do ícone" />
+ */
+export function Feedback(props: IconProps): React.JSX.Element {
+  return (
+    <BaseIcon {...props}>
+      <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2Z"/><path fill="currentColor" d="m12 5 1.2 3.4h3.5l-2.8 2 1 3.4-2.9-2-2.9 2 1-3.4-2.8-2h3.5z" stroke="none"/>
+    </BaseIcon>
+  )
+}

@@ -1,0 +1,708 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-alpha-backdrop: var(--alpha-backdrop);
+  --color-alpha-overlay: var(--alpha-overlay);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* ============================================
+   * TYPOGRAPHY - Font Size overrides (Figma)
+   * ============================================ */
+  --text-2xs: 0.625rem;       /* 10px — custom, não existe no Tailwind */
+  --text-4xl: 2.5rem;         /* 40px — Figma override (Tailwind padrão: 36px) */
+  --text-6xl: 4rem;           /* 64px — Figma override (Tailwind padrão: 60px) */
+
+  /* ============================================
+   * TYPOGRAPHY - Line Height custom values (Figma)
+   * ============================================ */
+  --leading-3_5: 0.875rem;    /* 14px */
+  --leading-4_5: 1.125rem;    /* 18px */
+  --leading-7_5: 1.875rem;    /* 30px */
+  --leading-15: 3.75rem;      /* 60px */
+  --leading-20_5: 5.125rem;   /* 82px */
+  --leading-22_5: 5.625rem;   /* 90px */
+
+  /* ============================================
+   * TYPOGRAPHY - Letter Spacing overrides (Figma)
+   * ============================================ */
+  --tracking-tighter: -0.05em;  /* ~-0.8px at 16px */
+  --tracking-tight: -0.025em;   /* ~-0.4px at 16px */
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;     /* ~+0.4px at 16px */
+  --tracking-wider: 0.05em;     /* ~+0.8px at 16px */
+  --tracking-widest: 0.1em;     /* ~+1.6px at 16px */
+}
+
+/*
+ * ============================================
+ * CYCLE DESIGN SYSTEM - Foundation Tokens
+ * ============================================
+ * Cores semânticas extraídas do Figma.
+ * Neutral = tema global. Variações (brand, class, etc.)
+ * são aplicadas via classes .theme-* em componentes.
+ * ============================================
+ */
+
+/* --- Light Mode: Neutral (tema global) --- */
+:root {
+  --background: #FFFFFF;
+  --foreground: #181D27;
+  --card: #FFFFFF;
+  --card-foreground: #181D27;
+  --popover: #FFFFFF;
+  --popover-foreground: #181D27;
+  --muted: #FAFAFA;
+  --muted-foreground: #535862;
+  --accent: #F5F5F5;
+  --accent-foreground: #181D27;
+  --primary: #0D0D12;
+  --primary-foreground: #F5F5F5;
+  --secondary: #FAFAFA;
+  --secondary-foreground: #181D27;
+  --border: #D5D7DA;
+  --input: #E9EAEB;
+  --ring: #717680;
+  --destructive: #B32020;
+  --destructive-foreground: #FFFFFF;
+  --chart-1: #D45558;
+  --chart-2: #1A5FE0;
+  --chart-3: #00C234;
+  --chart-4: #D48E00;
+  --chart-5: #7D0DD4;
+  --radius: 0.625rem;
+  --alpha-backdrop: rgba(0, 0, 0, 0.6);
+  --alpha-overlay: rgba(255, 255, 255, 0.6);
+  --sidebar: #FAFAFA;
+  --sidebar-foreground: #181D27;
+  --sidebar-primary: #0D0D12;
+  --sidebar-primary-foreground: #F5F5F5;
+  --sidebar-accent: #F5F5F5;
+  --sidebar-accent-foreground: #181D27;
+  --sidebar-border: #D5D7DA;
+  --sidebar-ring: #717680;
+}
+
+/* --- Dark Mode: Neutral --- */
+.dark {
+  --background: #0D0D12;
+  --foreground: #FAFAFA;
+  --card: #181D27;
+  --card-foreground: #FAFAFA;
+  --popover: #181D27;
+  --popover-foreground: #FAFAFA;
+  --muted: #181D27;
+  --muted-foreground: #A4A7AE;
+  --accent: #252B37;
+  --accent-foreground: #FAFAFA;
+  --primary: #FFFFFF;
+  --primary-foreground: #181D27;
+  --secondary: #181D27;
+  --secondary-foreground: #E9EAEB;
+  --border: #414651;
+  --input: #252B37;
+  --ring: #A4A7AE;
+  --destructive: #D42B2B;
+  --destructive-foreground: #FAFAFA;
+  --chart-1: #ED6A6D;
+  --chart-2: #2E74FF;
+  --chart-3: #00E73E;
+  --chart-4: #F5A800;
+  --chart-5: #9810FA;
+  --alpha-backdrop: rgba(0, 0, 0, 0.6);
+  --alpha-overlay: rgba(255, 255, 255, 0.6);
+  --sidebar: #181D27;
+  --sidebar-foreground: #FAFAFA;
+  --sidebar-primary: #FFFFFF;
+  --sidebar-primary-foreground: #181D27;
+  --sidebar-accent: #252B37;
+  --sidebar-accent-foreground: #FAFAFA;
+  --sidebar-border: #414651;
+  --sidebar-ring: #A4A7AE;
+}
+
+/* ============================================
+ * COLOR VARIATIONS - Light Mode
+ * ============================================
+ * Aplicar via classe no componente ou container:
+ * <Button className="theme-brand">Cycle</Button>
+ * <div className="theme-class"><Card>...</Card></div>
+ * ============================================
+ */
+
+.theme-brand {
+  --background: #FFE8E8;
+  --foreground: #D45558;
+  --card: #FFE8E8;
+  --card-foreground: #D45558;
+  --popover: #FFE8E8;
+  --popover-foreground: #D45558;
+  --muted: #FFD0D1;
+  --muted-foreground: #8C2D2F;
+  --accent: #FF8A8D;
+  --accent-foreground: #6B1E20;
+  --primary: #D45558;
+  --primary-foreground: #FFFFFF;
+  --secondary: #FFE8E8;
+  --secondary-foreground: #B33E41;
+  --border: #D45558;
+  --input: #ED6A6D;
+  --ring: #B33E41;
+}
+
+.theme-class {
+  --background: #E0EBFF;
+  --foreground: #1A5FE0;
+  --card: #E0EBFF;
+  --card-foreground: #1A5FE0;
+  --popover: #E0EBFF;
+  --popover-foreground: #1A5FE0;
+  --muted: #C2D6FF;
+  --muted-foreground: #0A3590;
+  --accent: #70A0FF;
+  --accent-foreground: #062268;
+  --primary: #1A5FE0;
+  --primary-foreground: #FFFFFF;
+  --secondary: #E0EBFF;
+  --secondary-foreground: #0F4BBC;
+  --border: #1A5FE0;
+  --input: #2E74FF;
+  --ring: #0F4BBC;
+}
+
+.theme-private {
+  --background: #FFEDE0;
+  --foreground: #E56530;
+  --card: #FFEDE0;
+  --card-foreground: #E56530;
+  --popover: #FFEDE0;
+  --popover-foreground: #E56530;
+  --muted: #FFD9C2;
+  --muted-foreground: #993A16;
+  --accent: #FFA570;
+  --accent-foreground: #73270E;
+  --primary: #E56530;
+  --primary-foreground: #FFFFFF;
+  --secondary: #FFEDE0;
+  --secondary-foreground: #BF4D20;
+  --border: #E56530;
+  --input: #FF8041;
+  --ring: #BF4D20;
+}
+
+.theme-group {
+  --background: #E0FFE9;
+  --foreground: #00C234;
+  --card: #E0FFE9;
+  --card-foreground: #00C234;
+  --popover: #E0FFE9;
+  --popover-foreground: #00C234;
+  --muted: #B8FFD0;
+  --muted-foreground: #00731E;
+  --accent: #47FF8A;
+  --accent-foreground: #004D14;
+  --primary: #00C234;
+  --primary-foreground: #FFFFFF;
+  --secondary: #E0FFE9;
+  --secondary-foreground: #009929;
+  --border: #00C234;
+  --input: #00E73E;
+  --ring: #009929;
+}
+
+.theme-impulse {
+  --background: #F7E0FF;
+  --foreground: #7D0DD4;
+  --card: #F7E0FF;
+  --card-foreground: #7D0DD4;
+  --popover: #F7E0FF;
+  --popover-foreground: #7D0DD4;
+  --muted: #EFC2FF;
+  --muted-foreground: #48077C;
+  --accent: #D070FF;
+  --accent-foreground: #48077C;
+  --primary: #7D0DD4;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F7E0FF;
+  --secondary-foreground: #6209A8;
+  --border: #7D0DD4;
+  --input: #9810FA;
+  --ring: #6209A8;
+}
+
+.theme-positive {
+  --background: #E0FAF0;
+  --foreground: #098A5E;
+  --card: #E0FAF0;
+  --card-foreground: #098A5E;
+  --popover: #E0FAF0;
+  --popover-foreground: #098A5E;
+  --muted: #B8F2D9;
+  --muted-foreground: #05523A;
+  --accent: #47D99E;
+  --accent-foreground: #033526;
+  --primary: #098A5E;
+  --primary-foreground: #FFFFFF;
+  --secondary: #E0FAF0;
+  --secondary-foreground: #07704C;
+  --border: #098A5E;
+  --input: #0BA370;
+  --ring: #07704C;
+}
+
+.theme-warning {
+  --background: #FFF5D9;
+  --foreground: #D48E00;
+  --card: #FFF5D9;
+  --card-foreground: #D48E00;
+  --popover: #FFF5D9;
+  --popover-foreground: #D48E00;
+  --muted: #FEEAB0;
+  --muted-foreground: #7D5400;
+  --accent: #FECF50;
+  --accent-foreground: #523800;
+  --primary: #D48E00;
+  --primary-foreground: #FFFFFF;
+  --secondary: #FFF5D9;
+  --secondary-foreground: #AA7200;
+  --border: #D48E00;
+  --input: #F5A800;
+  --ring: #AA7200;
+}
+
+.theme-critical {
+  --background: #FFE8E8;
+  --foreground: #B32020;
+  --card: #FFE8E8;
+  --card-foreground: #B32020;
+  --popover: #FFE8E8;
+  --popover-foreground: #B32020;
+  --muted: #FFD0D0;
+  --muted-foreground: #6B1010;
+  --accent: #FF8585;
+  --accent-foreground: #470A0A;
+  --primary: #B32020;
+  --primary-foreground: #FFFFFF;
+  --secondary: #FFE8E8;
+  --secondary-foreground: #8F1717;
+  --border: #B32020;
+  --input: #D42B2B;
+  --ring: #8F1717;
+}
+
+/* ============================================
+ * COLOR VARIATIONS - Dark Mode
+ * ============================================
+ * No dark, variações usam alpha/opacidade
+ * para backgrounds, muted e accent.
+ * ============================================
+ */
+
+.dark .theme-brand,
+.theme-brand:is(.dark *) {
+  --background: rgba(237, 106, 109, 0.1);
+  --foreground: #ED6A6D;
+  --card: rgba(237, 106, 109, 0.1);
+  --card-foreground: #ED6A6D;
+  --popover: rgba(237, 106, 109, 0.1);
+  --popover-foreground: #ED6A6D;
+  --muted: rgba(237, 106, 109, 0.2);
+  --muted-foreground: #FFB0B2;
+  --accent: rgba(237, 106, 109, 0.3);
+  --accent-foreground: #FFE8E8;
+  --primary: #ED6A6D;
+  --primary-foreground: #FFFFFF;
+  --secondary: rgba(237, 106, 109, 0.1);
+  --secondary-foreground: #FFD0D1;
+  --border: #ED6A6D;
+  --input: #F57B7E;
+  --ring: #F57B7E;
+}
+
+.dark .theme-class,
+.theme-class:is(.dark *) {
+  --background: rgba(46, 116, 255, 0.1);
+  --foreground: #2E74FF;
+  --card: rgba(46, 116, 255, 0.1);
+  --card-foreground: #2E74FF;
+  --popover: rgba(46, 116, 255, 0.1);
+  --popover-foreground: #2E74FF;
+  --muted: rgba(46, 116, 255, 0.2);
+  --muted-foreground: #99BBFF;
+  --accent: rgba(46, 116, 255, 0.3);
+  --accent-foreground: #E0EBFF;
+  --primary: #2E74FF;
+  --primary-foreground: #FFFFFF;
+  --secondary: rgba(46, 116, 255, 0.1);
+  --secondary-foreground: #C2D6FF;
+  --border: #2E74FF;
+  --input: #4D8AFF;
+  --ring: #4D8AFF;
+}
+
+.dark .theme-private,
+.theme-private:is(.dark *) {
+  --background: rgba(255, 128, 65, 0.1);
+  --foreground: #FF8041;
+  --card: rgba(255, 128, 65, 0.1);
+  --card-foreground: #FF8041;
+  --popover: rgba(255, 128, 65, 0.1);
+  --popover-foreground: #FF8041;
+  --muted: rgba(255, 128, 65, 0.2);
+  --muted-foreground: #FFC09A;
+  --accent: rgba(255, 128, 65, 0.3);
+  --accent-foreground: #FFEDE0;
+  --primary: #FF8041;
+  --primary-foreground: #FFFFFF;
+  --secondary: rgba(255, 128, 65, 0.1);
+  --secondary-foreground: #FFD9C2;
+  --border: #FF8041;
+  --input: #FF9158;
+  --ring: #FF9158;
+}
+
+.dark .theme-group,
+.theme-group:is(.dark *) {
+  --background: rgba(0, 231, 62, 0.1);
+  --foreground: #00E73E;
+  --card: rgba(0, 231, 62, 0.1);
+  --card-foreground: #00E73E;
+  --popover: rgba(0, 231, 62, 0.1);
+  --popover-foreground: #00E73E;
+  --muted: rgba(0, 231, 62, 0.2);
+  --muted-foreground: #80FFB0;
+  --accent: rgba(0, 231, 62, 0.3);
+  --accent-foreground: #E0FFE9;
+  --primary: #00E73E;
+  --primary-foreground: #FFFFFF;
+  --secondary: rgba(0, 231, 62, 0.1);
+  --secondary-foreground: #B8FFD0;
+  --border: #00E73E;
+  --input: #1AFF61;
+  --ring: #1AFF61;
+}
+
+.dark .theme-impulse,
+.theme-impulse:is(.dark *) {
+  --background: rgba(152, 16, 250, 0.1);
+  --foreground: #9810FA;
+  --card: rgba(152, 16, 250, 0.1);
+  --card-foreground: #9810FA;
+  --popover: rgba(152, 16, 250, 0.1);
+  --popover-foreground: #9810FA;
+  --muted: rgba(152, 16, 250, 0.2);
+  --muted-foreground: #E29AFF;
+  --accent: rgba(152, 16, 250, 0.3);
+  --accent-foreground: #F7E0FF;
+  --primary: #9810FA;
+  --primary-foreground: #FFFFFF;
+  --secondary: rgba(152, 16, 250, 0.1);
+  --secondary-foreground: #EFC2FF;
+  --border: #9810FA;
+  --input: #B844FF;
+  --ring: #B844FF;
+}
+
+.dark .theme-positive,
+.theme-positive:is(.dark *) {
+  --background: rgba(11, 163, 112, 0.1);
+  --foreground: #0BA370;
+  --card: rgba(11, 163, 112, 0.1);
+  --card-foreground: #0BA370;
+  --popover: rgba(11, 163, 112, 0.1);
+  --popover-foreground: #0BA370;
+  --muted: rgba(11, 163, 112, 0.2);
+  --muted-foreground: #80E8BC;
+  --accent: rgba(11, 163, 112, 0.3);
+  --accent-foreground: #E0FAF0;
+  --primary: #0BA370;
+  --primary-foreground: #FFFFFF;
+  --secondary: rgba(11, 163, 112, 0.1);
+  --secondary-foreground: #B8F2D9;
+  --border: #0BA370;
+  --input: #1EC485;
+  --ring: #1EC485;
+}
+
+.dark .theme-warning,
+.theme-warning:is(.dark *) {
+  --background: rgba(245, 168, 0, 0.1);
+  --foreground: #F5A800;
+  --card: rgba(245, 168, 0, 0.1);
+  --card-foreground: #F5A800;
+  --popover: rgba(245, 168, 0, 0.1);
+  --popover-foreground: #F5A800;
+  --muted: rgba(245, 168, 0, 0.2);
+  --muted-foreground: #FEDD80;
+  --accent: rgba(245, 168, 0, 0.3);
+  --accent-foreground: #FFF5D9;
+  --primary: #F5A800;
+  --primary-foreground: #FFFFFF;
+  --secondary: rgba(245, 168, 0, 0.1);
+  --secondary-foreground: #FEEAB0;
+  --border: #F5A800;
+  --input: #FDC028;
+  --ring: #FDC028;
+}
+
+.dark .theme-critical,
+.theme-critical:is(.dark *) {
+  --background: rgba(212, 43, 43, 0.1);
+  --foreground: #D42B2B;
+  --card: rgba(212, 43, 43, 0.1);
+  --card-foreground: #D42B2B;
+  --popover: rgba(212, 43, 43, 0.1);
+  --popover-foreground: #D42B2B;
+  --muted: rgba(212, 43, 43, 0.2);
+  --muted-foreground: #FFB0B0;
+  --accent: rgba(212, 43, 43, 0.3);
+  --accent-foreground: #FFE8E8;
+  --primary: #D42B2B;
+  --primary-foreground: #FFFFFF;
+  --secondary: rgba(212, 43, 43, 0.1);
+  --secondary-foreground: #FFD0D0;
+  --border: #D42B2B;
+  --input: #ED5555;
+  --ring: #ED5555;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ============================================
+ * CYCLE TYPOGRAPHY - Composite Styles
+ * ============================================
+ * Estilos tipográficos compostos extraídos do Figma.
+ * Cada classe aplica font-size, font-weight,
+ * line-height e letter-spacing de uma vez.
+ *
+ * Uso: <p class="body-md"> ou <h2 class="heading-xl">
+ * ============================================
+ */
+
+/* --- Body --- */
+@utility body-xs {
+  font-family: var(--font-sans);
+  font-size: 0.625rem;     /* 10px */
+  font-weight: 400;
+  line-height: 1rem;        /* 16px */
+  letter-spacing: 0em;
+}
+
+@utility body-sm {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;      /* 12px */
+  font-weight: 400;
+  line-height: 1.125rem;    /* 18px */
+  letter-spacing: 0em;
+}
+
+@utility body-md {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;     /* 14px */
+  font-weight: 400;
+  line-height: 1.25rem;     /* 20px */
+  letter-spacing: 0em;
+}
+
+@utility body-lg {
+  font-family: var(--font-sans);
+  font-size: 1rem;         /* 16px */
+  font-weight: 400;
+  line-height: 1.5rem;      /* 24px */
+  letter-spacing: 0em;
+}
+
+/* --- Heading --- */
+@utility heading-xs {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;     /* 14px */
+  font-weight: 600;
+  line-height: 1.25rem;     /* 20px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-sm {
+  font-family: var(--font-sans);
+  font-size: 1rem;         /* 16px */
+  font-weight: 600;
+  line-height: 1.5rem;      /* 24px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-md {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;     /* 18px */
+  font-weight: 600;
+  line-height: 1.75rem;     /* 28px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-lg {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;      /* 20px */
+  font-weight: 600;
+  line-height: 1.875rem;    /* 30px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-xl {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;       /* 24px */
+  font-weight: 600;
+  line-height: 2rem;         /* 32px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-2xl {
+  font-family: var(--font-sans);
+  font-size: 2rem;         /* 32px */
+  font-weight: 700;
+  line-height: 2.5rem;      /* 40px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-3xl {
+  font-family: var(--font-sans);
+  font-size: 2.5rem;       /* 40px */
+  font-weight: 700;
+  line-height: 3rem;         /* 48px */
+  letter-spacing: -0.025em;
+}
+
+@utility heading-4xl {
+  font-family: var(--font-sans);
+  font-size: 3rem;         /* 48px */
+  font-weight: 700;
+  line-height: 3.75rem;     /* 60px */
+  letter-spacing: -0.05em;
+}
+
+/* --- Display --- */
+@utility display-md {
+  font-family: var(--font-sans);
+  font-size: 4rem;         /* 64px */
+  font-weight: 700;
+  line-height: 5.125rem;    /* 82px */
+  letter-spacing: -0.05em;
+}
+
+@utility display-md-light {
+  font-family: var(--font-sans);
+  font-size: 4rem;         /* 64px */
+  font-weight: 300;
+  line-height: 5.125rem;    /* 82px */
+  letter-spacing: -0.05em;
+}
+
+@utility display-lg {
+  font-family: var(--font-sans);
+  font-size: 4.5rem;       /* 72px */
+  font-weight: 700;
+  line-height: 5.625rem;    /* 90px */
+  letter-spacing: -0.05em;
+}
+
+@utility display-lg-light {
+  font-family: var(--font-sans);
+  font-size: 4.5rem;       /* 72px */
+  font-weight: 300;
+  line-height: 5.625rem;    /* 90px */
+  letter-spacing: -0.05em;
+}
+
+/* --- Button --- */
+@utility button-sm {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;      /* 12px */
+  font-weight: 500;
+  line-height: 0.75rem;     /* 12px — 1:1 ratio */
+  letter-spacing: 0em;
+}
+
+@utility button-md {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;     /* 14px */
+  font-weight: 500;
+  line-height: 0.875rem;    /* 14px — 1:1 ratio */
+  letter-spacing: 0em;
+}
+
+@utility button-lg {
+  font-family: var(--font-sans);
+  font-size: 1rem;         /* 16px */
+  font-weight: 500;
+  line-height: 1rem;         /* 16px — 1:1 ratio */
+  letter-spacing: 0em;
+}
+
+/* --- UI --- */
+@utility ui-label {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;     /* 14px */
+  font-weight: 500;
+  line-height: 0.875rem;    /* 14px */
+  letter-spacing: 0em;
+}
+
+@utility ui-caption {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;      /* 12px */
+  font-weight: 400;
+  line-height: 1rem;         /* 16px */
+  letter-spacing: 0em;
+}
+
+@utility ui-overline {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;      /* 12px */
+  font-weight: 500;
+  line-height: 1rem;         /* 16px */
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}

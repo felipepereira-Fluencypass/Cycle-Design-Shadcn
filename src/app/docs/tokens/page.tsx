@@ -4,6 +4,7 @@ const sidebarItems = [
   { id: "alpha", label: "Alpha / Overlay" },
   { id: "graficos", label: "Cores de Grafico" },
   { id: "radius", label: "Border Radius" },
+  { id: "shadows", label: "Shadows" },
   { id: "spacing", label: "Spacing" },
   { id: "tipografia", label: "Tipografia" },
   { id: "estilos", label: "Estilos Tipograficos" },
@@ -34,7 +35,7 @@ export default function TokensPage() {
 
   const colorVariations = [
     { name: "neutral", label: "Neutral", description: "Tema global (default)", className: "" },
-    { name: "brand", label: "Brand", description: "Rose — marca Cycle", className: "theme-brand" },
+    { name: "brand", label: "Brand", description: "Rose — marca Fluencypass", className: "theme-brand" },
     { name: "class", label: "Class", description: "Blue — aulas", className: "theme-class" },
     { name: "private", label: "Private", description: "Orange — particular", className: "theme-private" },
     { name: "group", label: "Group", description: "Green — grupo", className: "theme-group" },
@@ -88,7 +89,7 @@ export default function TokensPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Design Tokens</h1>
           <p className="text-muted-foreground mt-2">
-            Todos os tokens semanticos do Cycle Design System. Use sempre estes
+            Todos os tokens semanticos do Cycle Design. Use sempre estes
             tokens — nunca cores ou valores hardcoded.
           </p>
         </div>
@@ -236,6 +237,79 @@ export default function TokensPage() {
                 <p className="text-xs text-muted-foreground">{radius.description}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ====== SHADOWS ====== */}
+        <section id="shadows" className="space-y-4 scroll-mt-8">
+          <h2 className="text-xl font-semibold">Shadows</h2>
+          <p className="text-sm text-muted-foreground">
+            Escala de elevacao com 5 niveis. Os valores se adaptam automaticamente ao light/dark mode.
+            No dark, as sombras sao mais fortes e incluem uma borda sutil de luz.
+          </p>
+          <div className="grid gap-6">
+            {[
+              { token: "shadow-xs", classe: "shadow-xs", description: "Inputs, elementos sutis", uso: "Input, Badge" },
+              { token: "shadow-sm", classe: "shadow-sm", description: "Cards em repouso, elementos elevados", uso: "Card, Button outline" },
+              { token: "shadow-md", classe: "shadow-md", description: "Cards em hover, dropdowns", uso: "Card:hover, Select" },
+              { token: "shadow-lg", classe: "shadow-lg", description: "Popovers, menus flutuantes", uso: "Popover, Tooltip" },
+              { token: "shadow-xl", classe: "shadow-xl", description: "Modais, toasts, elementos flutuantes", uso: "Dialog, Toast" },
+            ].map((shadow) => (
+              <div key={shadow.token} className="flex items-center gap-6">
+                <div
+                  className={`h-16 w-32 shrink-0 rounded-lg border border-border bg-card ${shadow.classe}`}
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-mono font-medium">{shadow.classe}</p>
+                  <p className="text-xs text-muted-foreground">{shadow.description}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Uso: <span className="font-mono">{shadow.uso}</span>
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="rounded-lg border border-border p-4 mt-6 space-y-3">
+            <h3 className="heading-xs">Valores</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="text-left p-2 font-medium">Token</th>
+                    <th className="text-left p-2 font-medium">Light</th>
+                    <th className="text-left p-2 font-medium">Dark</th>
+                  </tr>
+                </thead>
+                <tbody className="font-mono text-xs">
+                  <tr className="border-b border-border">
+                    <td className="p-2">shadow-xs</td>
+                    <td className="p-2 text-muted-foreground">0 1px 2px rgba(0,0,0, 0.05)</td>
+                    <td className="p-2 text-muted-foreground">0 1px 2px rgba(0,0,0, 0.40) + 1px border rgba(255,255,255, 0.03)</td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-2">shadow-sm</td>
+                    <td className="p-2 text-muted-foreground">0 1px 3px rgba(0,0,0, 0.08)</td>
+                    <td className="p-2 text-muted-foreground">0 1px 3px rgba(0,0,0, 0.50) + 1px border rgba(255,255,255, 0.04)</td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-2">shadow-md</td>
+                    <td className="p-2 text-muted-foreground">0 4px 6px rgba(0,0,0, 0.08)</td>
+                    <td className="p-2 text-muted-foreground">0 4px 6px rgba(0,0,0, 0.50) + 1px border rgba(255,255,255, 0.05)</td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-2">shadow-lg</td>
+                    <td className="p-2 text-muted-foreground">0 10px 15px rgba(0,0,0, 0.08)</td>
+                    <td className="p-2 text-muted-foreground">0 10px 15px rgba(0,0,0, 0.60) + 1px border rgba(255,255,255, 0.05)</td>
+                  </tr>
+                  <tr>
+                    <td className="p-2">shadow-xl</td>
+                    <td className="p-2 text-muted-foreground">0 20px 25px rgba(0,0,0, 0.08)</td>
+                    <td className="p-2 text-muted-foreground">0 20px 25px rgba(0,0,0, 0.60) + 1px border rgba(255,255,255, 0.06)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 

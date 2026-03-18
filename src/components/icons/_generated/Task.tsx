@@ -1,0 +1,21 @@
+// AUTO-GENERATED — não edite manualmente
+// Fonte: src/icons/_source → npm run build:icons
+import React from "react"
+import { BaseIcon } from '../BaseIcon'
+import type { IconProps } from '../types'
+
+/**
+ * @example
+ * // Decorativo (ícone puramente visual)
+ * <Task size="sm" decorative />
+ *
+ * // Semântico (requer aria-label)
+ * <Task size="sm" aria-label="descrição do ícone" />
+ */
+export function Task(props: IconProps): React.JSX.Element {
+  return (
+    <BaseIcon {...props}>
+      <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8z"/><path d="M14 2v6h6"/><path d="m8 13 3 3 5-5"/>
+    </BaseIcon>
+  )
+}

@@ -113,7 +113,7 @@ npm run lint     # ESLint
 11. **Usar TypeScript strict** — tipar todas as props, nunca usar `any`
 12. **Componentes devem exportar suas props** — `export interface ButtonProps extends ...`
 13. **Usar `forwardRef` quando o componente aceitar ref** — padrão shadcn
-14. **Ícones via Lucide React** — `import { IconName } from "lucide-react"`, nunca SVG inline
+14. **Ícones SEMPRE via `CycleIcon`** — nunca renderizar `<LucideIcon />` diretamente. Usar `<CycleIcon icon={IconName} size="sm" decorative />` (ou com `aria-label` para ícones semânticos). O `CycleIcon` aplica automaticamente `width`, `height` e `strokeWidth` baseado no token de size (`ICON_SIZES` em `src/components/icons/sizes.ts`). Isso garante consistência visual em todos os ícones do sistema.
 15. **Imports com alias `@/`** — nunca usar caminhos relativos como `../../`
 
 ### Regras de Processo
@@ -121,6 +121,9 @@ npm run lint     # ESLint
 16. **Um componente por vez** — instalar, customizar, documentar e validar antes de seguir para o próximo
 17. **Sempre rodar `npm run build` após mudanças** — garantir que compila sem erros
 18. **Atualizar este CLAUDE.md** — ao adicionar um componente, atualizar o registro abaixo
+19. **Sempre atualizar o registry** — ao adicionar ou alterar um componente, atualizar `public/registry.json` e rodar `npx tsx scripts/build-registry.ts` para regenerar os JSONs em `public/r/`
+20. **Sempre atualizar o catálogo de componentes** — ao adicionar um componente, incluir o nome no array da seção "Como instalar" em `src/app/docs/components/page.tsx`
+21. **Sempre criar documentação** — ao adicionar qualquer componente, token, logo ou recurso, criar ou atualizar a página de documentação correspondente em `src/app/docs/`
 
 ---
 
@@ -130,9 +133,11 @@ npm run lint     # ESLint
 
 | Componente | Status | Arquivo | Observações |
 |------------|--------|---------|-------------|
-| — | — | — | Nenhum componente instalado ainda |
+| Button | Instalado | `button.tsx` | 6 variants, 8 sizes (xs=24px, sm=32px, md=40px, lg=48px + icon-*). Ícones: xs=12px, sm=16px, md/lg=24px. Suporta `.theme-*`. |
+| Input | Instalado | `input.tsx` | 3 sizes (sm=32px, default=40px, lg=48px). Estados: default, focused, disabled, error (aria-invalid). |
+| Tabs | Instalado | `tabs.tsx` | Componente auxiliar usado na documentação (DocsTabs). |
 
-> **Próximo a instalar**: Button (componente mais fundamental)
+> **Próximo a instalar**: Label, Textarea
 
 ### Layout Primitives (`src/components/layout/`)
 

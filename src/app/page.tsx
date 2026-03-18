@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { CycleLogo } from "@/components/cycle-logo";
 
 export default function Home() {
   return (
@@ -6,9 +8,11 @@ export default function Home() {
       {/* Header */}
       <header className="border-b border-border">
         <div className="mx-auto max-w-5xl px-6 py-4 flex items-center justify-between">
-          <span className="text-lg font-semibold tracking-tight">
-            Cycle Design System
+          <span className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+            <CycleLogo />
+            Cycle Design
           </span>
+          <div className="flex items-center gap-6">
           <nav className="flex gap-6 text-sm">
             <Link href="/" className="text-foreground font-medium">
               Home
@@ -32,6 +36,8 @@ export default function Home() {
               Componentes
             </Link>
           </nav>
+          <ThemeToggle />
+          </div>
         </div>
       </header>
 
@@ -39,12 +45,12 @@ export default function Home() {
       <main className="mx-auto max-w-5xl px-6 py-20">
         <div className="space-y-6">
           <h1 className="text-4xl font-bold tracking-tight">
-            Cycle Design System
+            Cycle Design
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl">
-            Biblioteca de componentes customizada para a marca Cycle, construida
-            sobre shadcn/ui + Next.js + Tailwind CSS 4. Devs e IAs geram
-            front-end consistente usando componentes padronizados.
+            Design System da Fluencypass, construido sobre shadcn/ui + Next.js +
+            Tailwind CSS 4. Devs e IAs geram front-end consistente usando
+            componentes padronizados.
           </p>
         </div>
 
@@ -52,7 +58,7 @@ export default function Home() {
         <div className="grid grid-cols-1 gap-4 mt-12 sm:grid-cols-3">
           <Link
             href="/docs"
-            className="group rounded-lg border border-border p-6 hover:border-foreground/20 transition-colors"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
           >
             <h2 className="text-lg font-semibold mb-2">Setup Guide</h2>
             <p className="text-sm text-muted-foreground">
@@ -62,7 +68,7 @@ export default function Home() {
 
           <Link
             href="/docs/tokens"
-            className="group rounded-lg border border-border p-6 hover:border-foreground/20 transition-colors"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
           >
             <h2 className="text-lg font-semibold mb-2">Tokens</h2>
             <p className="text-sm text-muted-foreground">
@@ -72,7 +78,7 @@ export default function Home() {
 
           <Link
             href="/docs/components"
-            className="group rounded-lg border border-border p-6 hover:border-foreground/20 transition-colors"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
           >
             <h2 className="text-lg font-semibold mb-2">Componentes</h2>
             <p className="text-sm text-muted-foreground">
@@ -87,7 +93,7 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
             <div>
               <p className="text-muted-foreground">Primitives</p>
-              <p className="font-mono font-semibold">0</p>
+              <p className="font-mono font-semibold">1</p>
             </div>
             <div>
               <p className="text-muted-foreground">Layout</p>

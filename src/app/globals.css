@@ -38,10 +38,23 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-alpha-backdrop: var(--alpha-backdrop);
   --color-alpha-overlay: var(--alpha-overlay);
+  --color-neutral-foreground: var(--neutral-foreground);
+  --color-neutral-muted-foreground: var(--neutral-muted-foreground);
+  --color-neutral-border: var(--neutral-border);
+  --color-neutral-input: var(--neutral-input);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* ============================================
+   * SHADOWS - Responsive to light/dark mode
+   * ============================================ */
+  --shadow-xs: var(--cycle-shadow-xs);
+  --shadow-sm: var(--cycle-shadow-sm);
+  --shadow-md: var(--cycle-shadow-md);
+  --shadow-lg: var(--cycle-shadow-lg);
+  --shadow-xl: var(--cycle-shadow-xl);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
@@ -110,8 +123,20 @@
   --chart-4: #D48E00;
   --chart-5: #7D0DD4;
   --radius: 0.625rem;
+  --neutral-foreground: #181D27;
+  --neutral-muted-foreground: #535862;
+  --neutral-border: #D5D7DA;
+  --neutral-input: #E9EAEB;
   --alpha-backdrop: rgba(0, 0, 0, 0.6);
   --alpha-overlay: rgba(255, 255, 255, 0.6);
+
+  /* Shadows — Light */
+  --cycle-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --cycle-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08);
+  --cycle-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --cycle-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --cycle-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+
   --sidebar: #FAFAFA;
   --sidebar-foreground: #181D27;
   --sidebar-primary: #0D0D12;
@@ -148,8 +173,20 @@
   --chart-3: #00E73E;
   --chart-4: #F5A800;
   --chart-5: #9810FA;
+  --neutral-foreground: #FAFAFA;
+  --neutral-muted-foreground: #A4A7AE;
+  --neutral-border: #414651;
+  --neutral-input: #252B37;
   --alpha-backdrop: rgba(0, 0, 0, 0.6);
   --alpha-overlay: rgba(255, 255, 255, 0.6);
+
+  /* Shadows — Dark (mais fortes + borda sutil de luz) */
+  --cycle-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.03);
+  --cycle-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --cycle-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --cycle-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --cycle-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
+
   --sidebar: #181D27;
   --sidebar-foreground: #FAFAFA;
   --sidebar-primary: #FFFFFF;

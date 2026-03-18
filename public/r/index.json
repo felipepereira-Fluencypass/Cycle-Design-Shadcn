@@ -2,5 +2,11 @@
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "cycle",
   "homepage": "https://github.com/felipepereira-Fluencypass/Cycle-Design-Shadcn",
-  "items": []
+  "items": [
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "description": "Button component with variants and color theme support"
+    }
+  ]
 }
