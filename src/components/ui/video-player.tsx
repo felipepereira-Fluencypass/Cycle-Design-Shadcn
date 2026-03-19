@@ -481,12 +481,14 @@ function MobileSettingsControl() {
   )
 }
 
-/* ─── Seek gesture zone with feedback ─── */
+/* ─── Gesture helpers ─── */
 
 type SeekDirection = "backward" | "forward"
 
 const DOUBLE_TAP_THRESHOLD = 300
+const CONTROLS_HIDE_DELAY = 4000
 
+/** Desktop-only: double-tap left/right edges to seek ±10s */
 function SeekGestureZone({
   side,
   onSeekFeedback,
@@ -505,7 +507,6 @@ function SeekGestureZone({
       lastTapRef.current = now
 
       if (delta < DOUBLE_TAP_THRESHOLD) {
-        // Double tap detected — seek and show feedback
         e.stopPropagation()
         const seconds = side === "left" ? -10 : 10
         remote.seek(currentTime + seconds)
@@ -518,7 +519,7 @@ function SeekGestureZone({
   return (
     <div
       className={cn(
-        "absolute top-0 z-30 block h-full w-1/5",
+        "absolute top-0 z-30 hidden sm:block h-full w-1/5",
         side === "left" ? "left-0" : "right-0"
       )}
       onPointerUp={handlePointerUp}
@@ -529,16 +530,18 @@ function SeekGestureZone({
 function SeekFeedbackOverlay({
   direction,
   visible,
+  seconds,
 }: {
   direction: SeekDirection
   visible: boolean
+  seconds: number
 }) {
   const isBackward = direction === "backward"
 
   return (
     <div
       className={cn(
-        "pointer-events-none absolute top-0 z-[25] flex h-full w-2/5 items-center transition-opacity duration-200",
+        "pointer-events-none absolute top-0 z-[35] flex h-full w-2/5 items-center transition-opacity duration-200",
         isBackward ? "left-0 justify-center" : "right-0 justify-center",
         visible ? "opacity-100" : "opacity-0"
       )}
@@ -558,10 +561,106 @@ function SeekFeedbackOverlay({
           />
         </div>
         <span className="text-xs font-semibold text-white drop-shadow-md">
-          10s
+          {seconds}s
         </span>
       </div>
     </div>
+  )
+}
+
+/**
+ * Mobile touch layer — manages all touch interactions:
+ * - Single tap: toggle controls overlay
+ * - Double tap left (0-33%): seek -10s
+ * - Double tap center (33-66%): toggle fullscreen
+ * - Double tap right (66-100%): seek +10s
+ */
+function MobileTouchLayer({
+  showControls,
+  onToggleControls,
+  onSeekFeedback,
+}: {
+  showControls: boolean
+  onToggleControls: () => void
+  onSeekFeedback: (direction: SeekDirection) => void
+}) {
+  const remote = useMediaRemote()
+  const currentTime = useMediaState("currentTime")
+  const isFullscreen = useMediaState("fullscreen")
+  const lastTapRef = React.useRef(0)
+  const lastTapXRef = React.useRef(0)
+  const tapTimerRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
+  const containerRef = React.useRef<HTMLDivElement>(null)
+
+  const handleTap = React.useCallback(
+    (e: React.PointerEvent) => {
+      // Ignore if target is a button or interactive element
+      if ((e.target as HTMLElement).closest("button, [role=slider], [data-slot]")) return
+
+      const now = Date.now()
+      const delta = now - lastTapRef.current
+      const rect = containerRef.current?.getBoundingClientRect()
+
+      if (delta < DOUBLE_TAP_THRESHOLD && rect) {
+        // Double tap detected
+        clearTimeout(tapTimerRef.current)
+        lastTapRef.current = 0 // reset so triple tap doesn't count
+
+        const x = lastTapXRef.current
+        const relativeX = (x - rect.left) / rect.width
+
+        if (relativeX < 0.33) {
+          // Left third → seek backward
+          remote.seek(currentTime - 10)
+          onSeekFeedback("backward")
+        } else if (relativeX > 0.66) {
+          // Right third → seek forward
+          remote.seek(currentTime + 10)
+          onSeekFeedback("forward")
+        } else {
+          // Center → toggle fullscreen
+          if (isFullscreen) {
+            remote.exitFullscreen()
+          } else {
+            remote.enterFullscreen()
+          }
+        }
+      } else {
+        // First tap — wait to see if double tap follows
+        lastTapRef.current = now
+        lastTapXRef.current = e.clientX
+
+        clearTimeout(tapTimerRef.current)
+        tapTimerRef.current = setTimeout(() => {
+          // Single tap confirmed → toggle controls
+          onToggleControls()
+        }, DOUBLE_TAP_THRESHOLD)
+      }
+    },
+    [remote, currentTime, isFullscreen, onToggleControls, onSeekFeedback]
+  )
+
+  return (
+    <div
+      ref={containerRef}
+      className="absolute inset-0 z-30 sm:hidden"
+      onPointerUp={handleTap}
+    />
+  )
+}
+
+/* ─── Mobile center play button (part of custom overlay) ─── */
+
+function MobilePlayControl() {
+  const isPaused = useMediaState("paused")
+  return (
+    <PlayButton className="flex size-14 cursor-pointer items-center justify-center rounded-full bg-white/20 backdrop-blur-sm text-white outline-none transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-white/50">
+      {isPaused ? (
+        <CycleIcon icon={Play} size="lg" decorative className={cn(filledIconClass, "ml-1")} />
+      ) : (
+        <CycleIcon icon={Pause} size="lg" decorative className={filledIconClass} />
+      )}
+    </PlayButton>
   )
 }
 
@@ -579,18 +678,58 @@ export function VideoPlayer({
 }: VideoPlayerProps) {
   const player = React.useRef<MediaPlayerInstance>(null)
 
-  // Seek feedback state
+  // Seek feedback state with accumulation (like YouTube)
   const [seekFeedback, setSeekFeedback] = React.useState<SeekDirection | null>(null)
+  const [seekAccumulated, setSeekAccumulated] = React.useState(0)
   const feedbackTimeout = React.useRef<ReturnType<typeof setTimeout>>(undefined)
+
+  // Mobile controls visibility (managed manually)
+  const [mobileControlsVisible, setMobileControlsVisible] = React.useState(false)
+  const hideTimerRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
 
   const handleSeekFeedback = React.useCallback((direction: SeekDirection) => {
     clearTimeout(feedbackTimeout.current)
-    setSeekFeedback(direction)
-    feedbackTimeout.current = setTimeout(() => setSeekFeedback(null), 700)
+
+    setSeekFeedback((prev) => {
+      if (prev === direction) {
+        // Same direction → accumulate
+        setSeekAccumulated((s) => s + 10)
+      } else {
+        // New direction → reset
+        setSeekAccumulated(10)
+      }
+      return direction
+    })
+
+    feedbackTimeout.current = setTimeout(() => {
+      setSeekFeedback(null)
+      setSeekAccumulated(0)
+    }, 700)
+  }, [])
+
+  const toggleMobileControls = React.useCallback(() => {
+    setMobileControlsVisible((prev) => {
+      const next = !prev
+      clearTimeout(hideTimerRef.current)
+      if (next) {
+        // Auto-hide after delay
+        hideTimerRef.current = setTimeout(() => setMobileControlsVisible(false), CONTROLS_HIDE_DELAY)
+      }
+      return next
+    })
+  }, [])
+
+  // Reset auto-hide when interacting with mobile controls
+  const resetMobileHideTimer = React.useCallback(() => {
+    clearTimeout(hideTimerRef.current)
+    hideTimerRef.current = setTimeout(() => setMobileControlsVisible(false), CONTROLS_HIDE_DELAY)
   }, [])
 
   React.useEffect(() => {
-    return () => clearTimeout(feedbackTimeout.current)
+    return () => {
+      clearTimeout(feedbackTimeout.current)
+      clearTimeout(hideTimerRef.current)
+    }
   }, [])
 
   return (
@@ -620,28 +759,65 @@ export function VideoPlayer({
       {/* Captions overlay */}
       <Captions className="absolute inset-0 bottom-[80px] z-10 select-none break-words text-center text-sm media-preview:opacity-0 [&>[data-part=cue]]:inline [&>[data-part=cue]]:bg-black/70 [&>[data-part=cue]]:px-2 [&>[data-part=cue]]:py-0.5 [&>[data-part=cue]]:text-white" />
 
-      {/* Play overlay (paused + hover) */}
-      <PlayOverlay />
+      {/* Desktop: Play overlay (paused state — big play button) */}
+      <div className="hidden sm:block">
+        <PlayOverlay />
+      </div>
 
-      {/* Seek feedback indicators */}
-      <SeekFeedbackOverlay direction="backward" visible={seekFeedback === "backward"} />
-      <SeekFeedbackOverlay direction="forward" visible={seekFeedback === "forward"} />
+      {/* Seek feedback indicators (accumulated like YouTube) */}
+      <SeekFeedbackOverlay direction="backward" visible={seekFeedback === "backward"} seconds={seekAccumulated} />
+      <SeekFeedbackOverlay direction="forward" visible={seekFeedback === "forward"} seconds={seekAccumulated} />
 
-      {/* Gestures */}
-      <Gesture className="absolute inset-0 z-0 block h-full w-full" event="pointerup" action="toggle:paused" />
-      <Gesture className="absolute inset-0 z-0 block h-full w-full" event="dblpointerup" action="toggle:fullscreen" />
+      {/* Desktop gestures — click to pause, double-click fullscreen */}
+      <Gesture className="absolute inset-0 z-0 hidden sm:block h-full w-full" event="pointerup" action="toggle:paused" />
+      <Gesture className="absolute inset-0 z-0 hidden sm:block h-full w-full" event="dblpointerup" action="toggle:fullscreen" />
 
-      {/* Custom seek gesture zones with visual feedback — z-30 to sit above controls overlay */}
+      {/* Desktop: double-tap seek zones */}
       <SeekGestureZone side="left" onSeekFeedback={handleSeekFeedback} />
       <SeekGestureZone side="right" onSeekFeedback={handleSeekFeedback} />
 
-      {/* Controls overlay */}
-      <Controls.Root className="absolute inset-0 z-20 flex h-full w-full flex-col bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-data-[started]:group-hover:opacity-100 group-data-[paused]:opacity-100">
-        {/* Top bar — mobile: settings gear */}
-        <Controls.Group className="flex w-full items-center justify-end px-2 pt-2 sm:hidden">
-          <MobileSettingsControl />
-        </Controls.Group>
+      {/* Mobile: custom touch layer (single tap = controls, double tap = seek/fullscreen) */}
+      <MobileTouchLayer
+        showControls={mobileControlsVisible}
+        onToggleControls={toggleMobileControls}
+        onSeekFeedback={handleSeekFeedback}
+      />
 
+      {/* ─── Mobile controls overlay (manually toggled) ─── */}
+      <div
+        className={cn(
+          "absolute inset-0 z-[31] flex flex-col sm:hidden transition-opacity duration-200 pointer-events-none",
+          mobileControlsVisible ? "opacity-100" : "opacity-0"
+        )}
+        style={{ pointerEvents: mobileControlsVisible ? "auto" : "none" }}
+      >
+        {/* Gradient bg */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/40" />
+
+        {/* Top bar: settings gear */}
+        <div className="relative flex items-center justify-end px-3 pt-3" onClick={resetMobileHideTimer}>
+          <MobileSettingsControl />
+        </div>
+
+        {/* Center: Play/Pause */}
+        <div className="relative flex flex-1 items-center justify-center">
+          <MobilePlayControl />
+        </div>
+
+        {/* Bottom: seek bar + controls */}
+        <div className="relative px-3 pb-2" onClick={resetMobileHideTimer}>
+          <SeekBar thumbnails={thumbnails} />
+          <div className="flex items-center gap-1">
+            <MuteControl />
+            <TimeDisplay />
+            <div className="flex-1" />
+            <FullscreenControl />
+          </div>
+        </div>
+      </div>
+
+      {/* ─── Desktop controls overlay (Vidstack managed — hover/paused) ─── */}
+      <Controls.Root className="absolute inset-0 z-20 hidden sm:flex h-full w-full flex-col bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-data-[started]:group-hover:opacity-100 group-data-[paused]:opacity-100">
         <div className="flex-1" />
 
         {/* Seek bar */}
@@ -649,17 +825,8 @@ export function VideoPlayer({
           <SeekBar thumbnails={thumbnails} />
         </Controls.Group>
 
-        {/* Bottom bar — mobile: minimal */}
-        <Controls.Group className="flex w-full items-center gap-1 px-2 pb-2 sm:hidden">
-          <MuteControl />
-          <TimeDisplay />
-          <div className="flex-1" />
-          <FullscreenControl />
-        </Controls.Group>
-
-        {/* Bottom bar — desktop: full */}
-        <Controls.Group className="hidden sm:flex w-full items-center gap-1 px-2 pb-2">
-          {/* Left controls */}
+        {/* Bottom bar */}
+        <Controls.Group className="flex w-full items-center gap-1 px-2 pb-2">
           <PlayControl />
           <SeekBackwardControl />
           <SeekForwardControl />
@@ -669,7 +836,6 @@ export function VideoPlayer({
 
           <div className="flex-1" />
 
-          {/* Right controls */}
           <CaptionControl />
           <SpeedControl />
           <QualityControl />
