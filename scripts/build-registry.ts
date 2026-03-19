@@ -39,11 +39,15 @@ function main() {
       (file: { path: string; type: string; target: string }) => {
         const srcPath = resolveFilePath(file.target)
         const content = fs.readFileSync(srcPath, "utf-8")
-        return {
+        const entry: Record<string, string> = {
           path: file.target,
           type: file.type,
           content,
         }
+        if (file.target) {
+          entry.target = file.target
+        }
+        return entry
       }
     )
 
