@@ -255,7 +255,7 @@
     },
     {
       "name": "cycle-icon",
-      "type": "registry:ui",
+      "type": "registry:lib",
       "title": "CycleIcon",
       "description": "Wrapper para icones Lucide com size/stroke tokens da Cycle. Garante consistencia visual em todos os icones.",
       "dependencies": [
@@ -265,12 +265,12 @@
       "files": [
         {
           "path": "registry/icons/CycleIcon.tsx",
-          "type": "registry:ui",
+          "type": "registry:lib",
           "target": "components/icons/CycleIcon.tsx"
         },
         {
           "path": "registry/icons/sizes.ts",
-          "type": "registry:ui",
+          "type": "registry:lib",
           "target": "components/icons/sizes.ts"
         }
       ]
