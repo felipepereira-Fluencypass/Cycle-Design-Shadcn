@@ -249,6 +249,55 @@
           "target": "components/composites/header-class.tsx"
         }
       ]
+    },
+    {
+      "name": "sidebar-course",
+      "type": "registry:ui",
+      "title": "Sidebar Course",
+      "description": "Navegacao lateral do produto Class. Inclui SidebarCourse (container com scroll), ProgressCourse, AccordionConclusion, AccordionCourse, TaskCourse e ListTaskCourse.",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "checkbox",
+        "progress",
+        "progress-stage",
+        "scroll-area"
+      ],
+      "files": [
+        {
+          "path": "registry/sidebar-course/sidebar-course.tsx",
+          "type": "registry:ui",
+          "target": "components/composites/sidebar-course/sidebar-course.tsx"
+        },
+        {
+          "path": "registry/sidebar-course/progress-course.tsx",
+          "type": "registry:ui",
+          "target": "components/composites/sidebar-course/progress-course.tsx"
+        },
+        {
+          "path": "registry/sidebar-course/accordion-conclusion.tsx",
+          "type": "registry:ui",
+          "target": "components/composites/sidebar-course/accordion-conclusion.tsx"
+        },
+        {
+          "path": "registry/sidebar-course/accordion-course.tsx",
+          "type": "registry:ui",
+          "target": "components/composites/sidebar-course/accordion-course.tsx"
+        },
+        {
+          "path": "registry/sidebar-course/task-course.tsx",
+          "type": "registry:ui",
+          "target": "components/composites/sidebar-course/task-course.tsx"
+        },
+        {
+          "path": "registry/sidebar-course/list-task-course.tsx",
+          "type": "registry:ui",
+          "target": "components/composites/sidebar-course/list-task-course.tsx"
+        }
+      ]
     }
   ]
 }

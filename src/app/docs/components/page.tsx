@@ -270,7 +270,7 @@ export default function ComponentsPage() {
               Blocos maiores que combinam primitives. As dependencias de primitives sao instaladas automaticamente.
             </p>
             <div className="bg-muted rounded-lg p-4 text-sm font-mono overflow-x-auto space-y-1">
-              {["header-class"].map((name) => (
+              {["header-class", "sidebar-course"].map((name) => (
                 <p key={name}>
                   npx shadcn@latest add {name} -r https://cycle-design.vercel.app/r
                 </p>
