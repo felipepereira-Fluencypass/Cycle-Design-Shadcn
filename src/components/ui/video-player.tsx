@@ -759,74 +759,51 @@ export function VideoPlayer({
       {/* Captions overlay */}
       <Captions className="absolute inset-0 bottom-[80px] z-10 select-none break-words text-center text-sm media-preview:opacity-0 [&>[data-part=cue]]:inline [&>[data-part=cue]]:bg-black/70 [&>[data-part=cue]]:px-2 [&>[data-part=cue]]:py-0.5 [&>[data-part=cue]]:text-white" />
 
-      {/* Desktop: Play overlay (paused state — big play button) */}
-      <div className="hidden sm:block">
-        <PlayOverlay />
-      </div>
+      {/* Play overlay (paused state — big play button, desktop only) */}
+      <PlayOverlay />
 
       {/* Seek feedback indicators (accumulated like YouTube) */}
       <SeekFeedbackOverlay direction="backward" visible={seekFeedback === "backward"} seconds={seekAccumulated} />
       <SeekFeedbackOverlay direction="forward" visible={seekFeedback === "forward"} seconds={seekAccumulated} />
 
-      {/* Desktop gestures — click to pause, double-click fullscreen */}
-      <Gesture className="absolute inset-0 z-0 hidden sm:block h-full w-full" event="pointerup" action="toggle:paused" />
-      <Gesture className="absolute inset-0 z-0 hidden sm:block h-full w-full" event="dblpointerup" action="toggle:fullscreen" />
+      {/* Gestures — click to pause, double-click fullscreen (all screens) */}
+      <Gesture className="absolute inset-0 z-0 block h-full w-full" event="pointerup" action="toggle:paused" />
+      <Gesture className="absolute inset-0 z-0 block h-full w-full" event="dblpointerup" action="toggle:fullscreen" />
 
-      {/* Desktop: double-tap seek zones */}
+      {/* Desktop: double-tap seek zones on edges */}
       <SeekGestureZone side="left" onSeekFeedback={handleSeekFeedback} />
       <SeekGestureZone side="right" onSeekFeedback={handleSeekFeedback} />
 
-      {/* Mobile: custom touch layer (single tap = controls, double tap = seek/fullscreen) */}
-      <MobileTouchLayer
-        showControls={mobileControlsVisible}
-        onToggleControls={toggleMobileControls}
-        onSeekFeedback={handleSeekFeedback}
-      />
-
-      {/* ─── Mobile controls overlay (manually toggled) ─── */}
-      <div
-        className={cn(
-          "absolute inset-0 z-[31] flex flex-col sm:hidden transition-opacity duration-200 pointer-events-none",
-          mobileControlsVisible ? "opacity-100" : "opacity-0"
-        )}
-        style={{ pointerEvents: mobileControlsVisible ? "auto" : "none" }}
-      >
-        {/* Gradient bg */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/40" />
-
-        {/* Top bar: settings gear */}
-        <div className="relative flex items-center justify-end px-3 pt-3" onClick={resetMobileHideTimer}>
+      {/* ─── Controls overlay (Vidstack managed — hover/touch/paused) ─── */}
+      <Controls.Root className="absolute inset-0 z-20 flex h-full w-full flex-col bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-data-[started]:group-hover:opacity-100 group-data-[paused]:opacity-100">
+        {/* Top bar — mobile only: settings gear */}
+        <Controls.Group className="flex w-full items-center justify-end px-2 pt-2 sm:hidden">
           <MobileSettingsControl />
-        </div>
+        </Controls.Group>
 
-        {/* Center: Play/Pause */}
-        <div className="relative flex flex-1 items-center justify-center">
+        {/* Center — mobile only: Play/Pause button */}
+        <div className="flex flex-1 items-center justify-center sm:hidden">
           <MobilePlayControl />
         </div>
 
-        {/* Bottom: seek bar + controls */}
-        <div className="relative px-3 pb-2" onClick={resetMobileHideTimer}>
-          <SeekBar thumbnails={thumbnails} />
-          <div className="flex items-center gap-1">
-            <MuteControl />
-            <TimeDisplay />
-            <div className="flex-1" />
-            <FullscreenControl />
-          </div>
-        </div>
-      </div>
+        {/* Desktop spacer */}
+        <div className="hidden sm:flex flex-1" />
 
-      {/* ─── Desktop controls overlay (Vidstack managed — hover/paused) ─── */}
-      <Controls.Root className="absolute inset-0 z-20 hidden sm:flex h-full w-full flex-col bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-data-[started]:group-hover:opacity-100 group-data-[paused]:opacity-100">
-        <div className="flex-1" />
-
-        {/* Seek bar */}
+        {/* Seek bar (all screens) */}
         <Controls.Group className="flex w-full items-center px-3">
           <SeekBar thumbnails={thumbnails} />
         </Controls.Group>
 
-        {/* Bottom bar */}
-        <Controls.Group className="flex w-full items-center gap-1 px-2 pb-2">
+        {/* Bottom bar — mobile */}
+        <Controls.Group className="flex w-full items-center gap-1 px-2 pb-2 sm:hidden">
+          <MuteControl />
+          <TimeDisplay />
+          <div className="flex-1" />
+          <FullscreenControl />
+        </Controls.Group>
+
+        {/* Bottom bar — desktop */}
+        <Controls.Group className="hidden sm:flex w-full items-center gap-1 px-2 pb-2">
           <PlayControl />
           <SeekBackwardControl />
           <SeekForwardControl />
