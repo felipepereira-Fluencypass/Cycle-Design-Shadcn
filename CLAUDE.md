@@ -137,6 +137,7 @@ npm run lint     # ESLint
 | Input | Instalado | `input.tsx` | 3 sizes (sm=32px, default=40px, lg=48px). Estados: default, focused, disabled, error (aria-invalid). |
 | Sheet | Instalado | `sheet.tsx` | Overlay lateral/bottom. Sides: top, right, bottom, left. Usado no HeaderClass mobile. |
 | Tabs | Instalado | `tabs.tsx` | 2 variants (default, line), orientação horizontal e vertical. |
+| Audio Player | Instalado | `audio-player.tsx` | Player de audio com controles customizados (Vidstack). 2 variantes (default, card). Suporta MP3, OGG, HLS. Icones via CycleIcon. showSpeed=true por padrao (EdTech). |
 | Video Player | Instalado | `video-player.tsx` | Player com controles customizados (Vidstack). Suporta MP4, WebM, HLS. Icones via CycleIcon. |
 | Accordion | Instalado | `accordion.tsx` | Secoes colapsaveis com animacao. Suporta single e multiple. |
 | Badge | Instalado | `badge.tsx` | 10 variants (default, secondary, destructive, outline, ghost, link, muted, success, progress, progress-completed), 3 sizes (sm, default, lg). Suporta `.theme-*`. |
@@ -146,6 +147,8 @@ npm run lint     # ESLint
 | Checkbox | Instalado | `checkbox.tsx` | 3 sizes (sm, default, lg), 2 variants (default, circular). Prop `theme` aplica cor apenas no estado checked. |
 | Radio Group | Instalado | `radio-group.tsx` | 3 sizes (sm, default, lg). Prop `theme` aplica cor apenas no estado checked. Border unchecked neutro fixo. |
 | Scroll Area | Instalado | `scroll-area.tsx` | Area de scroll customizada com scrollbar estilizado. Vertical e horizontal. |
+| Slider | Instalado | `slider.tsx` | 3 sizes (sm, default, lg), suporte a range (2 thumbs). Track preenchido `bg-primary`, track vazio `bg-accent`, thumb `bg-primary-foreground` com `border-primary`. Suporta `.theme-*`. |
+| Switch | Instalado | `switch.tsx` | Toggle on/off. 3 sizes (sm, default, lg). Prop `theme` aplica cor apenas no estado checked. |
 
 > **Próximo a instalar**: Label, Textarea
 
@@ -249,14 +252,39 @@ Para cada novo componente, seguir este fluxo:
 
 ---
 
-## Objetivo Futuro
+## Fluxo Figma → Código
 
-Permitir que uma IA receba um layout do Figma e gere o front-end utilizando
-corretamente nosso Design System customizado, sem inventar componentes fora do padrão.
+Este Design System é usado com o **Figma MCP** para converter telas do Figma em código
+real usando os componentes registrados. O fluxo funciona assim:
 
-Para isso, este arquivo serve como **contrato**: a IA deve consultar as tabelas
-de componentes acima e usar APENAS o que está registrado. Se um componente necessário
-não existir, a IA deve sinalizar a lacuna em vez de inventar.
+### Como usar
+
+1. **Colar a URL do Figma** — o MCP retorna layout, screenshot, tokens e hints do design
+2. **IA interpreta e gera código** — usando APENAS componentes registrados neste CLAUDE.md
+3. **Resultado**: código React + Tailwind que usa os primitives e composites do Cycle Design
+
+### Regras para a IA ao receber um design do Figma
+
+1. **Usar APENAS componentes registrados** — consultar as tabelas de Primitives, Composites e Layout acima. Se um componente necessário não existir, **sinalizar a lacuna** em vez de inventar
+2. **Mapear tokens do Figma para tokens semânticos** — cores do Figma devem ser traduzidas para `bg-primary`, `text-muted-foreground`, `border-border`, etc. NUNCA usar valores hardcoded
+3. **Respeitar variantes e sizes existentes** — se o design mostra um botão pequeno, usar `size="sm"`, não criar CSS custom
+4. **Aplicar temas via `.theme-*`** — se o design usa cor de marca, usar a classe de tema correspondente (ex: `className="theme-brand"`)
+5. **Usar CycleIcon para ícones** — identificar o ícone Lucide mais próximo e renderizar via `<CycleIcon icon={...} />`
+6. **Seguir a hierarquia de camadas** — pages usam composites, composites usam primitives, primitives usam tokens
+7. **Dar contexto ao colar a URL** — informar qual produto/tela é (ex: "tela de curso do Class", "landing page") para melhor interpretação
+
+### Para maximizar a assertividade (dicas para designers)
+
+- Usar tokens com os mesmos nomes do código (`primary`, `muted`, `accent`, `destructive`...)
+- Nomear componentes no Figma igual ao código (`Button`, `Badge`, `Switch`...)
+- Manter spacing dentro da escala Tailwind (4px, 8px, 12px, 16px, 24px, 32px...)
+- Usar Auto Layout no Figma (traduz diretamente para Flexbox)
+
+### Limitações
+
+- O fluxo é **Figma → Código** (não o inverso — não criamos componentes no Figma a partir do código)
+- Nuances visuais muito sutis podem precisar de ajuste manual após geração
+- Componentes que não existem no Design System precisam ser criados antes de serem usados
 
 ---
 

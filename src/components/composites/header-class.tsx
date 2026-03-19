@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Home, PanelLeftClose, PanelLeftOpen, EllipsisVertical } from "lucide-react"
+import { Home, PanelLeftClose, PanelLeftOpen, EllipsisVertical, Sun, Moon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -10,6 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { useTheme } from "next-themes"
 import { CycleIcon } from "@/components/icons"
 import { ClassLogo } from "@/components/product-logo"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -35,11 +36,12 @@ export function HeaderClass({
   className,
 }: HeaderClassProps) {
   const SidebarIcon = isSidebarOpen ? PanelLeftClose : PanelLeftOpen
+  const { theme, setTheme } = useTheme()
 
   return (
     <header
       className={cn(
-        "flex items-center gap-6 border-b border-border bg-muted p-6 max-[740px]:p-4",
+        "flex items-center gap-3 border-b border-border bg-muted p-4 lg:gap-6 lg:p-6",
         className
       )}
     >
@@ -53,7 +55,7 @@ export function HeaderClass({
         >
           <SidebarIcon />
         </Button>
-        <span className="heading-md truncate max-[740px]:hidden">
+        <span className="heading-md truncate hidden lg:inline">
           {courseName}
         </span>
       </div>
@@ -62,7 +64,7 @@ export function HeaderClass({
       <ClassLogo size="lg" className="shrink-0" />
 
       {/* Right — Desktop actions */}
-      <div className="flex flex-1 items-center justify-end gap-3 min-w-0 max-[740px]:hidden">
+      <div className="hidden lg:flex flex-1 items-center justify-end gap-3 min-w-0">
         <ThemeToggle variant="outline" size="icon" />
         <Button variant="outline" onClick={onNavigateHome}>
           <Home /> Ir para o inicio
@@ -70,7 +72,7 @@ export function HeaderClass({
       </div>
 
       {/* Right — Mobile actions (bottom sheet) */}
-      <div className="flex flex-1 items-center justify-end min-w-0 min-[741px]:hidden">
+      <div className="flex flex-1 items-center justify-end min-w-0 lg:hidden">
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" aria-label="Mais opcoes">
@@ -81,15 +83,28 @@ export function HeaderClass({
             <SheetHeader>
               <SheetTitle>Opcoes</SheetTitle>
             </SheetHeader>
-            <div className="flex flex-col gap-2 px-4 pb-6">
-              <div className="flex items-center justify-between rounded-lg border border-border p-3">
-                <span className="text-sm font-medium">Tema</span>
-                <ThemeToggle variant="outline" size="icon-sm" />
-              </div>
-              <Button variant="outline" className="w-full justify-start" onClick={onNavigateHome}>
-                <Home /> Ir para o inicio
-              </Button>
-            </div>
+            <ul className="pb-6">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-sm text-foreground transition-colors hover:bg-muted"
+                >
+                  <CycleIcon icon={theme === "dark" ? Moon : Sun} size="sm" decorative className="text-muted-foreground" />
+                  <span>{theme === "dark" ? "Tema escuro" : "Tema claro"}</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={onNavigateHome}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-sm text-foreground transition-colors hover:bg-muted"
+                >
+                  <CycleIcon icon={Home} size="sm" decorative className="text-muted-foreground" />
+                  <span>Ir para o inicio</span>
+                </button>
+              </li>
+            </ul>
           </SheetContent>
         </Sheet>
       </div>

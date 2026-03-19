@@ -97,7 +97,7 @@ function TaskCourse({
           size="lg"
           checked={completed}
           onCheckedChange={(checked) => onCompletedChange?.(checked === true)}
-          theme={completed ? "theme-positive" : undefined}
+          theme={completed ? "theme-group" : undefined}
         />
       </div>
     </div>

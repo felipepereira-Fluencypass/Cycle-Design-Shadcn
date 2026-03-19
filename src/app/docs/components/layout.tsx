@@ -8,6 +8,7 @@ const sidebarItems = [
   { label: "Introducao", href: "/docs/components" },
   { type: "separator" as const, label: "Primitives" },
   { label: "Accordion", href: "/docs/components/accordion" },
+  { label: "Audio Player", href: "/docs/components/audio-player" },
   { label: "Badge", href: "/docs/components/badge" },
   { label: "Button", href: "/docs/components/button" },
   { label: "Checkbox", href: "/docs/components/checkbox" },
@@ -18,6 +19,8 @@ const sidebarItems = [
   { label: "Progress Stage", href: "/docs/components/progress-stage" },
   { label: "Scroll Area", href: "/docs/components/scroll-area" },
   { label: "Sheet", href: "/docs/components/sheet" },
+  { label: "Slider", href: "/docs/components/slider" },
+  { label: "Switch", href: "/docs/components/switch" },
   { label: "Tabs", href: "/docs/components/tabs" },
   { label: "Video Player", href: "/docs/components/video-player" },
   { type: "separator" as const, label: "Composites" },
@@ -35,8 +38,8 @@ export default function ComponentsLayout({
   const pathname = usePathname()
 
   return (
-    <div className="flex gap-10">
-      {/* Sidebar */}
+    <div className="flex gap-6 md:gap-10">
+      {/* Sidebar — desktop only (mobile uses Sheet in header) */}
       <aside className="hidden md:block w-52 shrink-0">
         <nav className="sticky top-24 space-y-1">
           {sidebarItems.map((item, i) => {

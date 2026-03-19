@@ -276,6 +276,61 @@
       ]
     },
     {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Toggle on/off com 3 tamanhos (sm, default, lg) e suporte a temas de cor (.theme-*).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/switch.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/switch.tsx"
+        }
+      ]
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "Controle deslizante com 3 tamanhos (sm, default, lg), suporte a range e temas de cor (.theme-*).",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/slider.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/slider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "audio-player",
+      "type": "registry:ui",
+      "title": "Audio Player",
+      "description": "Player de audio com controles customizados. 2 variantes (default, card). Suporta MP3, OGG e HLS.",
+      "dependencies": [
+        "@vidstack/react"
+      ],
+      "registryDependencies": [
+        "https://cycle-design.vercel.app/r/cycle-icon.json"
+      ],
+      "files": [
+        {
+          "path": "registry/audio-player.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/audio-player.tsx"
+        }
+      ]
+    },
+    {
       "name": "sidebar-course",
       "type": "registry:ui",
       "title": "Sidebar Course",

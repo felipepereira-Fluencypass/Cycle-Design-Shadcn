@@ -62,31 +62,44 @@ function DeveloperDocs() {
       <section className="space-y-4">
         <h3 className="text-xl font-semibold">Com Thumbnails</h3>
         <p className="text-muted-foreground">
-          Passe um arquivo <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">.vtt</code> com sprite sheet para exibir thumbnails na seek bar durante o hover.
+          Passe um arquivo <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">.vtt</code> com sprite sheet para exibir thumbnails na seek bar durante o hover. Igual ao YouTube.
         </p>
-        <CodeBlock
+        <ComponentPreview
           code={`<VideoPlayer
   src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/low.mp4"
+  poster="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/thumbnail.webp"
   thumbnails="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/storyboard.vtt"
 />`}
-          language="tsx"
-          showLineNumbers={false}
-        />
+        >
+          <VideoPlayer
+            src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/low.mp4"
+            poster="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/thumbnail.webp"
+            thumbnails="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/storyboard.vtt"
+          />
+        </ComponentPreview>
       </section>
 
       {/* HLS */}
       <section className="space-y-4">
-        <h3 className="text-xl font-semibold">HLS Streaming</h3>
+        <h3 className="text-xl font-semibold">HLS Streaming (com seletor de qualidade)</h3>
         <p className="text-muted-foreground">
-          Para HLS, basta passar uma URL <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">.m3u8</code>. O player carrega <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">hls.js</code> automaticamente quando necessario.
+          Com HLS (<code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">.m3u8</code>), o player carrega <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">hls.js</code> automaticamente e exibe o botao de qualidade (engrenagem) quando multiplas resolucoes estao disponiveis.
         </p>
-        <CodeBlock
+        <ComponentPreview
           code={`<VideoPlayer
-  src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/high.m3u8"
+  src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU.m3u8"
+  poster="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/thumbnail.webp"
+  posterAlt="HLS com seletor de qualidade"
+  thumbnails="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/storyboard.vtt"
 />`}
-          language="tsx"
-          showLineNumbers={false}
-        />
+        >
+          <VideoPlayer
+            src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU.m3u8"
+            poster="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/thumbnail.webp"
+            posterAlt="HLS com seletor de qualidade"
+            thumbnails="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/storyboard.vtt"
+          />
+        </ComponentPreview>
       </section>
 
       {/* API */}

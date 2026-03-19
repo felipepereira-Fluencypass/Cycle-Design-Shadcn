@@ -8,6 +8,8 @@ import { FileCard } from "@/components/ui/file-card";
 import { Progress } from "@/components/ui/progress";
 import { ProgressStage } from "@/components/ui/progress-stage";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 
 export default function ComponentsPage() {
   return (
@@ -85,6 +87,16 @@ export default function ComponentsPage() {
             <h3 className="heading-sm mb-2">Video Player</h3>
             <p className="text-sm text-muted-foreground">
               Player de video com controles customizados. Suporta MP4, WebM e HLS.
+            </p>
+          </Link>
+
+          <Link
+            href="/docs/components/audio-player"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">Audio Player</h3>
+            <p className="text-sm text-muted-foreground">
+              Player de audio com 2 variantes (default, card). Suporta MP3, OGG e HLS.
             </p>
           </Link>
 
@@ -186,6 +198,34 @@ export default function ComponentsPage() {
           </Link>
 
           <Link
+            href="/docs/components/slider"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">Slider</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Controle deslizante. 3 tamanhos, suporte a range e temas de cor.
+            </p>
+            <div className="w-full">
+              <Slider defaultValue={[60]} />
+            </div>
+          </Link>
+
+          <Link
+            href="/docs/components/switch"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">Switch</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Toggle on/off. 3 tamanhos, suporte a temas de cor.
+            </p>
+            <div className="flex items-center gap-4">
+              <Switch defaultChecked size="sm" />
+              <Switch defaultChecked />
+              <Switch defaultChecked size="lg" />
+            </div>
+          </Link>
+
+          <Link
             href="/docs/components/scroll-area"
             className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
           >
@@ -255,7 +295,7 @@ export default function ComponentsPage() {
               Componentes base que podem ser instalados individualmente:
             </p>
             <div className="bg-muted rounded-lg p-4 text-sm font-mono overflow-x-auto space-y-1">
-              {["accordion", "badge", "button", "checkbox", "cycle-icon", "file-card", "input", "progress", "progress-stage", "radio-group", "scroll-area", "sheet", "tabs", "video-player"].map((name) => (
+              {["accordion", "audio-player", "badge", "button", "checkbox", "cycle-icon", "file-card", "input", "progress", "progress-stage", "radio-group", "scroll-area", "sheet", "slider", "switch", "tabs", "video-player"].map((name) => (
                 <p key={name}>
                   npx shadcn@latest add https://cycle-design.vercel.app/r/{name}.json
                 </p>
