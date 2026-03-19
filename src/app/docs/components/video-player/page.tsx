@@ -43,6 +43,15 @@ function DeveloperDocs() {
       {/* Basico */}
       <section className="space-y-4">
         <h3 className="text-xl font-semibold">Basico</h3>
+        {/* Full-width on mobile for better testing */}
+        <div className="-mx-4 sm:mx-0">
+          <VideoPlayer
+            src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/low.mp4"
+            poster="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/thumbnail.webp"
+            posterAlt="Exemplo de video"
+            className="sm:rounded-[16px] rounded-none"
+          />
+        </div>
         <ComponentPreview
           code={`<VideoPlayer
   src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/low.mp4"
@@ -50,11 +59,7 @@ function DeveloperDocs() {
   posterAlt="Exemplo de video"
 />`}
         >
-          <VideoPlayer
-            src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/low.mp4"
-            poster="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/thumbnail.webp"
-            posterAlt="Exemplo de video"
-          />
+          <span />
         </ComponentPreview>
       </section>
 
