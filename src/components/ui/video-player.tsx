@@ -484,6 +484,12 @@ export function VideoPlayer({
 
       {/* Controls overlay */}
       <Controls.Root className="absolute inset-0 z-20 flex h-full w-full flex-col bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-data-[started]:group-hover:opacity-100 group-data-[paused]:opacity-100">
+        {/* Top bar — mobile: speed + quality */}
+        <Controls.Group className="flex w-full items-center justify-end gap-1 px-2 pt-2 sm:hidden">
+          <SpeedControl />
+          <QualityControl />
+        </Controls.Group>
+
         <div className="flex-1" />
 
         {/* Seek bar */}
@@ -498,16 +504,26 @@ export function VideoPlayer({
           <SeekBackwardControl />
           <SeekForwardControl />
           <MuteControl />
-          <VolumeControl />
+          <div className="hidden sm:inline-flex">
+            <VolumeControl />
+          </div>
           <TimeDisplay />
 
           <div className="flex-1" />
 
           {/* Right controls */}
-          <CaptionControl />
-          <SpeedControl />
-          <QualityControl />
-          <PIPControl />
+          <div className="hidden sm:inline-flex">
+            <CaptionControl />
+          </div>
+          <div className="hidden sm:inline-flex">
+            <SpeedControl />
+          </div>
+          <div className="hidden sm:inline-flex">
+            <QualityControl />
+          </div>
+          <div className="hidden sm:inline-flex">
+            <PIPControl />
+          </div>
           <FullscreenControl />
         </Controls.Group>
       </Controls.Root>
