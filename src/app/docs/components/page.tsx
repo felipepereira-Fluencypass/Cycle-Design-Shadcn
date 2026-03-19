@@ -257,7 +257,7 @@ export default function ComponentsPage() {
             <div className="bg-muted rounded-lg p-4 text-sm font-mono overflow-x-auto space-y-1">
               {["accordion", "badge", "button", "checkbox", "file-card", "input", "progress", "progress-stage", "radio-group", "scroll-area", "sheet", "tabs", "video-player"].map((name) => (
                 <p key={name}>
-                  npx shadcn@latest add {name} -r https://cycle-design.vercel.app/r
+                  npx shadcn@latest add https://cycle-design.vercel.app/r/{name}.json
                 </p>
               ))}
             </div>
@@ -272,7 +272,7 @@ export default function ComponentsPage() {
             <div className="bg-muted rounded-lg p-4 text-sm font-mono overflow-x-auto space-y-1">
               {["header-class", "sidebar-course"].map((name) => (
                 <p key={name}>
-                  npx shadcn@latest add {name} -r https://cycle-design.vercel.app/r
+                  npx shadcn@latest add https://cycle-design.vercel.app/r/{name}.json
                 </p>
               ))}
             </div>

@@ -239,8 +239,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "button",
-        "sheet"
+        "https://cycle-design.vercel.app/r/button.json",
+        "https://cycle-design.vercel.app/r/sheet.json"
       ],
       "files": [
         {
@@ -260,11 +260,11 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "badge",
-        "checkbox",
-        "progress",
-        "progress-stage",
-        "scroll-area"
+        "https://cycle-design.vercel.app/r/badge.json",
+        "https://cycle-design.vercel.app/r/checkbox.json",
+        "https://cycle-design.vercel.app/r/progress.json",
+        "https://cycle-design.vercel.app/r/progress-stage.json",
+        "https://cycle-design.vercel.app/r/scroll-area.json"
       ],
       "files": [
         {
