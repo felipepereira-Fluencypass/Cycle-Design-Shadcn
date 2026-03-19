@@ -8,6 +8,7 @@
     "lucide-react"
   ],
   "registryDependencies": [
+    "https://cycle-design.vercel.app/r/cycle-icon.json",
     "https://cycle-design.vercel.app/r/button.json",
     "https://cycle-design.vercel.app/r/sheet.json"
   ],

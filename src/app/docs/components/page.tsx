@@ -255,7 +255,7 @@ export default function ComponentsPage() {
               Componentes base que podem ser instalados individualmente:
             </p>
             <div className="bg-muted rounded-lg p-4 text-sm font-mono overflow-x-auto space-y-1">
-              {["accordion", "badge", "button", "checkbox", "file-card", "input", "progress", "progress-stage", "radio-group", "scroll-area", "sheet", "tabs", "video-player"].map((name) => (
+              {["accordion", "badge", "button", "checkbox", "cycle-icon", "file-card", "input", "progress", "progress-stage", "radio-group", "scroll-area", "sheet", "tabs", "video-player"].map((name) => (
                 <p key={name}>
                   npx shadcn@latest add https://cycle-design.vercel.app/r/{name}.json
                 </p>

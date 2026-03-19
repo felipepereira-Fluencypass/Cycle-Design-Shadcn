@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cycle-icon",
+  "type": "registry:ui",
+  "title": "CycleIcon",
+  "description": "Wrapper para icones Lucide com size/stroke tokens da Cycle. Garante consistencia visual em todos os icones.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/icons/CycleIcon.tsx",
+      "type": "registry:ui",
+      "content": "import { forwardRef } from 'react'\nimport type { Ref } from 'react'\nimport type { LucideIcon } from 'lucide-react'\nimport { ICON_SIZES } from './sizes'\nimport type { IconSize } from './sizes'\n\n/**\n * Props base compartilhada.\n */\ntype BaseProps = {\n  icon: LucideIcon\n  size?: IconSize\n  className?: string\n}\n\n/**\n * Ícone semântico — comunica algo para o usuário.\n * @example <CycleIcon icon={Home} size=\"sm\" aria-label=\"Ir para home\" />\n */\ntype SemanticProps = BaseProps & {\n  decorative?: false\n  'aria-label': string\n}\n\n/**\n * Ícone decorativo — puramente visual.\n * @example <CycleIcon icon={Home} size=\"sm\" decorative />\n */\ntype DecorativeProps = BaseProps & {\n  decorative: true\n  'aria-label'?: never\n}\n\nexport type CycleIconProps = SemanticProps | DecorativeProps\n\n/**\n * CycleIcon — wrapper para ícones Lucide com regras de size/stroke da Cycle.\n *\n * Aplica automaticamente width, height e strokeWidth baseado no size token.\n * Use para todos os ícones Lucide no produto.\n *\n * @example\n * import { Home, Search } from \"lucide-react\"\n * import { CycleIcon } from \"@/components/icons\"\n *\n * <CycleIcon icon={Home} size=\"sm\" decorative />\n * <CycleIcon icon={Search} size=\"lg\" aria-label=\"Buscar\" />\n */\nexport const CycleIcon = forwardRef<SVGSVGElement, CycleIconProps>(\n  function CycleIcon(props, ref: Ref<SVGSVGElement>) {\n    const { icon: Icon, size = 'sm', decorative, className, ...rest } = props\n\n    const { size: px, stroke } = ICON_SIZES[size]\n\n    const ariaProps = decorative\n      ? { 'aria-hidden': true as const, focusable: 'false' as const }\n      : { role: 'img' as const }\n\n    return (\n      <Icon\n        ref={ref}\n        width={px}\n        height={px}\n        strokeWidth={stroke}\n        className={className}\n        {...ariaProps}\n        {...rest}\n      />\n    )\n  }\n)\n"
+    },
+    {
+      "path": "components/icons/sizes.ts",
+      "type": "registry:ui",
+      "content": "/**\n * Cycle Design — Icon Size Map\n *\n * Fonte da verdade para componentes React.\n * Derivado de: figma/Icons size/icon-{size}.json\n *\n * REGRA: strokeWidth nunca é prop — é sempre derivado de size.\n * Isso garante consistência visual em todos os ícones.\n */\nexport const ICON_SIZES = {\n  '2xs': { size: 12, stroke: 1 },\n  xs: { size: 16, stroke: 1.2 },\n  sm: { size: 24, stroke: 1.5 },\n  md: { size: 32, stroke: 1.8 },\n  lg: { size: 40, stroke: 2.1 },\n  xl: { size: 48, stroke: 2.4 },\n} as const satisfies Record<string, { size: number; stroke: number }>\n\nexport type IconSize = keyof typeof ICON_SIZES\n"
+    }
+  ]
+}
