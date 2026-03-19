@@ -486,9 +486,8 @@ function MobileSettingsControl() {
 type SeekDirection = "backward" | "forward"
 
 const DOUBLE_TAP_THRESHOLD = 300
-const CONTROLS_HIDE_DELAY = 4000
 
-/** Desktop-only: double-tap left/right edges to seek ±10s */
+/** Double-tap left/right edges to seek ±10s. z-10 so it doesn't block controls (z-20). */
 function SeekGestureZone({
   side,
   onSeekFeedback,
@@ -519,7 +518,7 @@ function SeekGestureZone({
   return (
     <div
       className={cn(
-        "absolute top-0 z-30 hidden sm:block h-full w-1/5",
+        "absolute top-0 z-10 block h-full w-1/5",
         side === "left" ? "left-0" : "right-0"
       )}
       onPointerUp={handlePointerUp}
@@ -568,88 +567,7 @@ function SeekFeedbackOverlay({
   )
 }
 
-/**
- * Mobile touch layer — manages all touch interactions:
- * - Single tap: toggle controls overlay
- * - Double tap left (0-33%): seek -10s
- * - Double tap center (33-66%): toggle fullscreen
- * - Double tap right (66-100%): seek +10s
- */
-function MobileTouchLayer({
-  showControls,
-  onToggleControls,
-  onSeekFeedback,
-}: {
-  showControls: boolean
-  onToggleControls: () => void
-  onSeekFeedback: (direction: SeekDirection) => void
-}) {
-  const remote = useMediaRemote()
-  const currentTime = useMediaState("currentTime")
-  const isFullscreen = useMediaState("fullscreen")
-  const lastTapRef = React.useRef(0)
-  const lastTapXRef = React.useRef(0)
-  const tapTimerRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
-  const containerRef = React.useRef<HTMLDivElement>(null)
-
-  const handleTap = React.useCallback(
-    (e: React.PointerEvent) => {
-      // Ignore if target is a button or interactive element
-      if ((e.target as HTMLElement).closest("button, [role=slider], [data-slot]")) return
-
-      const now = Date.now()
-      const delta = now - lastTapRef.current
-      const rect = containerRef.current?.getBoundingClientRect()
-
-      if (delta < DOUBLE_TAP_THRESHOLD && rect) {
-        // Double tap detected
-        clearTimeout(tapTimerRef.current)
-        lastTapRef.current = 0 // reset so triple tap doesn't count
-
-        const x = lastTapXRef.current
-        const relativeX = (x - rect.left) / rect.width
-
-        if (relativeX < 0.33) {
-          // Left third → seek backward
-          remote.seek(currentTime - 10)
-          onSeekFeedback("backward")
-        } else if (relativeX > 0.66) {
-          // Right third → seek forward
-          remote.seek(currentTime + 10)
-          onSeekFeedback("forward")
-        } else {
-          // Center → toggle fullscreen
-          if (isFullscreen) {
-            remote.exitFullscreen()
-          } else {
-            remote.enterFullscreen()
-          }
-        }
-      } else {
-        // First tap — wait to see if double tap follows
-        lastTapRef.current = now
-        lastTapXRef.current = e.clientX
-
-        clearTimeout(tapTimerRef.current)
-        tapTimerRef.current = setTimeout(() => {
-          // Single tap confirmed → toggle controls
-          onToggleControls()
-        }, DOUBLE_TAP_THRESHOLD)
-      }
-    },
-    [remote, currentTime, isFullscreen, onToggleControls, onSeekFeedback]
-  )
-
-  return (
-    <div
-      ref={containerRef}
-      className="absolute inset-0 z-30 sm:hidden"
-      onPointerUp={handleTap}
-    />
-  )
-}
-
-/* ─── Mobile center play button (part of custom overlay) ─── */
+/* ─── Mobile center play button ─── */
 
 function MobilePlayControl() {
   const isPaused = useMediaState("paused")
@@ -683,10 +601,6 @@ export function VideoPlayer({
   const [seekAccumulated, setSeekAccumulated] = React.useState(0)
   const feedbackTimeout = React.useRef<ReturnType<typeof setTimeout>>(undefined)
 
-  // Mobile controls visibility (managed manually)
-  const [mobileControlsVisible, setMobileControlsVisible] = React.useState(false)
-  const hideTimerRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
-
   const handleSeekFeedback = React.useCallback((direction: SeekDirection) => {
     clearTimeout(feedbackTimeout.current)
 
@@ -707,29 +621,8 @@ export function VideoPlayer({
     }, 700)
   }, [])
 
-  const toggleMobileControls = React.useCallback(() => {
-    setMobileControlsVisible((prev) => {
-      const next = !prev
-      clearTimeout(hideTimerRef.current)
-      if (next) {
-        // Auto-hide after delay
-        hideTimerRef.current = setTimeout(() => setMobileControlsVisible(false), CONTROLS_HIDE_DELAY)
-      }
-      return next
-    })
-  }, [])
-
-  // Reset auto-hide when interacting with mobile controls
-  const resetMobileHideTimer = React.useCallback(() => {
-    clearTimeout(hideTimerRef.current)
-    hideTimerRef.current = setTimeout(() => setMobileControlsVisible(false), CONTROLS_HIDE_DELAY)
-  }, [])
-
   React.useEffect(() => {
-    return () => {
-      clearTimeout(feedbackTimeout.current)
-      clearTimeout(hideTimerRef.current)
-    }
+    return () => clearTimeout(feedbackTimeout.current)
   }, [])
 
   return (
