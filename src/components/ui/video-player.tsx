@@ -328,6 +328,159 @@ function FullscreenControl() {
   )
 }
 
+/* ─── Mobile settings menu (gear icon → Speed, Quality, Captions, PIP) ─── */
+
+function MobileSettingsControl() {
+  const [open, setOpen] = React.useState(false)
+  const [subMenu, setSubMenu] = React.useState<"speed" | "quality" | null>(null)
+
+  const playbackRate = useMediaState("playbackRate")
+  const remote = useMediaRemote()
+  const qualityOptions = useVideoQualityOptions({ auto: true, sort: "descending" })
+  const track = useMediaState("textTrack")
+  const isPIP = useMediaState("pictureInPicture")
+
+  const rates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
+
+  const close = () => {
+    setOpen(false)
+    setSubMenu(null)
+  }
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => { setOpen(!open); setSubMenu(null) }}
+        className={controlBtnClass}
+      >
+        <CycleIcon icon={Settings} size="sm" decorative className="text-white" />
+      </button>
+
+      {open && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={close} />
+
+          <div className="absolute top-full right-0 z-50 mt-2 min-w-[180px] rounded-lg border border-white/10 bg-black/90 backdrop-blur-md p-1 shadow-xl">
+            {/* Main menu */}
+            {subMenu === null && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setSubMenu("speed")}
+                  className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <span className="flex items-center gap-2">
+                    <CycleIcon icon={Gauge} size="xs" decorative className="text-white" />
+                    Velocidade
+                  </span>
+                  <span className="font-mono text-xs text-white/50">
+                    {playbackRate === 1 ? "Normal" : `${playbackRate}x`}
+                  </span>
+                </button>
+
+                {!qualityOptions.disabled && (
+                  <button
+                    type="button"
+                    onClick={() => setSubMenu("quality")}
+                    className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                  >
+                    <span className="flex items-center gap-2">
+                      <CycleIcon icon={Settings} size="xs" decorative className="text-white" />
+                      Qualidade
+                    </span>
+                    <span className="font-mono text-xs text-white/50">
+                      {qualityOptions.selectedQuality ? `${qualityOptions.selectedQuality.height}p` : "Auto"}
+                    </span>
+                  </button>
+                )}
+
+                <CaptionButton
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <CycleIcon icon={track ? CaptionsIcon : CaptionsOff} size="xs" decorative className="text-white" />
+                  Legendas {track ? "ON" : "OFF"}
+                </CaptionButton>
+
+                <PIPButton
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <CycleIcon icon={PictureInPicture2} size="xs" decorative className="text-white" />
+                  Picture-in-Picture
+                </PIPButton>
+              </>
+            )}
+
+            {/* Speed sub-menu */}
+            {subMenu === "speed" && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setSubMenu(null)}
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/50 hover:text-white/80"
+                >
+                  ← Velocidade
+                </button>
+                {rates.map((rate) => (
+                  <button
+                    key={rate}
+                    type="button"
+                    onClick={() => {
+                      remote.changePlaybackRate(rate)
+                      close()
+                    }}
+                    className={cn(
+                      "flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white",
+                      playbackRate === rate && "text-white font-medium"
+                    )}
+                  >
+                    <span className="size-4 flex items-center justify-center">
+                      {playbackRate === rate && <CycleIcon icon={Check} size="2xs" decorative className="text-white" />}
+                    </span>
+                    <span className="font-mono">{rate === 1 ? "Normal" : `${rate}x`}</span>
+                  </button>
+                ))}
+              </>
+            )}
+
+            {/* Quality sub-menu */}
+            {subMenu === "quality" && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setSubMenu(null)}
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/50 hover:text-white/80"
+                >
+                  ← Qualidade
+                </button>
+                {qualityOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => {
+                      option.select()
+                      close()
+                    }}
+                    className={cn(
+                      "flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white",
+                      option.selected && "text-white font-medium"
+                    )}
+                  >
+                    <span className="size-4 flex items-center justify-center">
+                      {option.selected && <CycleIcon icon={Check} size="2xs" decorative className="text-white" />}
+                    </span>
+                    <span className="font-mono">{option.label}</span>
+                  </button>
+                ))}
+              </>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 /* ─── Seek gesture zone with feedback ─── */
 
 type SeekDirection = "backward" | "forward"
@@ -365,7 +518,7 @@ function SeekGestureZone({
   return (
     <div
       className={cn(
-        "absolute top-0 z-10 block h-full w-1/5",
+        "absolute top-0 z-30 block h-full w-1/5",
         side === "left" ? "left-0" : "right-0"
       )}
       onPointerUp={handlePointerUp}
@@ -478,16 +631,15 @@ export function VideoPlayer({
       <Gesture className="absolute inset-0 z-0 block h-full w-full" event="pointerup" action="toggle:paused" />
       <Gesture className="absolute inset-0 z-0 block h-full w-full" event="dblpointerup" action="toggle:fullscreen" />
 
-      {/* Custom seek gesture zones with visual feedback (replace Gesture seek) */}
+      {/* Custom seek gesture zones with visual feedback — z-30 to sit above controls overlay */}
       <SeekGestureZone side="left" onSeekFeedback={handleSeekFeedback} />
       <SeekGestureZone side="right" onSeekFeedback={handleSeekFeedback} />
 
       {/* Controls overlay */}
       <Controls.Root className="absolute inset-0 z-20 flex h-full w-full flex-col bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-data-[started]:group-hover:opacity-100 group-data-[paused]:opacity-100">
-        {/* Top bar — mobile: speed + quality */}
-        <Controls.Group className="flex w-full items-center justify-end gap-1 px-2 pt-2 sm:hidden">
-          <SpeedControl />
-          <QualityControl />
+        {/* Top bar — mobile: settings gear */}
+        <Controls.Group className="flex w-full items-center justify-end px-2 pt-2 sm:hidden">
+          <MobileSettingsControl />
         </Controls.Group>
 
         <div className="flex-1" />
@@ -497,33 +649,31 @@ export function VideoPlayer({
           <SeekBar thumbnails={thumbnails} />
         </Controls.Group>
 
-        {/* Bottom bar */}
-        <Controls.Group className="flex w-full items-center gap-1 px-2 pb-2">
+        {/* Bottom bar — mobile: minimal */}
+        <Controls.Group className="flex w-full items-center gap-1 px-2 pb-2 sm:hidden">
+          <MuteControl />
+          <TimeDisplay />
+          <div className="flex-1" />
+          <FullscreenControl />
+        </Controls.Group>
+
+        {/* Bottom bar — desktop: full */}
+        <Controls.Group className="hidden sm:flex w-full items-center gap-1 px-2 pb-2">
           {/* Left controls */}
           <PlayControl />
           <SeekBackwardControl />
           <SeekForwardControl />
           <MuteControl />
-          <div className="hidden sm:inline-flex">
-            <VolumeControl />
-          </div>
+          <VolumeControl />
           <TimeDisplay />
 
           <div className="flex-1" />
 
           {/* Right controls */}
-          <div className="hidden sm:inline-flex">
-            <CaptionControl />
-          </div>
-          <div className="hidden sm:inline-flex">
-            <SpeedControl />
-          </div>
-          <div className="hidden sm:inline-flex">
-            <QualityControl />
-          </div>
-          <div className="hidden sm:inline-flex">
-            <PIPControl />
-          </div>
+          <CaptionControl />
+          <SpeedControl />
+          <QualityControl />
+          <PIPControl />
           <FullscreenControl />
         </Controls.Group>
       </Controls.Root>
