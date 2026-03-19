@@ -139,8 +139,12 @@ npm run lint     # ESLint
 | Tabs | Instalado | `tabs.tsx` | 2 variants (default, line), orientação horizontal e vertical. |
 | Video Player | Instalado | `video-player.tsx` | Player com controles customizados (Vidstack). Suporta MP4, WebM, HLS. Icones via CycleIcon. |
 | Accordion | Instalado | `accordion.tsx` | Secoes colapsaveis com animacao. Suporta single e multiple. |
-| Badge | Instalado | `badge.tsx` | 8 variants (default, secondary, destructive, outline, ghost, link, muted, success), 3 sizes (sm, default, lg). Suporta `.theme-*`. |
-| Progress | Instalado | `progress.tsx` | 4 sizes (xs, sm, default, lg), 4 variants (default, secondary, destructive, muted). Barra de progresso responde a `.theme-*`, track permanece `bg-muted`. |
+| Badge | Instalado | `badge.tsx` | 10 variants (default, secondary, destructive, outline, ghost, link, muted, success, progress, progress-completed), 3 sizes (sm, default, lg). Suporta `.theme-*`. |
+| File Card | Instalado | `file-card.tsx` | Botao de download com icone, titulo, tipo e tamanho. 3 sizes (sm, md, lg). Props: icon, showDescription, showFileSize. |
+| Progress | Instalado | `progress.tsx` | 4 sizes (xs, sm, default, lg), 4 variants (default, secondary, destructive, muted). Prop `theme` aplica cor apenas no indicator, track permanece `bg-accent` neutral. |
+| Progress Stage | Instalado | `progress-stage.tsx` | Progresso segmentado em pills (2-10 stages). Prop `theme` aplica cor apenas nas pills preenchidas, vazias ficam `bg-accent` neutral. |
+| Checkbox | Instalado | `checkbox.tsx` | 3 sizes (sm, default, lg), 2 variants (default, circular). Prop `theme` aplica cor apenas no estado checked. |
+| Radio Group | Instalado | `radio-group.tsx` | 3 sizes (sm, default, lg). Prop `theme` aplica cor apenas no estado checked. Border unchecked neutro fixo. |
 | Scroll Area | Instalado | `scroll-area.tsx` | Area de scroll customizada com scrollbar estilizado. Vertical e horizontal. |
 
 > **Próximo a instalar**: Label, Textarea
@@ -156,6 +160,7 @@ npm run lint     # ESLint
 | Componente | Status | Arquivo | Observações |
 |------------|--------|---------|-------------|
 | HeaderClass | Criado | `header-class.tsx` | Header do produto Class. Responsivo (740px breakpoint). Props: courseName, isSidebarOpen, onToggleSidebar, onNavigateHome. Mobile usa bottom sheet. |
+| Sidebar Course | Criado | `sidebar-course/` | Navegação lateral do produto Class. Componente principal: SidebarCourse (container com ScrollArea, max-w-[354px]). Sub-componentes: ProgressCourse (header com progresso bar/stage), AccordionConclusion (accordion simples para conclusão), AccordionCourse (accordion com badge de progresso e tag live), TaskCourse (item de atividade com icon/badge/checkbox, 3 estados: default/active/completed), ListTaskCourse (container flex-col para TaskCourse items). |
 
 ### Hooks (`src/hooks/`)
 

@@ -160,6 +160,77 @@
       ]
     },
     {
+      "name": "progress-stage",
+      "type": "registry:ui",
+      "title": "Progress Stage",
+      "description": "Barra de progresso segmentada em pills (2-10 stages). Suporta temas de cor aplicados apenas nas pills preenchidas.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/progress-stage.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/progress-stage.tsx"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Checkbox com 3 tamanhos (sm, default, lg), 2 variantes (default, circular) e suporte a temas de cor.",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/checkbox.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/checkbox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "Radio Group",
+      "description": "Radio button com 3 tamanhos (sm, default, lg) e suporte a temas de cor.",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/radio-group.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/radio-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "file-card",
+      "type": "registry:ui",
+      "title": "File Card",
+      "description": "Botao de download de arquivos com icone, titulo, tipo e tamanho. 3 sizes (sm, md, lg).",
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/file-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/file-card.tsx"
+        }
+      ]
+    },
+    {
       "name": "header-class",
       "type": "registry:ui",
       "title": "Header Class",

@@ -5,7 +5,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeBlock } from "@/components/docs/code-block"
 import { DocsTabs } from "@/components/docs/docs-tabs"
 import { SpecTable } from "@/components/docs/spec-table"
-import { Check, Circle, Clock, Star, AlertTriangle } from "lucide-react"
+import { ArrowLeft, ArrowRight, Check, Circle, Clock, Star, AlertTriangle } from "lucide-react"
 
 /* ============================================
  * DEVELOPER DOCS
@@ -67,6 +67,8 @@ export function BadgeVariants() {
       <Badge variant="link">Link</Badge>
       <Badge variant="muted">Muted</Badge>
       <Badge variant="success">Success</Badge>
+      <Badge variant="progress">Progress</Badge>
+      <Badge variant="progress-completed">Progress Completed</Badge>
     </div>
   )
 }`}
@@ -80,6 +82,8 @@ export function BadgeVariants() {
             <Badge variant="link">Link</Badge>
             <Badge variant="muted">Muted</Badge>
             <Badge variant="success">Success</Badge>
+            <Badge variant="progress">Progress</Badge>
+            <Badge variant="progress-completed">Progress Completed</Badge>
           </div>
         </ComponentPreview>
       </section>
@@ -263,6 +267,70 @@ export function BadgeAsChild() {
         </ComponentPreview>
       </section>
 
+      {/* Badge Progress */}
+      <section className="space-y-4">
+        <h3 className="text-xl font-semibold">Badge Progress</h3>
+        <p className="text-muted-foreground">
+          Variants <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">progress</code> e{" "}
+          <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">progress-completed</code> para indicadores de progresso em sidebars e trilhas de curso. Fundo neutro (<code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">bg-accent</code>) com texto cinza ou verde conforme o estado.
+        </p>
+        <ComponentPreview
+          code={`import { Badge } from "@/components/ui/badge"
+import { ArrowLeft, ArrowRight } from "lucide-react"
+
+export function BadgeProgressDemo() {
+  return (
+    <div className="space-y-4">
+      {/* Em progresso */}
+      <div className="flex flex-wrap items-center gap-3">
+        <Badge variant="progress" size="sm">2/5</Badge>
+        <Badge variant="progress" size="default">2/5</Badge>
+        <Badge variant="progress" size="lg">2/5</Badge>
+      </div>
+
+      {/* Completo */}
+      <div className="flex flex-wrap items-center gap-3">
+        <Badge variant="progress-completed" size="sm">5/5</Badge>
+        <Badge variant="progress-completed" size="default">5/5</Badge>
+        <Badge variant="progress-completed" size="lg">5/5</Badge>
+      </div>
+
+      {/* Com icones de seta */}
+      <div className="flex flex-wrap items-center gap-3">
+        <Badge variant="progress" size="sm">
+          <ArrowLeft /> 2/5 <ArrowRight />
+        </Badge>
+        <Badge variant="progress-completed" size="sm">
+          <ArrowLeft /> 5/5 <ArrowRight />
+        </Badge>
+      </div>
+    </div>
+  )
+}`}
+        >
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <Badge variant="progress" size="sm">2/5</Badge>
+              <Badge variant="progress" size="default">2/5</Badge>
+              <Badge variant="progress" size="lg">2/5</Badge>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <Badge variant="progress-completed" size="sm">5/5</Badge>
+              <Badge variant="progress-completed" size="default">5/5</Badge>
+              <Badge variant="progress-completed" size="lg">5/5</Badge>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <Badge variant="progress" size="sm">
+                <ArrowLeft /> 2/5 <ArrowRight />
+              </Badge>
+              <Badge variant="progress-completed" size="sm">
+                <ArrowLeft /> 5/5 <ArrowRight />
+              </Badge>
+            </div>
+          </div>
+        </ComponentPreview>
+      </section>
+
       {/* API Reference */}
       <section className="space-y-4">
         <h2 className="text-xl font-semibold">API Reference</h2>
@@ -279,7 +347,7 @@ export function BadgeAsChild() {
             <tbody>
               <tr className="border-b border-border">
                 <td className="p-3 font-mono text-xs">variant</td>
-                <td className="p-3 font-mono text-xs text-muted-foreground">&quot;default&quot; | &quot;secondary&quot; | &quot;destructive&quot; | &quot;outline&quot; | &quot;ghost&quot; | &quot;link&quot; | &quot;muted&quot; | &quot;success&quot;</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">&quot;default&quot; | &quot;secondary&quot; | &quot;destructive&quot; | &quot;outline&quot; | &quot;ghost&quot; | &quot;link&quot; | &quot;muted&quot; | &quot;success&quot; | &quot;progress&quot; | &quot;progress-completed&quot;</td>
                 <td className="p-3 font-mono text-xs">&quot;default&quot;</td>
                 <td className="p-3 text-muted-foreground">Estilo visual do badge</td>
               </tr>
@@ -340,6 +408,8 @@ function DesignerDocs() {
             ["link", "transparent", "text-primary", "transparent", "Badge clicavel, navegacao"],
             ["muted", "bg-muted", "text-muted-foreground", "transparent", "Informacao secundaria, metadados"],
             ["success", "bg-[#28c953]/15", "text-[#28c953]", "border-[#28c953]/20", "Status positivo, aprovado, ativo"],
+            ["progress", "bg-accent", "text-muted-foreground", "transparent", "Indicador de progresso em andamento"],
+            ["progress-completed", "bg-accent", "text-[#00c234]", "transparent", "Indicador de progresso concluido"],
           ]}
         />
         <div className="rounded-lg border border-border p-8 bg-background">
@@ -352,6 +422,8 @@ function DesignerDocs() {
             <Badge variant="link">Link</Badge>
             <Badge variant="muted">Muted</Badge>
             <Badge variant="success">Success</Badge>
+            <Badge variant="progress">Progress</Badge>
+            <Badge variant="progress-completed">Progress Completed</Badge>
           </div>
         </div>
       </section>

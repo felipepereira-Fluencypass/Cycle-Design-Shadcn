@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "checkbox",
+  "type": "registry:ui",
+  "title": "Checkbox",
+  "description": "Checkbox com 3 tamanhos (sm, default, lg), 2 variantes (default, circular) e suporte a temas de cor.",
+  "dependencies": [
+    "class-variance-authority",
+    "radix-ui",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/checkbox.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { CheckIcon } from \"lucide-react\"\nimport { Checkbox as CheckboxPrimitive } from \"radix-ui\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst checkboxVariants = cva(\n  \"peer shrink-0 border border-neutral-input shadow-xs transition-shadow outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:bg-neutral-input/30 dark:aria-invalid:ring-destructive/40 dark:data-[state=checked]:bg-primary\",\n  {\n    variants: {\n      size: {\n        sm: \"size-3.5 [&_svg]:size-3\",\n        default: \"size-4 [&_svg]:size-3.5\",\n        lg: \"size-5 [&_svg]:size-4\",\n      },\n      variant: {\n        default: \"rounded-[4px]\",\n        circular: \"rounded-full\",\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n      variant: \"default\",\n    },\n  }\n)\n\nexport interface CheckboxProps\n  extends React.ComponentProps<typeof CheckboxPrimitive.Root>,\n    VariantProps<typeof checkboxVariants> {\n  /** Classe de tema aplicada apenas no estado checked (ex: \"theme-class\") */\n  theme?: string\n}\n\nfunction Checkbox({\n  className,\n  size = \"default\",\n  variant = \"default\",\n  theme,\n  ...props\n}: CheckboxProps) {\n  return (\n    <CheckboxPrimitive.Root\n      data-slot=\"checkbox\"\n      data-variant={variant}\n      className={cn(theme, checkboxVariants({ size, variant }), className)}\n      {...props}\n    >\n      <CheckboxPrimitive.Indicator\n        data-slot=\"checkbox-indicator\"\n        className=\"grid place-content-center text-current transition-none\"\n      >\n        <CheckIcon />\n      </CheckboxPrimitive.Indicator>\n    </CheckboxPrimitive.Root>\n  )\n}\n\nexport { Checkbox, checkboxVariants }\n"
+    }
+  ]
+}

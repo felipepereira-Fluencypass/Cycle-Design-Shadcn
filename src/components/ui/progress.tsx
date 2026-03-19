@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 /* ─── Track variants ─── */
 
 const progressVariants = cva(
-  "relative w-full overflow-hidden rounded-full bg-muted",
+  "relative w-full overflow-hidden rounded-full bg-neutral-accent",
   {
     variants: {
       size: {
@@ -47,13 +47,17 @@ const indicatorVariants = cva(
 export interface ProgressProps
   extends Omit<React.ComponentProps<typeof ProgressPrimitive.Root>, "children">,
     VariantProps<typeof progressVariants>,
-    VariantProps<typeof indicatorVariants> {}
+    VariantProps<typeof indicatorVariants> {
+  /** Classe de tema aplicada apenas no indicator (ex: "theme-class") */
+  theme?: string
+}
 
 function Progress({
   className,
   value,
   size,
   variant,
+  theme,
   ...props
 }: ProgressProps) {
   return (
@@ -64,7 +68,7 @@ function Progress({
     >
       <ProgressPrimitive.Indicator
         data-slot="progress-indicator"
-        className={cn(indicatorVariants({ variant }))}
+        className={cn(theme, indicatorVariants({ variant }))}
         style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
       />
     </ProgressPrimitive.Root>

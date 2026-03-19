@@ -25,6 +25,10 @@ const badgeVariants = cva(
           "bg-muted text-muted-foreground",
         success:
           "bg-[#28c953]/15 text-[#28c953] border-[#28c953]/20",
+        progress:
+          "bg-accent text-muted-foreground",
+        "progress-completed":
+          "bg-accent text-[#00c234] dark:text-[#00E73E]",
       },
       size: {
         default: "rounded-full px-2 py-0.5 text-xs font-medium [&>svg]:size-3",

@@ -3,7 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FileCard } from "@/components/ui/file-card";
 import { Progress } from "@/components/ui/progress";
+import { ProgressStage } from "@/components/ui/progress-stage";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export default function ComponentsPage() {
   return (
@@ -51,6 +55,17 @@ export default function ComponentsPage() {
               <Input inputSize="sm" placeholder="Small" className="max-w-[180px]" />
               <Input placeholder="Default" className="max-w-[180px]" />
             </div>
+          </Link>
+
+          <Link
+            href="/docs/components/file-card"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">File Card</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Botao de download com icone, titulo, tipo e tamanho. 3 sizes.
+            </p>
+            <FileCard title="Documento" fileType="PDF" fileSize="180 KB" size="sm" />
           </Link>
 
           <Link
@@ -129,6 +144,48 @@ export default function ComponentsPage() {
           </Link>
 
           <Link
+            href="/docs/components/progress-stage"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">Progress Stage</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Progresso segmentado em pills (2-10 stages). Suporta temas.
+            </p>
+            <ProgressStage stages={5} value={3} />
+          </Link>
+
+          <Link
+            href="/docs/components/radio-group"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">Radio Group</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              3 tamanhos, suporte a temas de cor.
+            </p>
+            <RadioGroup defaultValue="a" className="flex gap-3" orientation="horizontal">
+              <RadioGroupItem value="a" size="sm" />
+              <RadioGroupItem value="b" />
+              <RadioGroupItem value="c" size="lg" />
+            </RadioGroup>
+          </Link>
+
+          <Link
+            href="/docs/components/checkbox"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">Checkbox</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              3 tamanhos, 2 variantes (default, circular), suporte a temas.
+            </p>
+            <div className="flex items-center gap-3">
+              <Checkbox defaultChecked size="sm" />
+              <Checkbox defaultChecked />
+              <Checkbox defaultChecked size="lg" />
+              <Checkbox defaultChecked variant="circular" />
+            </div>
+          </Link>
+
+          <Link
             href="/docs/components/scroll-area"
             className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
           >
@@ -173,6 +230,16 @@ export default function ComponentsPage() {
               Headers de pagina dos produtos. Responsivos com bottom sheet no mobile.
             </p>
           </Link>
+
+          <Link
+            href="/docs/components/sidebar-course"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">Sidebar Course</h3>
+            <p className="text-sm text-muted-foreground">
+              Navegacao lateral do produto Class. ProgressCourse, items e accordions.
+            </p>
+          </Link>
         </div>
       </section>
 
@@ -188,7 +255,7 @@ export default function ComponentsPage() {
               Componentes base que podem ser instalados individualmente:
             </p>
             <div className="bg-muted rounded-lg p-4 text-sm font-mono overflow-x-auto space-y-1">
-              {["accordion", "badge", "button", "input", "progress", "scroll-area", "sheet", "tabs", "video-player"].map((name) => (
+              {["accordion", "badge", "button", "checkbox", "file-card", "input", "progress", "progress-stage", "radio-group", "scroll-area", "sheet", "tabs", "video-player"].map((name) => (
                 <p key={name}>
                   npx shadcn@latest add {name} -r https://cycle-design.vercel.app/r
                 </p>
