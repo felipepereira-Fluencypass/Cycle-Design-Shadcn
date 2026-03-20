@@ -42,6 +42,7 @@ const sidebarItems = [
   { label: "Tabs", href: "/docs/components/tabs" },
   { label: "Video Player", href: "/docs/components/video-player" },
   { type: "separator" as const, label: "Composites" },
+  { label: "Content Course", href: "/docs/components/content-course" },
   { label: "Headers", href: "/docs/components/headers" },
   { label: "Sidebar Course", href: "/docs/components/sidebar-course" },
   { type: "separator" as const, label: "Brand" },

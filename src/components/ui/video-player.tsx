@@ -22,7 +22,14 @@ import {
   useVideoQualityOptions,
   type MediaPlayerInstance,
 } from "@vidstack/react"
+// Desktop-only controls use the above. Mobile uses DefaultVideoLayout below.
+import {
+  DefaultVideoLayout,
+  defaultLayoutIcons,
+} from "@vidstack/react/player/layouts/default"
 import "@vidstack/react/player/styles/base.css"
+import "@vidstack/react/player/styles/default/theme.css"
+import "@vidstack/react/player/styles/default/layouts/video.css"
 import {
   Play,
   Pause,
@@ -328,158 +335,6 @@ function FullscreenControl() {
   )
 }
 
-/* ─── Mobile settings menu (gear icon → Speed, Quality, Captions, PIP) ─── */
-
-function MobileSettingsControl() {
-  const [open, setOpen] = React.useState(false)
-  const [subMenu, setSubMenu] = React.useState<"speed" | "quality" | null>(null)
-
-  const playbackRate = useMediaState("playbackRate")
-  const remote = useMediaRemote()
-  const qualityOptions = useVideoQualityOptions({ auto: true, sort: "descending" })
-  const track = useMediaState("textTrack")
-  const isPIP = useMediaState("pictureInPicture")
-
-  const rates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
-
-  const close = () => {
-    setOpen(false)
-    setSubMenu(null)
-  }
-
-  return (
-    <div className="relative">
-      <button
-        type="button"
-        onClick={() => { setOpen(!open); setSubMenu(null) }}
-        className={controlBtnClass}
-      >
-        <CycleIcon icon={Settings} size="sm" decorative className="text-white" />
-      </button>
-
-      {open && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={close} />
-
-          <div className="absolute top-full right-0 z-50 mt-2 min-w-[180px] rounded-lg border border-white/10 bg-black/90 backdrop-blur-md p-1 shadow-xl">
-            {/* Main menu */}
-            {subMenu === null && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => setSubMenu("speed")}
-                  className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white"
-                >
-                  <span className="flex items-center gap-2">
-                    <CycleIcon icon={Gauge} size="xs" decorative className="text-white" />
-                    Velocidade
-                  </span>
-                  <span className="font-mono text-xs text-white/50">
-                    {playbackRate === 1 ? "Normal" : `${playbackRate}x`}
-                  </span>
-                </button>
-
-                {!qualityOptions.disabled && (
-                  <button
-                    type="button"
-                    onClick={() => setSubMenu("quality")}
-                    className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white"
-                  >
-                    <span className="flex items-center gap-2">
-                      <CycleIcon icon={Settings} size="xs" decorative className="text-white" />
-                      Qualidade
-                    </span>
-                    <span className="font-mono text-xs text-white/50">
-                      {qualityOptions.selectedQuality ? `${qualityOptions.selectedQuality.height}p` : "Auto"}
-                    </span>
-                  </button>
-                )}
-
-                <CaptionButton
-                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white"
-                >
-                  <CycleIcon icon={track ? CaptionsIcon : CaptionsOff} size="xs" decorative className="text-white" />
-                  Legendas {track ? "ON" : "OFF"}
-                </CaptionButton>
-
-                <PIPButton
-                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white"
-                >
-                  <CycleIcon icon={PictureInPicture2} size="xs" decorative className="text-white" />
-                  Picture-in-Picture
-                </PIPButton>
-              </>
-            )}
-
-            {/* Speed sub-menu */}
-            {subMenu === "speed" && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => setSubMenu(null)}
-                  className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/50 hover:text-white/80"
-                >
-                  ← Velocidade
-                </button>
-                {rates.map((rate) => (
-                  <button
-                    key={rate}
-                    type="button"
-                    onClick={() => {
-                      remote.changePlaybackRate(rate)
-                      close()
-                    }}
-                    className={cn(
-                      "flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white",
-                      playbackRate === rate && "text-white font-medium"
-                    )}
-                  >
-                    <span className="size-4 flex items-center justify-center">
-                      {playbackRate === rate && <CycleIcon icon={Check} size="2xs" decorative className="text-white" />}
-                    </span>
-                    <span className="font-mono">{rate === 1 ? "Normal" : `${rate}x`}</span>
-                  </button>
-                ))}
-              </>
-            )}
-
-            {/* Quality sub-menu */}
-            {subMenu === "quality" && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => setSubMenu(null)}
-                  className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/50 hover:text-white/80"
-                >
-                  ← Qualidade
-                </button>
-                {qualityOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() => {
-                      option.select()
-                      close()
-                    }}
-                    className={cn(
-                      "flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white",
-                      option.selected && "text-white font-medium"
-                    )}
-                  >
-                    <span className="size-4 flex items-center justify-center">
-                      {option.selected && <CycleIcon icon={Check} size="2xs" decorative className="text-white" />}
-                    </span>
-                    <span className="font-mono">{option.label}</span>
-                  </button>
-                ))}
-              </>
-            )}
-          </div>
-        </>
-      )}
-    </div>
-  )
-}
 
 /* ─── Gesture helpers ─── */
 
@@ -567,19 +422,21 @@ function SeekFeedbackOverlay({
   )
 }
 
-/* ─── Mobile center play button ─── */
 
-function MobilePlayControl() {
-  const isPaused = useMediaState("paused")
-  return (
-    <PlayButton className="flex size-14 cursor-pointer items-center justify-center rounded-full bg-white/20 backdrop-blur-sm text-white outline-none transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-white/50">
-      {isPaused ? (
-        <CycleIcon icon={Play} size="lg" decorative className={cn(filledIconClass, "ml-1")} />
-      ) : (
-        <CycleIcon icon={Pause} size="lg" decorative className={filledIconClass} />
-      )}
-    </PlayButton>
-  )
+/* ─── Hook: detect desktop (sm breakpoint = 640px) ─── */
+
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = React.useState(false)
+
+  React.useEffect(() => {
+    const mq = window.matchMedia("(min-width: 640px)")
+    setIsDesktop(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+
+  return isDesktop
 }
 
 /* ─── Main component ─── */
@@ -595,8 +452,9 @@ export function VideoPlayer({
   className,
 }: VideoPlayerProps) {
   const player = React.useRef<MediaPlayerInstance>(null)
+  const isDesktop = useIsDesktop()
 
-  // Seek feedback state with accumulation (like YouTube)
+  // Seek feedback state with accumulation (like YouTube) — desktop only
   const [seekFeedback, setSeekFeedback] = React.useState<SeekDirection | null>(null)
   const [seekAccumulated, setSeekAccumulated] = React.useState(0)
   const feedbackTimeout = React.useRef<ReturnType<typeof setTimeout>>(undefined)
@@ -606,10 +464,8 @@ export function VideoPlayer({
 
     setSeekFeedback((prev) => {
       if (prev === direction) {
-        // Same direction → accumulate
         setSeekAccumulated((s) => s + 10)
       } else {
-        // New direction → reset
         setSeekAccumulated(10)
       }
       return direction
@@ -635,84 +491,79 @@ export function VideoPlayer({
       playsInline
       crossOrigin=""
       className={cn(
-        "group relative aspect-video w-full overflow-hidden rounded-[16px] bg-black text-white",
+        "group relative aspect-video w-full overflow-hidden bg-black text-white rounded-none sm:rounded-[16px]",
         className
       )}
     >
       <MediaProvider>
         {poster && (
           <Poster
-            className="absolute inset-0 block h-full w-full rounded-[16px] object-cover opacity-0 transition-opacity data-[visible]:opacity-100"
+            className="absolute inset-0 block h-full w-full object-cover opacity-0 transition-opacity data-[visible]:opacity-100 sm:rounded-[16px]"
             src={poster}
             alt={posterAlt}
           />
         )}
       </MediaProvider>
 
-      {/* Captions overlay */}
-      <Captions className="absolute inset-0 bottom-[80px] z-10 select-none break-words text-center text-sm media-preview:opacity-0 [&>[data-part=cue]]:inline [&>[data-part=cue]]:bg-black/70 [&>[data-part=cue]]:px-2 [&>[data-part=cue]]:py-0.5 [&>[data-part=cue]]:text-white" />
+      {/* ─── MOBILE: Vidstack DefaultVideoLayout (touch, gestos, menus nativos) ─── */}
+      {!isDesktop && (
+        <DefaultVideoLayout
+          icons={defaultLayoutIcons}
+          thumbnails={thumbnails}
+          colorScheme="dark"
+        />
+      )}
 
-      {/* Play overlay (paused state — big play button, desktop only) */}
-      <PlayOverlay />
+      {/* ─── DESKTOP: Controles customizados do Cycle Design ─── */}
+      {isDesktop && (
+        <>
+          {/* Captions overlay */}
+          <Captions className="absolute inset-0 bottom-[80px] z-10 select-none break-words text-center text-sm media-preview:opacity-0 [&>[data-part=cue]]:inline [&>[data-part=cue]]:bg-black/70 [&>[data-part=cue]]:px-2 [&>[data-part=cue]]:py-0.5 [&>[data-part=cue]]:text-white" />
 
-      {/* Seek feedback indicators (accumulated like YouTube) */}
-      <SeekFeedbackOverlay direction="backward" visible={seekFeedback === "backward"} seconds={seekAccumulated} />
-      <SeekFeedbackOverlay direction="forward" visible={seekFeedback === "forward"} seconds={seekAccumulated} />
+          {/* Play overlay (paused state — big play button) */}
+          <PlayOverlay />
 
-      {/* Gestures — click to pause, double-click fullscreen (all screens) */}
-      <Gesture className="absolute inset-0 z-0 block h-full w-full" event="pointerup" action="toggle:paused" />
-      <Gesture className="absolute inset-0 z-0 block h-full w-full" event="dblpointerup" action="toggle:fullscreen" />
+          {/* Seek feedback indicators (accumulated like YouTube) */}
+          <SeekFeedbackOverlay direction="backward" visible={seekFeedback === "backward"} seconds={seekAccumulated} />
+          <SeekFeedbackOverlay direction="forward" visible={seekFeedback === "forward"} seconds={seekAccumulated} />
 
-      {/* Desktop: double-tap seek zones on edges */}
-      <SeekGestureZone side="left" onSeekFeedback={handleSeekFeedback} />
-      <SeekGestureZone side="right" onSeekFeedback={handleSeekFeedback} />
+          {/* Gestures: click to pause, double-click fullscreen */}
+          <Gesture className="absolute inset-0 z-0 block h-full w-full" event="pointerup" action="toggle:paused" />
+          <Gesture className="absolute inset-0 z-0 block h-full w-full" event="dblpointerup" action="toggle:fullscreen" />
 
-      {/* ─── Controls overlay (Vidstack managed — hover/touch/paused) ─── */}
-      <Controls.Root className="absolute inset-0 z-20 flex h-full w-full flex-col bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-data-[started]:group-hover:opacity-100 group-data-[paused]:opacity-100">
-        {/* Top bar — mobile only: settings gear */}
-        <Controls.Group className="flex w-full items-center justify-end px-2 pt-2 sm:hidden">
-          <MobileSettingsControl />
-        </Controls.Group>
+          {/* Double-tap seek zones on edges */}
+          <SeekGestureZone side="left" onSeekFeedback={handleSeekFeedback} />
+          <SeekGestureZone side="right" onSeekFeedback={handleSeekFeedback} />
 
-        {/* Center — mobile only: Play/Pause button */}
-        <div className="flex flex-1 items-center justify-center sm:hidden">
-          <MobilePlayControl />
-        </div>
+          {/* Controls overlay (hover to show) */}
+          <Controls.Root className="absolute inset-0 z-20 flex h-full w-full flex-col bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-data-[started]:group-hover:opacity-100 group-data-[paused]:opacity-100">
+            <div className="flex-1" />
 
-        {/* Desktop spacer */}
-        <div className="hidden sm:flex flex-1" />
+            {/* Seek bar */}
+            <Controls.Group className="flex w-full items-center px-3">
+              <SeekBar thumbnails={thumbnails} />
+            </Controls.Group>
 
-        {/* Seek bar (all screens) */}
-        <Controls.Group className="flex w-full items-center px-3">
-          <SeekBar thumbnails={thumbnails} />
-        </Controls.Group>
+            {/* Bottom bar */}
+            <Controls.Group className="flex w-full items-center gap-1 px-2 pb-2">
+              <PlayControl />
+              <SeekBackwardControl />
+              <SeekForwardControl />
+              <MuteControl />
+              <VolumeControl />
+              <TimeDisplay />
 
-        {/* Bottom bar — mobile */}
-        <Controls.Group className="flex w-full items-center gap-1 px-2 pb-2 sm:hidden">
-          <MuteControl />
-          <TimeDisplay />
-          <div className="flex-1" />
-          <FullscreenControl />
-        </Controls.Group>
+              <div className="flex-1" />
 
-        {/* Bottom bar — desktop */}
-        <Controls.Group className="hidden sm:flex w-full items-center gap-1 px-2 pb-2">
-          <PlayControl />
-          <SeekBackwardControl />
-          <SeekForwardControl />
-          <MuteControl />
-          <VolumeControl />
-          <TimeDisplay />
-
-          <div className="flex-1" />
-
-          <CaptionControl />
-          <SpeedControl />
-          <QualityControl />
-          <PIPControl />
-          <FullscreenControl />
-        </Controls.Group>
-      </Controls.Root>
+              <CaptionControl />
+              <SpeedControl />
+              <QualityControl />
+              <PIPControl />
+              <FullscreenControl />
+            </Controls.Group>
+          </Controls.Root>
+        </>
+      )}
     </MediaPlayer>
   )
 }

@@ -280,6 +280,16 @@ export default function ComponentsPage() {
               Navegacao lateral do produto Class. ProgressCourse, items e accordions.
             </p>
           </Link>
+
+          <Link
+            href="/docs/components/content-course"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">Content Course</h3>
+            <p className="text-sm text-muted-foreground">
+              Templates de conteudo do Class. Video, audio, quiz, etc. Responsivo com max-w-860px.
+            </p>
+          </Link>
         </div>
       </section>
 
@@ -310,7 +320,7 @@ export default function ComponentsPage() {
               Blocos maiores que combinam primitives. As dependencias de primitives sao instaladas automaticamente.
             </p>
             <div className="bg-muted rounded-lg p-4 text-sm font-mono overflow-x-auto space-y-1">
-              {["header-class", "sidebar-course"].map((name) => (
+              {["header-class", "sidebar-course", "content-course"].map((name) => (
                 <p key={name}>
                   npx shadcn@latest add https://cycle-design.vercel.app/r/{name}.json
                 </p>

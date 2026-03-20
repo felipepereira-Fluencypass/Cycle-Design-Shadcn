@@ -125,30 +125,42 @@ npm run lint     # ESLint
 20. **Sempre atualizar o catálogo de componentes** — ao adicionar um componente, incluir o nome no array da seção "Como instalar" em `src/app/docs/components/page.tsx`
 21. **Sempre criar documentação** — ao adicionar qualquer componente, token, logo ou recurso, criar ou atualizar a página de documentação correspondente em `src/app/docs/`
 
+### Regras de Versionamento (IMPORTANTE)
+
+22. **Bumpar versão ao alterar um componente** — qualquer mudança em um componente (cor, prop, comportamento, fix) exige atualizar o campo `meta.version` e `meta.updatedAt` no `registry.json`:
+    - **Patch** (1.0.0 → 1.0.1): bug fix, ajuste de estilo que não muda API
+    - **Minor** (1.0.0 → 1.1.0): nova prop, nova variant, novo comportamento (retrocompatível)
+    - **Major** (1.0.0 → 2.0.0): breaking change — prop removida/renomeada, mudança de estrutura
+23. **Rebuild obrigatório** — após bumpar versão, rodar `npx tsx scripts/build-registry.ts`
+24. **Rotina de início de sessão** — toda sessão deve começar verificando:
+    - Se há atualizações upstream do shadcn/ui nos componentes que usamos
+    - Listar o que mudou, avaliar risco de quebra, decidir se aplica ou não
+    - Se aplicar, bumpar a versão do componente afetado
+
 ---
 
 ## Registro de Componentes
 
 ### Primitives (`src/components/ui/`)
 
-| Componente | Status | Arquivo | Observações |
+| Componente | Versão | Arquivo | Observações |
 |------------|--------|---------|-------------|
-| Button | Instalado | `button.tsx` | 6 variants, 8 sizes (xs=24px, sm=32px, md=40px, lg=48px + icon-*). Ícones com strokeWidth automático via CSS. Suporta `.theme-*`. |
-| Input | Instalado | `input.tsx` | 3 sizes (sm=32px, default=40px, lg=48px). Estados: default, focused, disabled, error (aria-invalid). |
-| Sheet | Instalado | `sheet.tsx` | Overlay lateral/bottom. Sides: top, right, bottom, left. Usado no HeaderClass mobile. |
-| Tabs | Instalado | `tabs.tsx` | 2 variants (default, line), orientação horizontal e vertical. |
-| Audio Player | Instalado | `audio-player.tsx` | Player de audio com controles customizados (Vidstack). 2 variantes (default, card). Suporta MP3, OGG, HLS. Icones via CycleIcon. showSpeed=true por padrao (EdTech). |
-| Video Player | Instalado | `video-player.tsx` | Player com controles customizados (Vidstack). Suporta MP4, WebM, HLS. Icones via CycleIcon. |
-| Accordion | Instalado | `accordion.tsx` | Secoes colapsaveis com animacao. Suporta single e multiple. |
-| Badge | Instalado | `badge.tsx` | 10 variants (default, secondary, destructive, outline, ghost, link, muted, success, progress, progress-completed), 3 sizes (sm, default, lg). Suporta `.theme-*`. |
-| File Card | Instalado | `file-card.tsx` | Botao de download com icone, titulo, tipo e tamanho. 3 sizes (sm, md, lg). Props: icon, showDescription, showFileSize. |
-| Progress | Instalado | `progress.tsx` | 4 sizes (xs, sm, default, lg), 4 variants (default, secondary, destructive, muted). Prop `theme` aplica cor apenas no indicator, track permanece `bg-accent` neutral. |
-| Progress Stage | Instalado | `progress-stage.tsx` | Progresso segmentado em pills (2-10 stages). Prop `theme` aplica cor apenas nas pills preenchidas, vazias ficam `bg-accent` neutral. |
-| Checkbox | Instalado | `checkbox.tsx` | 3 sizes (sm, default, lg), 2 variants (default, circular). Prop `theme` aplica cor apenas no estado checked. |
-| Radio Group | Instalado | `radio-group.tsx` | 3 sizes (sm, default, lg). Prop `theme` aplica cor apenas no estado checked. Border unchecked neutro fixo. |
-| Scroll Area | Instalado | `scroll-area.tsx` | Area de scroll customizada com scrollbar estilizado. Vertical e horizontal. |
-| Slider | Instalado | `slider.tsx` | 3 sizes (sm, default, lg), suporte a range (2 thumbs). Track preenchido `bg-primary`, track vazio `bg-accent`, thumb `bg-primary-foreground` com `border-primary`. Suporta `.theme-*`. |
-| Switch | Instalado | `switch.tsx` | Toggle on/off. 3 sizes (sm, default, lg). Prop `theme` aplica cor apenas no estado checked. |
+| Button | 1.0.0 | `button.tsx` | 6 variants, 8 sizes (xs=24px, sm=32px, md=40px, lg=48px + icon-*). Ícones com strokeWidth automático via CSS. Suporta `.theme-*`. |
+| Input | 1.0.0 | `input.tsx` | 3 sizes (sm=32px, default=40px, lg=48px). Estados: default, focused, disabled, error (aria-invalid). |
+| Sheet | 1.0.0 | `sheet.tsx` | Overlay lateral/bottom. Sides: top, right, bottom, left. Usado no HeaderClass mobile. |
+| Tabs | 1.0.0 | `tabs.tsx` | 2 variants (default, line), orientação horizontal e vertical. |
+| Audio Player | 1.0.0 | `audio-player.tsx` | Player de audio com controles customizados (Vidstack). 2 variantes (default, card). Suporta MP3, OGG, HLS. Icones via CycleIcon. showSpeed=true por padrao (EdTech). |
+| Video Player | 1.0.0 | `video-player.tsx` | Player com controles customizados (Vidstack). Suporta MP4, WebM, HLS. Icones via CycleIcon. |
+| Accordion | 1.0.0 | `accordion.tsx` | Secoes colapsaveis com animacao. Suporta single e multiple. |
+| Badge | 1.0.0 | `badge.tsx` | 10 variants (default, secondary, destructive, outline, ghost, link, muted, success, progress, progress-completed), 3 sizes (sm, default, lg). Suporta `.theme-*`. |
+| File Card | 1.0.0 | `file-card.tsx` | Botao de download com icone, titulo, tipo e tamanho. 3 sizes (sm, md, lg). Props: icon, showDescription, showFileSize. |
+| Progress | 1.0.0 | `progress.tsx` | 4 sizes (xs, sm, default, lg), 4 variants (default, secondary, destructive, muted). Prop `theme` aplica cor apenas no indicator, track permanece `bg-accent` neutral. |
+| Progress Stage | 1.0.0 | `progress-stage.tsx` | Progresso segmentado em pills (2-10 stages). Prop `theme` aplica cor apenas nas pills preenchidas, vazias ficam `bg-accent` neutral. |
+| Checkbox | 1.0.0 | `checkbox.tsx` | 3 sizes (sm, default, lg), 2 variants (default, circular). Prop `theme` aplica cor apenas no estado checked. |
+| Radio Group | 1.0.0 | `radio-group.tsx` | 3 sizes (sm, default, lg). Prop `theme` aplica cor apenas no estado checked. Border unchecked neutro fixo. |
+| Scroll Area | 1.0.0 | `scroll-area.tsx` | Area de scroll customizada com scrollbar estilizado. Vertical e horizontal. |
+| Slider | 1.0.0 | `slider.tsx` | 3 sizes (sm, default, lg), suporte a range (2 thumbs). Track preenchido `bg-primary`, track vazio `bg-accent`, thumb `bg-primary-foreground` com `border-primary`. Suporta `.theme-*`. |
+| Switch | 1.0.0 | `switch.tsx` | Toggle on/off. 3 sizes (sm, default, lg). Prop `theme` aplica cor apenas no estado checked. |
 
 > **Próximo a instalar**: Label, Textarea
 
@@ -160,10 +172,11 @@ npm run lint     # ESLint
 
 ### Composites (`src/components/composites/`)
 
-| Componente | Status | Arquivo | Observações |
+| Componente | Versão | Arquivo | Observações |
 |------------|--------|---------|-------------|
-| HeaderClass | Criado | `header-class.tsx` | Header do produto Class. Responsivo (740px breakpoint). Props: courseName, isSidebarOpen, onToggleSidebar, onNavigateHome. Mobile usa bottom sheet. |
-| Sidebar Course | Criado | `sidebar-course/` | Navegação lateral do produto Class. Componente principal: SidebarCourse (container com ScrollArea, max-w-[354px]). Sub-componentes: ProgressCourse (header com progresso bar/stage), AccordionConclusion (accordion simples para conclusão), AccordionCourse (accordion com badge de progresso e tag live), TaskCourse (item de atividade com icon/badge/checkbox, 3 estados: default/active/completed), ListTaskCourse (container flex-col para TaskCourse items). |
+| HeaderClass | 1.0.0 | `header-class.tsx` | Header do produto Class. Responsivo (740px breakpoint). Props: courseName, isSidebarOpen, onToggleSidebar, onNavigateHome. Mobile usa bottom sheet. |
+| Sidebar Course | 1.0.0 | `sidebar-course/` | Navegação lateral do produto Class com 2 camadas. Componente principal: SidebarCourse (container com ScrollArea, max-w-[354px]). Sub-componentes: ProgressCourse (header com progresso bar/stage), AccordionConclusion (accordion simples para conclusão), AccordionCourse (accordion com badge de progresso e tag live), UnitRow (row de navegação entre camadas — título + badge progresso + seta >), TaskCourse (item de atividade com icon/badge/checkbox, 3 estados: default/active/completed), ListTaskCourse (container flex-col para TaskCourse items). |
+| Content Course | 1.0.0 | `content-course/` | Templates de conteúdo do produto Class. Wrapper comum: ContentCourse (título, subtítulo, botão concluído com auto-advance, descrição, FileCards, ReportButton — tudo condicional). Templates: ContentVideo (VideoPlayer + ContentCourse). Responsivo: max-w-[860px] centralizado, vídeo full-bleed no mobile. |
 
 ### Hooks (`src/hooks/`)
 
@@ -240,14 +253,27 @@ criados manualmente seguindo o código-fonte do shadcn/ui no GitHub.
 
 ## Fluxo de Trabalho por Componente
 
-Para cada novo componente, seguir este fluxo:
+Para cada **novo** componente, seguir este fluxo:
 
 ```
 1. INSTALAR   → npx shadcn@latest add [componente] (ou criar manualmente)
 2. CUSTOMIZAR → ajustar variants, sizes e tokens para a marca Cycle
 3. TESTAR     → npm run build (garantir que compila)
-4. REGISTRAR  → atualizar a tabela de componentes neste CLAUDE.md
-5. VALIDAR    → apresentar ao usuário para aprovação antes de seguir
+4. VERSIONAR  → adicionar meta.version "1.0.0" e meta.updatedAt no registry.json
+5. REGISTRAR  → atualizar a tabela de componentes neste CLAUDE.md (com versão)
+6. REBUILD    → npx tsx scripts/build-registry.ts
+7. VALIDAR    → apresentar ao usuário para aprovação antes de seguir
+```
+
+Para **alterar** um componente existente:
+
+```
+1. ALTERAR    → fazer a mudança (cor, prop, comportamento, fix)
+2. TESTAR     → npm run build (garantir que compila)
+3. VERSIONAR  → bumpar meta.version no registry.json (patch/minor/major) + meta.updatedAt
+4. REGISTRAR  → atualizar versão na tabela deste CLAUDE.md
+5. REBUILD    → npx tsx scripts/build-registry.ts
+6. VALIDAR    → apresentar ao usuário para aprovação
 ```
 
 ---

@@ -16,5 +16,9 @@
       "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Switch as SwitchPrimitive } from \"radix-ui\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst switchVariants = cva(\n  \"peer group/switch inline-flex shrink-0 cursor-pointer items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 data-[state=unchecked]:bg-neutral-input data-[state=checked]:bg-primary\",\n  {\n    variants: {\n      size: {\n        sm: \"h-4 w-7\",\n        default: \"h-5 w-9\",\n        lg: \"h-6 w-11\",\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n    },\n  }\n)\n\nconst thumbVariants = cva(\n  \"pointer-events-none block rounded-full bg-primary-foreground ring-0 shadow-sm transition-transform data-[state=unchecked]:translate-x-0.5\",\n  {\n    variants: {\n      size: {\n        sm: \"size-3 data-[state=checked]:translate-x-[calc(100%+2px)]\",\n        default: \"size-4 data-[state=checked]:translate-x-[calc(100%+2px)]\",\n        lg: \"size-5 data-[state=checked]:translate-x-[calc(100%+2px)]\",\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n    },\n  }\n)\n\nexport interface SwitchProps\n  extends React.ComponentProps<typeof SwitchPrimitive.Root>,\n    VariantProps<typeof switchVariants> {\n  /** Classe de tema aplicada no estado checked (ex: \"theme-brand\") */\n  theme?: string\n}\n\nfunction Switch({\n  className,\n  size = \"default\",\n  theme,\n  ...props\n}: SwitchProps) {\n  return (\n    <SwitchPrimitive.Root\n      data-slot=\"switch\"\n      className={cn(theme, switchVariants({ size }), className)}\n      {...props}\n    >\n      <SwitchPrimitive.Thumb\n        data-slot=\"switch-thumb\"\n        className={thumbVariants({ size })}\n      />\n    </SwitchPrimitive.Root>\n  )\n}\n\nexport { Switch, switchVariants }\n",
       "target": "components/ui/switch.tsx"
     }
-  ]
+  ],
+  "meta": {
+    "version": "1.0.0",
+    "updatedAt": "2026-03-17"
+  }
 }

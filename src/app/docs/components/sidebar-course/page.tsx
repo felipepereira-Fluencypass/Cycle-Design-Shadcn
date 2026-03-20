@@ -1,13 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { VideoIcon, FileTextIcon, MicIcon, UsersIcon, BookOpenIcon } from "lucide-react"
+import { VideoIcon, FileTextIcon, MicIcon, UsersIcon, BookOpenIcon, MessageSquareIcon, BrainCircuitIcon, PencilLineIcon, HelpCircleIcon, CreditCardIcon } from "lucide-react"
 import { ProgressCourse } from "@/components/composites/sidebar-course/progress-course"
 import { AccordionConclusion } from "@/components/composites/sidebar-course/accordion-conclusion"
 import { AccordionCourse } from "@/components/composites/sidebar-course/accordion-course"
 import { TaskCourse } from "@/components/composites/sidebar-course/task-course"
 import { ListTaskCourse } from "@/components/composites/sidebar-course/list-task-course"
 import { SidebarCourse } from "@/components/composites/sidebar-course/sidebar-course"
+import { UnitRow } from "@/components/composites/sidebar-course/unit-row"
 import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeBlock } from "@/components/docs/code-block"
 import { DocsTabs } from "@/components/docs/docs-tabs"
@@ -54,6 +55,150 @@ function InteractiveTaskDemo() {
         ))}
       </ListTaskCourse>
     </div>
+  )
+}
+
+/* ============================================
+ * TWO-LAYER NAVIGATION DEMO (Units → Unit Detail)
+ * ============================================ */
+
+const DEMO_UNITS = [
+  { id: "u1", title: "Lesson: I'm in!", completed: 0, total: 7, liveLabel: undefined },
+  { id: "u2", title: "On cloud nine!", completed: 0, total: 7, liveLabel: undefined },
+  { id: "u3", title: "On cloud nine!", completed: 0, total: 7, liveLabel: undefined },
+] as const
+
+const DEMO_COMPLETED_UNITS = [
+  { id: "cu1", title: "Welcome to Beginner 1!", completed: 7, total: 7 },
+  { id: "cu2", title: "Unit: Hello, stranger!", completed: 7, total: 7 },
+  { id: "cu3", title: "Unit: Every day!", completed: 7, total: 7 },
+] as const
+
+const UNIT_DETAIL_TASKS = [
+  { id: "d1", title: "Call it a day!", icon: MessageSquareIcon, typeLabel: "Conteúdo", duration: "12 min" },
+  { id: "d2", title: "Blog post: Culture shock", icon: FileTextIcon, typeLabel: "Atividade", duration: "12 min" },
+  { id: "d3", title: "Dialogue: Arranging a meeting", icon: MicIcon, typeLabel: "Video", duration: "12 min" },
+  { id: "d4", title: "Interpretation: Deal!", icon: VideoIcon, typeLabel: "Video", duration: "12 min" },
+  { id: "d5", title: "Conversation with AI", icon: BrainCircuitIcon, typeLabel: "Atividade", duration: "12 min" },
+  { id: "d6", title: "What would you be willing to t...", icon: PencilLineIcon, typeLabel: "Atividade", duration: "12 min" },
+  { id: "d7", title: "Quiz", icon: HelpCircleIcon, typeLabel: "Activity", duration: "12 min" },
+  { id: "d8", title: "Flashcard", icon: CreditCardIcon, typeLabel: "Activity", duration: "12 min" },
+] as const
+
+function TwoLayerDemo() {
+  const [selectedUnit, setSelectedUnit] = useState<string | null>(null)
+  const [activeTaskId, setActiveTaskId] = useState("d1")
+  const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set())
+
+  const toggleCompleted = (id: string, checked: boolean) => {
+    setCompletedTasks((prev) => {
+      const next = new Set(prev)
+      if (checked) next.add(id)
+      else next.delete(id)
+      return next
+    })
+  }
+
+  // Camada 1: Lista de Units
+  if (!selectedUnit) {
+    return (
+      <SidebarCourse
+        className="h-[600px] border border-border rounded-lg overflow-hidden"
+        header={
+          <ProgressCourse
+            title="Beginner 1"
+            showBack={false}
+            infoText="No seu ritmo, você conclui em 2 meses"
+            link={{ label: "Ajustar meta", href: "#" }}
+            progressType="stage"
+            progressValue={3}
+            stages={6}
+            percentLabel="50%"
+            theme="theme-group"
+          />
+        }
+      >
+        <AccordionConclusion label="Units não concluídas (4)" defaultOpen>
+          {DEMO_UNITS.map((unit) => (
+            <UnitRow
+              key={unit.id}
+              title={unit.title}
+              completedCount={unit.completed}
+              totalCount={unit.total}
+              onClick={() => setSelectedUnit(unit.id)}
+            />
+          ))}
+        </AccordionConclusion>
+
+        <AccordionConclusion label="Units concluídas (3)">
+          {DEMO_COMPLETED_UNITS.map((unit) => (
+            <UnitRow
+              key={unit.id}
+              title={unit.title}
+              completedCount={unit.completed}
+              totalCount={unit.total}
+              onClick={() => setSelectedUnit(unit.id)}
+            />
+          ))}
+        </AccordionConclusion>
+      </SidebarCourse>
+    )
+  }
+
+  // Camada 2: Detalhe da Unit (lessons + tasks)
+  return (
+    <SidebarCourse
+      className="h-[600px] border border-border rounded-lg overflow-hidden"
+      header={
+        <ProgressCourse
+          title="Unit: Time flies..."
+          onBack={() => setSelectedUnit(null)}
+          showBack
+          infoText="No seu ritmo, você conclui em 5 dias"
+          link={{ label: "Ajustar meta", href: "#" }}
+          progressType="bar"
+          progressValue={33}
+          percentLabel="33%"
+          theme="theme-class"
+        />
+      }
+    >
+      <AccordionConclusion label="Units não concluídas (4)" defaultOpen>
+        {/* Lesson aberta com tasks */}
+        <AccordionCourse
+          title="Lesson: I'm in!"
+          completedCount={completedTasks.size}
+          totalCount={UNIT_DETAIL_TASKS.length}
+          liveLabel="Liveclass hoje"
+          defaultOpen
+        >
+          <ListTaskCourse>
+            {UNIT_DETAIL_TASKS.map((task) => (
+              <TaskCourse
+                key={task.id}
+                title={task.title}
+                icon={task.icon}
+                typeLabel={task.typeLabel}
+                duration={task.duration}
+                active={activeTaskId === task.id}
+                completed={completedTasks.has(task.id)}
+                onClick={() => setActiveTaskId(task.id)}
+                onCompletedChange={(checked) => toggleCompleted(task.id, checked)}
+              />
+            ))}
+          </ListTaskCourse>
+        </AccordionCourse>
+
+        {/* Outras lessons fechadas */}
+        <UnitRow title="On cloud nine!" completedCount={0} totalCount={5} onClick={() => {}} />
+        <UnitRow title="On cloud nine!" completedCount={0} totalCount={7} onClick={() => {}} />
+      </AccordionConclusion>
+
+      <AccordionConclusion label="Units concluídas (2)">
+        <UnitRow title="What time is it?" completedCount={7} totalCount={7} onClick={() => {}} />
+        <UnitRow title="Day after day!" completedCount={7} totalCount={7} onClick={() => {}} />
+      </AccordionConclusion>
+    </SidebarCourse>
   )
 }
 
@@ -157,22 +302,33 @@ function FullSidebarDemo() {
 function DeveloperDocs() {
   return (
     <>
-      {/* Full SidebarCourse */}
+      {/* Two-layer navigation */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold tracking-tight">SidebarCourse completo</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Navegação em 2 camadas</h2>
         <p className="text-muted-foreground">
-          Composicao completa do sidebar com todos os sub-componentes. Clique nas tasks para navegar.
+          Camada 1: lista de units com <code className="text-xs bg-muted px-1.5 py-0.5 rounded-md font-mono">UnitRow</code> (clique numa unit para navegar).
+          Camada 2: detalhe da unit com lessons (<code className="text-xs bg-muted px-1.5 py-0.5 rounded-md font-mono">AccordionCourse</code>) e tasks (<code className="text-xs bg-muted px-1.5 py-0.5 rounded-md font-mono">TaskCourse</code>).
         </p>
         <CodeBlock
           code={`import { SidebarCourse } from "@/components/composites/sidebar-course/sidebar-course"
 import { ProgressCourse } from "@/components/composites/sidebar-course/progress-course"
 import { AccordionConclusion } from "@/components/composites/sidebar-course/accordion-conclusion"
 import { AccordionCourse } from "@/components/composites/sidebar-course/accordion-course"
+import { UnitRow } from "@/components/composites/sidebar-course/unit-row"
 import { TaskCourse } from "@/components/composites/sidebar-course/task-course"
 import { ListTaskCourse } from "@/components/composites/sidebar-course/list-task-course"`}
           language="tsx"
           showLineNumbers={false}
         />
+        <TwoLayerDemo />
+      </section>
+
+      {/* Full SidebarCourse (single layer — legacy) */}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold tracking-tight">SidebarCourse (camada única)</h2>
+        <p className="text-muted-foreground">
+          Versão com accordion direto (sem navegação entre camadas). Útil para sidebars simples.
+        </p>
         <FullSidebarDemo />
       </section>
 
@@ -412,6 +568,94 @@ import { ListTaskCourse } from "@/components/composites/sidebar-course/list-task
                 <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
                 <td className="p-3 font-mono text-xs">—</td>
                 <td className="p-3 text-muted-foreground">Tema de cor (ex: &quot;theme-class&quot;)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* UnitRow */}
+      <section className="space-y-4 pt-8 border-t border-border">
+        <h2 className="text-xl font-semibold">UnitRow</h2>
+        <p className="text-muted-foreground">
+          Row de navegação para units/lessons. Ao clicar, navega para a segunda camada (detalhe da unit). Visualmente similar ao AccordionCourse, mas sem comportamento de accordion — sempre mostra a seta <code className="text-xs bg-muted px-1.5 py-0.5 rounded-md font-mono">&gt;</code>.
+        </p>
+        <CodeBlock
+          code={`import { UnitRow } from "@/components/composites/sidebar-course/unit-row"`}
+          language="tsx"
+          showLineNumbers={false}
+        />
+      </section>
+
+      {/* UnitRow variants */}
+      <section className="space-y-4">
+        <h3 className="text-base font-semibold">Variants</h3>
+        <div className="space-y-4">
+          <CodeBlock
+            code={`<UnitRow title="Lesson: I'm in!" completedCount={0} totalCount={7} onClick={() => {}} />
+<UnitRow title="Welcome to Beginner 1!" completedCount={7} totalCount={7} onClick={() => {}} />
+<UnitRow title="Lesson: I'm in!" completedCount={1} totalCount={7} liveLabel="Liveclass hoje" onClick={() => {}} />`}
+            language="tsx"
+          />
+          <ComponentPreview code="">
+            <div className="w-full max-w-[354px] rounded-lg border border-border overflow-hidden">
+              <UnitRow title="Lesson: I'm in!" completedCount={0} totalCount={7} onClick={() => {}} />
+              <UnitRow title="Welcome to Beginner 1!" completedCount={7} totalCount={7} onClick={() => {}} />
+              <UnitRow title="Lesson: I'm in!" completedCount={1} totalCount={7} liveLabel="Liveclass hoje" onClick={() => {}} />
+            </div>
+          </ComponentPreview>
+        </div>
+      </section>
+
+      {/* API Reference UnitRow */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold">API Reference — UnitRow</h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="text-left p-3 font-medium">Prop</th>
+                <th className="text-left p-3 font-medium">Tipo</th>
+                <th className="text-left p-3 font-medium">Default</th>
+                <th className="text-left p-3 font-medium">Descricao</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">title</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">—</td>
+                <td className="p-3">Titulo da unit ou lesson</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">completedCount</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">number</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">—</td>
+                <td className="p-3">Progresso atual (ex: 1)</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">totalCount</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">number</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">—</td>
+                <td className="p-3">Total de items (ex: 7)</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">liveLabel</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">undefined</td>
+                <td className="p-3">Texto da tag live. Omitir para esconder.</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">onClick</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">{"() => void"}</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">undefined</td>
+                <td className="p-3">Callback ao clicar na row (navega para detalhe)</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">className</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">undefined</td>
+                <td className="p-3">Classes adicionais</td>
               </tr>
             </tbody>
           </table>

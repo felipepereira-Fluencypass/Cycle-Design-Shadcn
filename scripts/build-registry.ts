@@ -52,7 +52,7 @@ function main() {
     )
 
     // Gerar JSON do item individual
-    const itemJson = {
+    const itemJson: Record<string, unknown> = {
       $schema: "https://ui.shadcn.com/schema/registry-item.json",
       name: item.name,
       type: item.type,
@@ -61,6 +61,10 @@ function main() {
       dependencies: item.dependencies || [],
       registryDependencies: item.registryDependencies || [],
       files,
+    }
+
+    if (item.meta) {
+      itemJson.meta = item.meta
     }
 
     fs.writeFileSync(outputFile, JSON.stringify(itemJson, null, 2))

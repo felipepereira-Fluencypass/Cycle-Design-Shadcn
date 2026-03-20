@@ -21,5 +21,9 @@
       "content": "/**\n * Cycle Design — Icon Size Map\n *\n * Fonte da verdade para componentes React.\n * Derivado de: figma/Icons size/icon-{size}.json\n *\n * REGRA: strokeWidth nunca é prop — é sempre derivado de size.\n * Isso garante consistência visual em todos os ícones.\n */\nexport const ICON_SIZES = {\n  '2xs': { size: 12, stroke: 1 },\n  xs: { size: 16, stroke: 1.2 },\n  sm: { size: 24, stroke: 1.5 },\n  md: { size: 32, stroke: 1.8 },\n  lg: { size: 40, stroke: 2.1 },\n  xl: { size: 48, stroke: 2.4 },\n} as const satisfies Record<string, { size: number; stroke: number }>\n\nexport type IconSize = keyof typeof ICON_SIZES\n",
       "target": "components/icons/sizes.ts"
     }
-  ]
+  ],
+  "meta": {
+    "version": "1.0.0",
+    "updatedAt": "2026-03-17"
+  }
 }

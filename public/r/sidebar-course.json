@@ -53,5 +53,9 @@
       "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface ListTaskCourseProps {\n  children: React.ReactNode\n  className?: string\n}\n\nfunction ListTaskCourse({ children, className }: ListTaskCourseProps) {\n  return (\n    <div data-slot=\"list-task-course\" className={cn(\"flex flex-col\", className)}>\n      {children}\n    </div>\n  )\n}\n\nexport { ListTaskCourse }\n",
       "target": "components/composites/sidebar-course/list-task-course.tsx"
     }
-  ]
+  ],
+  "meta": {
+    "version": "1.0.0",
+    "updatedAt": "2026-03-18"
+  }
 }

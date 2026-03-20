@@ -16,5 +16,9 @@
       "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Progress as ProgressPrimitive } from \"radix-ui\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* ─── Track variants ─── */\n\nconst progressVariants = cva(\n  \"relative w-full overflow-hidden rounded-full bg-neutral-accent\",\n  {\n    variants: {\n      size: {\n        xs: \"h-1\",\n        sm: \"h-1.5\",\n        default: \"h-2\",\n        lg: \"h-3\",\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n    },\n  }\n)\n\n/* ─── Indicator variants ─── */\n\nconst indicatorVariants = cva(\n  \"h-full w-full flex-1 rounded-full transition-all\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-primary\",\n        secondary: \"bg-secondary\",\n        destructive: \"bg-destructive\",\n        muted: \"bg-muted-foreground\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  }\n)\n\nexport interface ProgressProps\n  extends Omit<React.ComponentProps<typeof ProgressPrimitive.Root>, \"children\">,\n    VariantProps<typeof progressVariants>,\n    VariantProps<typeof indicatorVariants> {\n  /** Classe de tema aplicada apenas no indicator (ex: \"theme-class\") */\n  theme?: string\n}\n\nfunction Progress({\n  className,\n  value,\n  size,\n  variant,\n  theme,\n  ...props\n}: ProgressProps) {\n  return (\n    <ProgressPrimitive.Root\n      data-slot=\"progress\"\n      className={cn(progressVariants({ size }), className)}\n      {...props}\n    >\n      <ProgressPrimitive.Indicator\n        data-slot=\"progress-indicator\"\n        className={cn(theme, indicatorVariants({ variant }))}\n        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}\n      />\n    </ProgressPrimitive.Root>\n  )\n}\n\nexport { Progress, progressVariants, indicatorVariants }\n",
       "target": "components/ui/progress.tsx"
     }
-  ]
+  ],
+  "meta": {
+    "version": "1.0.0",
+    "updatedAt": "2026-03-17"
+  }
 }

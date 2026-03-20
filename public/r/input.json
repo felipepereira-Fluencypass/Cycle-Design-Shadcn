@@ -13,5 +13,9 @@
       "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface InputProps extends React.ComponentProps<\"input\"> {\n  inputSize?: \"sm\" | \"default\" | \"lg\"\n}\n\nfunction Input({ className, type, inputSize = \"default\", ...props }: InputProps) {\n  return (\n    <input\n      type={type}\n      data-slot=\"input\"\n      data-size={inputSize}\n      className={cn(\n        \"w-full min-w-0 rounded-lg border border-neutral-border bg-transparent text-neutral-foreground shadow-xs transition-[color,border-color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:border-0 file:bg-transparent file:font-medium file:text-neutral-foreground placeholder:text-neutral-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-input dark:bg-input/30 dark:shadow-none\",\n        \"hover:border-ring hover:bg-ring/5\",\n        \"focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:bg-ring/5\",\n        \"aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-invalid:hover:border-destructive dark:aria-invalid:ring-destructive/40\",\n        inputSize === \"sm\" && \"h-8 px-3 py-2 text-sm\",\n        inputSize === \"default\" && \"h-10 px-4 py-2 text-sm\",\n        inputSize === \"lg\" && \"h-12 px-4 py-3 text-base\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Input }\n",
       "target": "components/ui/input.tsx"
     }
-  ]
+  ],
+  "meta": {
+    "version": "1.0.0",
+    "updatedAt": "2026-03-17"
+  }
 }
