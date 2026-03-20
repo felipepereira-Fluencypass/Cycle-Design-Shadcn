@@ -1,3 +1,15 @@
+import { Home } from "lucide-react"
+import { CycleIcon } from "@/components/icons"
+
+const iconSizes = [
+  { token: "2xs", size: 12, stroke: 1.0 },
+  { token: "xs", size: 16, stroke: 1.2 },
+  { token: "sm", size: 24, stroke: 1.5 },
+  { token: "md", size: 32, stroke: 1.8 },
+  { token: "lg", size: 40, stroke: 2.1 },
+  { token: "xl", size: 48, stroke: 2.4 },
+] as const
+
 const sidebarItems = [
   { id: "cores", label: "Cores Semanticas" },
   { id: "variacoes", label: "Variacoes de Cor" },
@@ -6,6 +18,7 @@ const sidebarItems = [
   { id: "radius", label: "Border Radius" },
   { id: "shadows", label: "Shadows" },
   { id: "spacing", label: "Spacing" },
+  { id: "icons", label: "Icon Sizes" },
   { id: "tipografia", label: "Tipografia" },
   { id: "estilos", label: "Estilos Tipograficos" },
 ];
@@ -333,6 +346,61 @@ export default function TokensPage() {
                 <span className="text-xs text-muted-foreground">{size * 4}px</span>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ====== ICON SIZES ====== */}
+        <section id="icons" className="space-y-4 scroll-mt-8">
+          <h2 className="text-xl font-semibold">Icon Sizes</h2>
+          <p className="text-sm text-muted-foreground">
+            Tokens de tamanho e espessura de traço para ícones. Definidos em{" "}
+            <code className="bg-muted px-1.5 py-0.5 rounded text-foreground">ICON_SIZES</code>{" "}
+            e aplicados automaticamente pelo{" "}
+            <code className="bg-muted px-1.5 py-0.5 rounded text-foreground">CycleIcon</code>.
+            O strokeWidth é sempre derivado do size — nunca configurado manualmente.
+          </p>
+
+          <div className="overflow-x-auto rounded-lg border border-border">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border bg-muted/50">
+                  <th className="text-left p-3 font-medium">Token</th>
+                  <th className="text-left p-3 font-medium">Size (px)</th>
+                  <th className="text-left p-3 font-medium">Stroke Width</th>
+                  <th className="text-left p-3 font-medium">Preview</th>
+                </tr>
+              </thead>
+              <tbody>
+                {iconSizes.map((icon) => (
+                  <tr key={icon.token} className="border-b border-border last:border-0">
+                    <td className="p-3 font-mono text-xs font-medium">{icon.token}</td>
+                    <td className="p-3 font-mono text-xs text-muted-foreground">{icon.size}</td>
+                    <td className="p-3 font-mono text-xs text-muted-foreground">{icon.stroke}</td>
+                    <td className="p-3">
+                      <CycleIcon icon={Home} size={icon.token} decorative />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="rounded-lg border border-border p-4 space-y-2">
+            <p className="text-sm text-muted-foreground flex gap-2">
+              <span className="text-foreground shrink-0">•</span>
+              <strong>Nunca</strong> renderize ícones Lucide diretamente. Sempre use{" "}
+              <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono">CycleIcon</code>.
+            </p>
+            <p className="text-sm text-muted-foreground flex gap-2">
+              <span className="text-foreground shrink-0">•</span>
+              O strokeWidth é compensado automaticamente para o viewBox 24x24 do Lucide,
+              garantindo que o valor renderizado em pixels corresponda ao token.
+            </p>
+            <p className="text-sm text-muted-foreground flex gap-2">
+              <span className="text-foreground shrink-0">•</span>
+              Fonte da verdade:{" "}
+              <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono">src/components/icons/sizes.ts</code>
+            </p>
           </div>
         </section>
 

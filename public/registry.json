@@ -30,8 +30,8 @@
       "name": "input",
       "type": "registry:ui",
       "title": "Input",
-      "description": "Campo de entrada com 3 tamanhos, estados de erro, e suporte a temas de cor (.theme-*).",
-      "meta": { "version": "1.0.0", "updatedAt": "2026-03-17" },
+      "description": "Campo de entrada com 2 variantes (outline, filled), 3 tamanhos, estados de erro, e suporte a temas de cor (.theme-*).",
+      "meta": { "version": "1.1.0", "updatedAt": "2026-03-20" },
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -83,8 +83,8 @@
       "name": "video-player",
       "type": "registry:ui",
       "title": "Video Player",
-      "description": "Player de video com controles customizados. Suporta MP4, WebM e HLS.",
-      "meta": { "version": "1.0.0", "updatedAt": "2026-03-19" },
+      "description": "Player de video com controles customizados. Suporta MP4, WebM e HLS. Chapters, buffering spinner, screen reader announcer, tooltips e live indicator.",
+      "meta": { "version": "1.2.0", "updatedAt": "2026-03-20" },
       "dependencies": [
         "@vidstack/react"
       ],
@@ -141,7 +141,7 @@
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
-      "description": "Badge com 8 variantes, 3 tamanhos e suporte a temas de cor (.theme-*).",
+      "description": "Badge com 10 variantes, 3 tamanhos e suporte a temas de cor (.theme-*).",
       "meta": { "version": "1.0.0", "updatedAt": "2026-03-17" },
       "dependencies": [
         "class-variance-authority",
@@ -250,28 +250,6 @@
       ]
     },
     {
-      "name": "header-class",
-      "type": "registry:ui",
-      "title": "Header Class",
-      "description": "Header do produto Class. Responsivo com bottom sheet no mobile. Depende de componentes internos: CycleIcon, ClassLogo, ThemeToggle.",
-      "meta": { "version": "1.0.0", "updatedAt": "2026-03-18" },
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://cycle-design.vercel.app/r/cycle-icon.json",
-        "https://cycle-design.vercel.app/r/button.json",
-        "https://cycle-design.vercel.app/r/sheet.json"
-      ],
-      "files": [
-        {
-          "path": "registry/header-class.tsx",
-          "type": "registry:ui",
-          "target": "components/composites/header-class.tsx"
-        }
-      ]
-    },
-    {
       "name": "cycle-icon",
       "type": "registry:lib",
       "title": "CycleIcon",
@@ -337,7 +315,7 @@
       "type": "registry:ui",
       "title": "Audio Player",
       "description": "Player de audio com controles customizados. 2 variantes (default, card). Suporta MP3, OGG e HLS.",
-      "meta": { "version": "1.0.0", "updatedAt": "2026-03-19" },
+      "meta": { "version": "1.0.1", "updatedAt": "2026-03-20" },
       "dependencies": [
         "@vidstack/react"
       ],
@@ -353,88 +331,161 @@
       ]
     },
     {
-      "name": "content-course",
+      "name": "live-waiting",
       "type": "registry:ui",
-      "title": "Content Course",
-      "description": "Templates de conteudo para atividades do Class. Inclui ContentCourse (wrapper base), ContentVideo (video template) e ReportButton (botao flutuante de report).",
-      "meta": { "version": "1.0.0", "updatedAt": "2026-03-19" },
+      "title": "Live Waiting",
+      "description": "Tela de espera para lives com countdown em tempo real, badge, info do professor e topico. Reutilizavel em qualquer contexto de live/evento.",
+      "meta": { "version": "1.0.0", "updatedAt": "2026-03-20" },
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://cycle-design.vercel.app/r/cycle-icon.json",
+        "https://cycle-design.vercel.app/r/avatar.json",
+        "https://cycle-design.vercel.app/r/badge.json"
+      ],
+      "files": [
+        {
+          "path": "registry/live-waiting.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/live-waiting.tsx"
+        }
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "Avatar com imagem, fallback de iniciais, badge de status e group para empilhar. 3 sizes (sm=24px, default=32px, lg=40px).",
+      "meta": { "version": "1.0.0", "updatedAt": "2026-03-20" },
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/avatar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/avatar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chat-bubble",
+      "type": "registry:ui",
+      "title": "Chat Bubble",
+      "description": "Bolha de mensagem de chat. 3 variantes: default (aluno), instructor (professor com destaque primary), system (mensagem de sistema). Usa Avatar para imagem/fallback.",
+      "meta": { "version": "1.0.0", "updatedAt": "2026-03-20" },
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://cycle-design.vercel.app/r/avatar.json"
+      ],
+      "files": [
+        {
+          "path": "registry/chat-bubble.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/chat-bubble.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chat-panel",
+      "type": "registry:ui",
+      "title": "Chat Panel",
+      "description": "Painel de chat completo com lista de mensagens (ChatBubble), scroll automatico, e campo de input para envio. Usado no LiveContent.",
+      "meta": { "version": "1.0.0", "updatedAt": "2026-03-20" },
       "dependencies": [
         "lucide-react"
       ],
       "registryDependencies": [
         "https://cycle-design.vercel.app/r/cycle-icon.json",
         "https://cycle-design.vercel.app/r/button.json",
-        "https://cycle-design.vercel.app/r/file-card.json",
-        "https://cycle-design.vercel.app/r/sheet.json",
-        "https://cycle-design.vercel.app/r/radio-group.json",
-        "https://cycle-design.vercel.app/r/video-player.json"
+        "https://cycle-design.vercel.app/r/scroll-area.json",
+        "https://cycle-design.vercel.app/r/chat-bubble.json"
       ],
       "files": [
         {
-          "path": "registry/content-course/content-course.tsx",
+          "path": "registry/chat-panel.tsx",
           "type": "registry:ui",
-          "target": "components/composites/content-course/content-course.tsx"
-        },
-        {
-          "path": "registry/content-course/content-video.tsx",
-          "type": "registry:ui",
-          "target": "components/composites/content-course/content-video.tsx"
-        },
-        {
-          "path": "registry/content-course/report-button.tsx",
-          "type": "registry:ui",
-          "target": "components/composites/content-course/report-button.tsx"
+          "target": "components/ui/chat-panel.tsx"
         }
       ]
     },
     {
-      "name": "sidebar-course",
+      "name": "toggle",
       "type": "registry:ui",
-      "title": "Sidebar Course",
-      "description": "Navegacao lateral do produto Class. Inclui SidebarCourse (container com scroll), ProgressCourse, AccordionConclusion, AccordionCourse, TaskCourse e ListTaskCourse.",
-      "meta": { "version": "1.0.0", "updatedAt": "2026-03-18" },
+      "title": "Toggle",
+      "description": "Botao toggle com 2 variantes (default, outline), 8 sizes. Prop fillOnPress para preencher icones no estado on.",
+      "meta": { "version": "1.2.0", "updatedAt": "2026-03-20" },
       "dependencies": [
-        "radix-ui",
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/toggle.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/toggle.tsx"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "Rotulo acessivel para campos de formulario. Baseado no Radix UI Label.",
+      "meta": { "version": "1.0.0", "updatedAt": "2026-03-20" },
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/label.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/label.tsx"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Campo de texto multi-linha com 2 variantes (outline, filled), 3 tamanhos (sm, default, lg), estados de erro e suporte a temas de cor (.theme-*).",
+      "meta": { "version": "1.1.0", "updatedAt": "2026-03-20" },
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/textarea.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/textarea.tsx"
+        }
+      ]
+    },
+    {
+      "name": "like-dislike",
+      "type": "registry:ui",
+      "title": "Like Dislike",
+      "description": "Botoes de like/dislike mutuamente exclusivos com animacao de bounce no like. Feedback opcional no dislike via textarea inline. 4 sizes, suporte a temas de cor (.theme-*).",
+      "meta": { "version": "1.0.0", "updatedAt": "2026-03-20" },
+      "dependencies": [
+        "class-variance-authority",
         "lucide-react"
       ],
       "registryDependencies": [
         "https://cycle-design.vercel.app/r/cycle-icon.json",
-        "https://cycle-design.vercel.app/r/badge.json",
-        "https://cycle-design.vercel.app/r/checkbox.json",
-        "https://cycle-design.vercel.app/r/progress.json",
-        "https://cycle-design.vercel.app/r/progress-stage.json",
-        "https://cycle-design.vercel.app/r/scroll-area.json"
+        "https://cycle-design.vercel.app/r/button.json",
+        "https://cycle-design.vercel.app/r/textarea.json"
       ],
       "files": [
         {
-          "path": "registry/sidebar-course/sidebar-course.tsx",
+          "path": "registry/like-dislike.tsx",
           "type": "registry:ui",
-          "target": "components/composites/sidebar-course/sidebar-course.tsx"
-        },
-        {
-          "path": "registry/sidebar-course/progress-course.tsx",
-          "type": "registry:ui",
-          "target": "components/composites/sidebar-course/progress-course.tsx"
-        },
-        {
-          "path": "registry/sidebar-course/accordion-conclusion.tsx",
-          "type": "registry:ui",
-          "target": "components/composites/sidebar-course/accordion-conclusion.tsx"
-        },
-        {
-          "path": "registry/sidebar-course/accordion-course.tsx",
-          "type": "registry:ui",
-          "target": "components/composites/sidebar-course/accordion-course.tsx"
-        },
-        {
-          "path": "registry/sidebar-course/task-course.tsx",
-          "type": "registry:ui",
-          "target": "components/composites/sidebar-course/task-course.tsx"
-        },
-        {
-          "path": "registry/sidebar-course/list-task-course.tsx",
-          "type": "registry:ui",
-          "target": "components/composites/sidebar-course/list-task-course.tsx"
+          "target": "components/ui/like-dislike.tsx"
         }
       ]
     }

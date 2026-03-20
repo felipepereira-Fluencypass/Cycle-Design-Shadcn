@@ -52,6 +52,13 @@ export const CycleIcon = forwardRef<SVGSVGElement, CycleIconProps>(
 
     const { size: px, stroke } = ICON_SIZES[size]
 
+    // Lucide usa viewBox="0 0 24 24" fixo. Quando renderizado em tamanho
+    // diferente de 24px, o stroke-width e escalado proporcionalmente.
+    // Compensamos dividindo pelo fator de escala para que o stroke
+    // renderizado em pixels corresponda ao valor definido em ICON_SIZES.
+    const VIEWBOX = 24
+    const adjustedStroke = stroke * (VIEWBOX / px)
+
     const ariaProps = decorative
       ? { 'aria-hidden': true as const, focusable: 'false' as const }
       : { role: 'img' as const }
@@ -61,8 +68,9 @@ export const CycleIcon = forwardRef<SVGSVGElement, CycleIconProps>(
         ref={ref}
         width={px}
         height={px}
-        strokeWidth={stroke}
+        strokeWidth={adjustedStroke}
         className={className}
+        style={{ width: px, height: px }}
         {...ariaProps}
         {...rest}
       />

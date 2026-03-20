@@ -232,6 +232,7 @@ export function AudioPlayer({
         loop={loop}
         viewType="audio"
         data-filled={filled ? "" : undefined}
+        style={filled ? { '--primary-foreground': 'var(--secondary-foreground)' } as Record<string, string> : undefined}
         className={cn(
           "group/root group !block w-full rounded-xl border border-border bg-card p-4 shadow-sm md:p-6",
           className
@@ -309,6 +310,7 @@ export function AudioPlayer({
       loop={loop}
       viewType="audio"
       data-filled={filled ? "" : undefined}
+      style={filled ? { '--primary-foreground': 'var(--secondary-foreground)' } as Record<string, string> : undefined}
       className={cn(
         "group/root group !flex w-full items-center gap-1.5 rounded-xl border border-border bg-card px-2 py-1.5 shadow-sm",
         className

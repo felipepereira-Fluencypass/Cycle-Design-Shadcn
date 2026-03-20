@@ -108,6 +108,43 @@ export function InputTypes() {
         </ComponentPreview>
       </section>
 
+      {/* Variantes */}
+      <section className="space-y-4">
+        <h3 className="text-xl font-semibold">Variantes</h3>
+        <p className="text-muted-foreground">
+          Use a prop <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">variant</code> para alternar entre outline e filled.
+        </p>
+        <ComponentPreview
+          code={`<div className="flex flex-col gap-4 max-w-sm">
+  <Input variant="outline" placeholder="Outline (padrao)" />
+  <Input variant="filled" placeholder="Filled" />
+</div>`}
+        >
+          <div className="flex flex-col gap-4 max-w-sm">
+            <Input variant="outline" placeholder="Outline (padrao)" />
+            <Input variant="filled" placeholder="Filled" />
+          </div>
+        </ComponentPreview>
+      </section>
+
+      {/* Filled + sizes */}
+      <section className="space-y-4">
+        <h3 className="text-xl font-semibold">Filled com Tamanhos</h3>
+        <ComponentPreview
+          code={`<div className="flex flex-col gap-4 max-w-sm">
+  <Input variant="filled" inputSize="sm" placeholder="Small filled" />
+  <Input variant="filled" inputSize="default" placeholder="Default filled" />
+  <Input variant="filled" inputSize="lg" placeholder="Large filled" />
+</div>`}
+        >
+          <div className="flex flex-col gap-4 max-w-sm">
+            <Input variant="filled" inputSize="sm" placeholder="Small filled" />
+            <Input variant="filled" inputSize="default" placeholder="Default filled" />
+            <Input variant="filled" inputSize="lg" placeholder="Large filled" />
+          </div>
+        </ComponentPreview>
+      </section>
+
       {/* File */}
       <section className="space-y-4">
         <h3 className="text-xl font-semibold">File</h3>
@@ -279,6 +316,61 @@ export function InputThemes() {
         </ComponentPreview>
       </section>
 
+      {/* Filled + Themes */}
+      <section className="space-y-4">
+        <h3 className="text-xl font-semibold">Filled com Temas</h3>
+        <p className="text-muted-foreground">
+          O <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">filled</code> segue as mesmas regras: idle neutro, cor do tema aparece no hover/focus.
+        </p>
+        <ComponentPreview
+          code={`<div className="flex flex-col gap-6 max-w-sm">
+  <div>
+    <span className="text-xs font-mono text-muted-foreground">neutral filled</span>
+    <Input variant="filled" placeholder="Focus para ver o ring" />
+  </div>
+  <div className="theme-brand">
+    <span className="text-xs font-mono text-muted-foreground">.theme-brand filled</span>
+    <Input variant="filled" placeholder="Focus para ver o ring" />
+  </div>
+  <div className="theme-class">
+    <span className="text-xs font-mono text-muted-foreground">.theme-class filled</span>
+    <Input variant="filled" placeholder="Focus para ver o ring" />
+  </div>
+  <div className="theme-positive">
+    <span className="text-xs font-mono text-muted-foreground">.theme-positive filled</span>
+    <Input variant="filled" placeholder="Focus para ver o ring" />
+  </div>
+  <div className="theme-brand">
+    <span className="text-xs font-mono text-muted-foreground">.theme-brand filled + error</span>
+    <Input variant="filled" aria-invalid placeholder="Erro — sempre destructive" />
+  </div>
+</div>`}
+        >
+          <div className="flex flex-col gap-6 max-w-sm">
+            <div>
+              <span className="text-xs font-mono text-muted-foreground">neutral filled</span>
+              <Input variant="filled" placeholder="Focus para ver o ring" />
+            </div>
+            <div className="theme-brand">
+              <span className="text-xs font-mono text-muted-foreground">.theme-brand filled</span>
+              <Input variant="filled" placeholder="Focus para ver o ring" />
+            </div>
+            <div className="theme-class">
+              <span className="text-xs font-mono text-muted-foreground">.theme-class filled</span>
+              <Input variant="filled" placeholder="Focus para ver o ring" />
+            </div>
+            <div className="theme-positive">
+              <span className="text-xs font-mono text-muted-foreground">.theme-positive filled</span>
+              <Input variant="filled" placeholder="Focus para ver o ring" />
+            </div>
+            <div className="theme-brand">
+              <span className="text-xs font-mono text-muted-foreground">.theme-brand filled + error</span>
+              <Input variant="filled" aria-invalid placeholder="Erro — sempre destructive" />
+            </div>
+          </div>
+        </ComponentPreview>
+      </section>
+
       {/* API Reference */}
       <section className="space-y-4">
         <h2 className="text-xl font-semibold">API Reference</h2>
@@ -293,6 +385,12 @@ export function InputThemes() {
               </tr>
             </thead>
             <tbody>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">variant</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">&quot;outline&quot; | &quot;filled&quot;</td>
+                <td className="p-3 font-mono text-xs">&quot;outline&quot;</td>
+                <td className="p-3 text-muted-foreground">Outline (borda) ou filled (fundo preenchido)</td>
+              </tr>
               <tr className="border-b border-border">
                 <td className="p-3 font-mono text-xs">inputSize</td>
                 <td className="p-3 font-mono text-xs text-muted-foreground">&quot;sm&quot; | &quot;default&quot; | &quot;lg&quot;</td>

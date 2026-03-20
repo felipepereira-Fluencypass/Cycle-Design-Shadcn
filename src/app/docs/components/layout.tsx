@@ -9,11 +9,16 @@ const sidebarItems = [
   { type: "separator" as const, label: "Primitives" },
   { label: "Accordion", href: "/docs/components/accordion" },
   { label: "Audio Player", href: "/docs/components/audio-player" },
+  { label: "Avatar", href: "/docs/components/avatar" },
   { label: "Badge", href: "/docs/components/badge" },
   { label: "Button", href: "/docs/components/button" },
+  { label: "Chat", href: "/docs/components/chat" },
   { label: "Checkbox", href: "/docs/components/checkbox" },
+  { label: "Cycle Icon", href: "/docs/components/cycle-icon" },
   { label: "File Card", href: "/docs/components/file-card" },
   { label: "Input", href: "/docs/components/input" },
+  { label: "Label", href: "/docs/components/label" },
+  { label: "Like Dislike", href: "/docs/components/like-dislike" },
   { label: "Progress", href: "/docs/components/progress" },
   { label: "Radio Group", href: "/docs/components/radio-group" },
   { label: "Progress Stage", href: "/docs/components/progress-stage" },
@@ -22,11 +27,9 @@ const sidebarItems = [
   { label: "Slider", href: "/docs/components/slider" },
   { label: "Switch", href: "/docs/components/switch" },
   { label: "Tabs", href: "/docs/components/tabs" },
+  { label: "Textarea", href: "/docs/components/textarea" },
+  { label: "Toggle", href: "/docs/components/toggle" },
   { label: "Video Player", href: "/docs/components/video-player" },
-  { type: "separator" as const, label: "Composites" },
-  { label: "Content Course", href: "/docs/components/content-course" },
-  { label: "Headers", href: "/docs/components/headers" },
-  { label: "Sidebar Course", href: "/docs/components/sidebar-course" },
   { type: "separator" as const, label: "Brand" },
   { label: "Logos", href: "/docs/components/logos" },
 ]
@@ -42,7 +45,7 @@ export default function ComponentsLayout({
     <div className="flex gap-6 md:gap-10">
       {/* Sidebar — desktop only (mobile uses Sheet in header) */}
       <aside className="hidden md:block w-52 shrink-0">
-        <nav className="sticky top-24 space-y-1">
+        <nav className="sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto space-y-1 pb-8">
           {sidebarItems.map((item, i) => {
             if ("type" in item && item.type === "separator") {
               return (

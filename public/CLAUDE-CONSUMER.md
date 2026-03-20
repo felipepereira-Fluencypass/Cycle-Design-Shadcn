@@ -53,7 +53,7 @@ npx shadcn@latest add https://cycle-design.vercel.app/r/[nome].json
 |------|----------------------|
 | header-class | `npx shadcn@latest add https://cycle-design.vercel.app/r/header-class.json` |
 | sidebar-course | `npx shadcn@latest add https://cycle-design.vercel.app/r/sidebar-course.json` |
-| content-course | `npx shadcn@latest add https://cycle-design.vercel.app/r/content-course.json` |
+| course-content | `npx shadcn@latest add https://cycle-design.vercel.app/r/course-content.json` |
 
 ### Templates de pagina e conteudo (IMPORTANTE)
 
@@ -63,12 +63,12 @@ Os composites acima incluem **templates completos de areas da pagina**. Antes de
 |------------------------|---------------------|
 | Header com logo, menu e navegacao do Class | `header-class` |
 | Sidebar lateral com lista de unidades, modulos e atividades | `sidebar-course` |
-| Area central de conteudo com video, titulo, botao concluir, descricao e arquivos | `content-course` (ContentVideo) |
-| Area central de conteudo com audio | `content-course` (ContentAudio — proximo) |
-| Area central com qualquer tipo de atividade (quiz, texto, flashcard) | `content-course` (ContentCourse wrapper + children) |
-| Botao flutuante de reportar problema | Ja incluso no `content-course` (ReportButton) |
+| Area central de conteudo com video, titulo, botao concluir, descricao e arquivos | `course-content` (VideoContent) |
+| Area central de conteudo com audio | `course-content` (AudioContent — proximo) |
+| Area central com qualquer tipo de atividade (quiz, texto, flashcard) | `course-content` (CourseContent wrapper + children) |
+| Botao flutuante de reportar problema | Ja incluso no `course-content` (ReportButton) |
 
-**Exemplo**: se a IA receber um screenshot de uma pagina de curso com sidebar, header e video no centro, ela deve instalar `header-class`, `sidebar-course` e `content-course` — NAO criar esses componentes manualmente.
+**Exemplo**: se a IA receber um screenshot de uma pagina de curso com sidebar, header e video no centro, ela deve instalar `header-class`, `sidebar-course` e `course-content` — NAO criar esses componentes manualmente.
 
 ---
 
@@ -114,7 +114,7 @@ Analisei o design. Vou usar os seguintes componentes do Cycle Design System:
 Do registry (ja prontos):
 - header-class → Header com logo e navegacao
 - sidebar-course → Sidebar com unidades e atividades
-- content-course (ContentVideo) → Area de conteudo com video player
+- course-content (VideoContent) → Area de conteudo com video player
 - button → Botoes de acao
 - badge → Tags de status
 
@@ -144,12 +144,12 @@ Antes de colar um screenshot ou descrever uma tela, adicione contexto para a IA:
 
 **Ao ver a IA criando um componente que parece existir:**
 > "Antes de criar esse componente, verifique se nao tem algo parecido no registry.
-> Confira os composites tambem — templates como content-course, sidebar-course e
+> Confira os composites tambem — templates como course-content, sidebar-course e
 > header-class cobrem areas inteiras da pagina, nao so componentes pequenos."
 
 **Ao pedir uma variacao de algo existente:**
-> "Quero uma pagina de conteudo com audio em vez de video. Verifique se o content-course
-> ja suporta isso (ContentCourse wrapper aceita children). Se sim, use o template existente
+> "Quero uma pagina de conteudo com audio em vez de video. Verifique se o course-content
+> ja suporta isso (CourseContent wrapper aceita children). Se sim, use o template existente
 > em vez de criar um novo."
 
 **Ao revisar o codigo gerado:**
@@ -171,8 +171,8 @@ Antes de aceitar o codigo da IA, pergunte:
 
 | O dev pede... | O que a IA faz errado | O que deveria fazer |
 |---------------|----------------------|---------------------|
-| "Cria a pagina do curso" | Cria header, sidebar e player do zero | Instalar `header-class` + `sidebar-course` + `content-course` |
+| "Cria a pagina do curso" | Cria header, sidebar e player do zero | Instalar `header-class` + `sidebar-course` + `course-content` |
 | "Adiciona um player de video" | Cria um `<video>` com controles HTML | Instalar `video-player` do registry |
 | "Faz um botao de download" | Cria um botao custom com icone | Instalar `file-card` do registry |
 | "Coloca uma barra de progresso" | Cria um `<div>` com width dinamico | Instalar `progress` ou `progress-stage` |
-| "Monta a area de conteudo da aula" | Cria layout custom com titulo, botao, descricao | Instalar `content-course` e usar ContentVideo ou ContentCourse wrapper |
+| "Monta a area de conteudo da aula" | Cria layout custom com titulo, botao, descricao | Instalar `course-content` e usar VideoContent ou CourseContent wrapper |

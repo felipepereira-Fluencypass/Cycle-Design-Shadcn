@@ -146,11 +146,11 @@ npm run lint     # ESLint
 | Componente | Versão | Arquivo | Observações |
 |------------|--------|---------|-------------|
 | Button | 1.0.0 | `button.tsx` | 6 variants, 8 sizes (xs=24px, sm=32px, md=40px, lg=48px + icon-*). Ícones com strokeWidth automático via CSS. Suporta `.theme-*`. |
-| Input | 1.0.0 | `input.tsx` | 3 sizes (sm=32px, default=40px, lg=48px). Estados: default, focused, disabled, error (aria-invalid). |
+| Input | 1.1.0 | `input.tsx` | 2 variantes (outline, filled), 3 sizes (sm=32px, default=40px, lg=48px). Estados: default, focused, disabled, error (aria-invalid). Idle neutro (light e dark), tema só no hover/focus. |
 | Sheet | 1.0.0 | `sheet.tsx` | Overlay lateral/bottom. Sides: top, right, bottom, left. Usado no HeaderClass mobile. |
 | Tabs | 1.0.0 | `tabs.tsx` | 2 variants (default, line), orientação horizontal e vertical. |
-| Audio Player | 1.0.0 | `audio-player.tsx` | Player de audio com controles customizados (Vidstack). 2 variantes (default, card). Suporta MP3, OGG, HLS. Icones via CycleIcon. showSpeed=true por padrao (EdTech). |
-| Video Player | 1.0.0 | `video-player.tsx` | Player com controles customizados (Vidstack). Suporta MP4, WebM, HLS. Icones via CycleIcon. |
+| Audio Player | 1.0.1 | `audio-player.tsx` | Player de audio com controles customizados (Vidstack). 2 variantes (default, card). Suporta MP3, OGG, HLS. Icones via CycleIcon. showSpeed=true por padrao (EdTech). |
+| Video Player | 1.2.0 | `video-player.tsx` | Player com controles customizados (Vidstack). Suporta MP4, WebM, HLS. Icones via CycleIcon. Props opcionais: chapters (VTT), showBuffering (spinner), announcer (screen reader). Tooltips em todos os botoes desktop. Live indicator automatico para streams ao vivo. |
 | Accordion | 1.0.0 | `accordion.tsx` | Secoes colapsaveis com animacao. Suporta single e multiple. |
 | Badge | 1.0.0 | `badge.tsx` | 10 variants (default, secondary, destructive, outline, ghost, link, muted, success, progress, progress-completed), 3 sizes (sm, default, lg). Suporta `.theme-*`. |
 | File Card | 1.0.0 | `file-card.tsx` | Botao de download com icone, titulo, tipo e tamanho. 3 sizes (sm, md, lg). Props: icon, showDescription, showFileSize. |
@@ -161,8 +161,16 @@ npm run lint     # ESLint
 | Scroll Area | 1.0.0 | `scroll-area.tsx` | Area de scroll customizada com scrollbar estilizado. Vertical e horizontal. |
 | Slider | 1.0.0 | `slider.tsx` | 3 sizes (sm, default, lg), suporte a range (2 thumbs). Track preenchido `bg-primary`, track vazio `bg-accent`, thumb `bg-primary-foreground` com `border-primary`. Suporta `.theme-*`. |
 | Switch | 1.0.0 | `switch.tsx` | Toggle on/off. 3 sizes (sm, default, lg). Prop `theme` aplica cor apenas no estado checked. |
+| Toggle | 1.2.0 | `toggle.tsx` | Botão toggle (on/off). 2 variants (default, outline), 8 sizes (xs, sm, default, lg + icon-*). Prop `fillOnPress` para preencher ícones SVG no on. Alinhado com shadcn/ui (bg-accent/text-accent-foreground). |
+| Label | 1.0.0 | `label.tsx` | Rotulo acessivel para campos de formulario. Baseado no Radix UI Label. Reage a disabled via peer-disabled:. |
+| Textarea | 1.1.0 | `textarea.tsx` | Campo multi-linha. 2 variantes (outline, filled), 3 sizes (sm=60px, default=80px, lg=120px). Mesmos tokens e estados do Input. Resize-y. Suporta `.theme-*`. |
+| Avatar | 1.0.0 | `avatar.tsx` | Avatar com imagem, fallback de iniciais, badge de status e group. 3 sizes (sm=24px, default=32px, lg=40px). Prop `theme` colore fallback via tokens primary. Sub-componentes: AvatarImage, AvatarFallback, AvatarBadge, AvatarGroup, AvatarGroupCount. Suporta `.theme-*`. |
+| Chat Bubble | 1.0.0 | `chat-bubble.tsx` | Bolha de mensagem. 3 variantes: default (aluno), instructor (destaque primary), system (italic central). Usa Avatar para imagem/fallback. |
+| Chat Panel | 1.0.0 | `chat-panel.tsx` | Painel de chat com lista de ChatBubbles, ScrollArea, auto-scroll, e input para envio. Usado no LiveContent. |
+| Like Dislike | 1.0.0 | `like-dislike.tsx` | Botões de like/dislike mutuamente exclusivos. 4 sizes (xs, sm, default, lg). Animação burst no like (raios coloridos, default theme-brand). Feedback opcional no dislike via Textarea inline (showFeedback). |
+| Live Waiting | 1.0.0 | `live-waiting.tsx` | Tela de espera para lives com countdown em tempo real, badge, info do professor (Avatar) e tópico. Reutilizável em qualquer contexto de live/evento. |
 
-> **Próximo a instalar**: Label, Textarea
+> **Próximo a instalar**: (a definir)
 
 ### Layout Primitives (`src/components/layout/`)
 
@@ -172,11 +180,12 @@ npm run lint     # ESLint
 
 ### Composites (`src/components/composites/`)
 
+> **Composites específicos de produto foram movidos para seus respectivos projetos.**
+> Os composites do Class (HeaderClass, SidebarCourse, CourseContent, LiveContent) estão no projeto `class-page`.
+
 | Componente | Versão | Arquivo | Observações |
 |------------|--------|---------|-------------|
-| HeaderClass | 1.0.0 | `header-class.tsx` | Header do produto Class. Responsivo (740px breakpoint). Props: courseName, isSidebarOpen, onToggleSidebar, onNavigateHome. Mobile usa bottom sheet. |
-| Sidebar Course | 1.0.0 | `sidebar-course/` | Navegação lateral do produto Class com 2 camadas. Componente principal: SidebarCourse (container com ScrollArea, max-w-[354px]). Sub-componentes: ProgressCourse (header com progresso bar/stage), AccordionConclusion (accordion simples para conclusão), AccordionCourse (accordion com badge de progresso e tag live), UnitRow (row de navegação entre camadas — título + badge progresso + seta >), TaskCourse (item de atividade com icon/badge/checkbox, 3 estados: default/active/completed), ListTaskCourse (container flex-col para TaskCourse items). |
-| Content Course | 1.0.0 | `content-course/` | Templates de conteúdo do produto Class. Wrapper comum: ContentCourse (título, subtítulo, botão concluído com auto-advance, descrição, FileCards, ReportButton — tudo condicional). Templates: ContentVideo (VideoPlayer + ContentCourse). Responsivo: max-w-[860px] centralizado, vídeo full-bleed no mobile. |
+| — | — | — | Nenhum composite no Cycle (são específicos de produto) |
 
 ### Hooks (`src/hooks/`)
 

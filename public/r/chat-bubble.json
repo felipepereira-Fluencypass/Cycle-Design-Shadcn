@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chat-bubble",
+  "type": "registry:ui",
+  "title": "Chat Bubble",
+  "description": "Bolha de mensagem de chat. 3 variantes: default (aluno), instructor (professor com destaque primary), system (mensagem de sistema). Usa Avatar para imagem/fallback.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "https://cycle-design.vercel.app/r/avatar.json"
+  ],
+  "files": [
+    {
+      "path": "components/ui/chat-bubble.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { Avatar, AvatarImage, AvatarFallback } from \"@/components/ui/avatar\"\nimport { cn } from \"@/lib/utils\"\n\n/* ─── Variants ─── */\n\nconst chatBubbleVariants = cva(\n  \"flex gap-2.5 text-sm\",\n  {\n    variants: {\n      variant: {\n        default: \"\",\n        instructor: \"\",\n        system: \"justify-center\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  }\n)\n\n/* ─── Types ─── */\n\nexport interface ChatBubbleProps\n  extends React.ComponentProps<\"div\">,\n    VariantProps<typeof chatBubbleVariants> {\n  /** Author display name */\n  author: string\n  /** Avatar URL (renders initials if absent) */\n  avatar?: string\n  /** Message text content */\n  message: string\n  /** Timestamp label (e.g. \"14:32\") */\n  timestamp?: string\n}\n\n/* ─── Helpers ─── */\n\nfunction getInitials(name: string): string {\n  return name\n    .split(\" \")\n    .slice(0, 2)\n    .map((w) => w[0])\n    .join(\"\")\n    .toUpperCase()\n}\n\n/* ─── Component ─── */\n\nfunction ChatBubble({\n  author,\n  avatar,\n  message,\n  timestamp,\n  variant = \"default\",\n  className,\n  ...props\n}: ChatBubbleProps) {\n  if (variant === \"system\") {\n    return (\n      <div\n        data-slot=\"chat-bubble\"\n        data-variant=\"system\"\n        className={cn(chatBubbleVariants({ variant }), className)}\n        {...props}\n      >\n        <span className=\"text-xs text-muted-foreground italic\">{message}</span>\n      </div>\n    )\n  }\n\n  const isInstructor = variant === \"instructor\"\n\n  return (\n    <div\n      data-slot=\"chat-bubble\"\n      data-variant={variant}\n      className={cn(chatBubbleVariants({ variant }), className)}\n      {...props}\n    >\n      {/* Avatar */}\n      <Avatar>\n        {avatar && <AvatarImage src={avatar} alt={author} />}\n        <AvatarFallback\n          className={cn(\n            isInstructor\n              ? \"bg-primary text-primary-foreground\"\n              : \"bg-muted text-muted-foreground\"\n          )}\n        >\n          {getInitials(author)}\n        </AvatarFallback>\n      </Avatar>\n\n      {/* Content */}\n      <div className=\"flex-1 min-w-0\">\n        <div className=\"flex items-baseline gap-2\">\n          <span\n            className={cn(\n              \"text-sm font-semibold leading-5 truncate\",\n              isInstructor ? \"text-primary\" : \"text-foreground\"\n            )}\n          >\n            {author}\n          </span>\n          {timestamp && (\n            <span className=\"text-[11px] text-muted-foreground shrink-0\">\n              {timestamp}\n            </span>\n          )}\n        </div>\n        <p className=\"text-sm leading-5 text-foreground break-words\">\n          {message}\n        </p>\n      </div>\n    </div>\n  )\n}\n\nexport { ChatBubble, chatBubbleVariants }\n",
+      "target": "components/ui/chat-bubble.tsx"
+    }
+  ],
+  "meta": {
+    "version": "1.0.0",
+    "updatedAt": "2026-03-20"
+  }
+}

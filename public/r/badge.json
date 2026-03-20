@@ -3,7 +3,7 @@
   "name": "badge",
   "type": "registry:ui",
   "title": "Badge",
-  "description": "Badge com 8 variantes, 3 tamanhos e suporte a temas de cor (.theme-*).",
+  "description": "Badge com 10 variantes, 3 tamanhos e suporte a temas de cor (.theme-*).",
   "dependencies": [
     "class-variance-authority",
     "radix-ui"

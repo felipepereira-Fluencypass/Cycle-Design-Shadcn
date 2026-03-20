@@ -1,6 +1,8 @@
 "use client"
 
+import * as React from "react"
 import { VideoPlayer } from "@/components/ui/video-player"
+import { LiveWaiting } from "@/components/ui/live-waiting"
 import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeBlock } from "@/components/docs/code-block"
 import { DocsTabs } from "@/components/docs/docs-tabs"
@@ -107,6 +109,177 @@ function DeveloperDocs() {
         </ComponentPreview>
       </section>
 
+      {/* Chapters */}
+      <section className="space-y-4">
+        <h3 className="text-xl font-semibold">Chapters (marcadores de secao)</h3>
+        <p className="text-muted-foreground">
+          Passe um arquivo <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">.vtt</code> com marcadores de capitulos. A seek bar sera dividida em segmentos,
+          e o nome do capitulo aparece no preview ao navegar. Ideal para aulas longas divididas em topicos.
+        </p>
+        <CodeBlock
+          code={`<VideoPlayer
+  src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU.m3u8"
+  poster="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/thumbnail.webp"
+  thumbnails="https://image.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/storyboard.vtt"
+  chapters="/chapters-example.vtt"
+/>`}
+          language="tsx"
+          showLineNumbers={false}
+        />
+        <CodeBlock
+          code={`WEBVTT
+
+00:00:00.000 --> 00:02:30.000
+Introduction
+
+00:02:30.000 --> 00:08:00.000
+Vocabulary: Idioms
+
+00:08:00.000 --> 00:12:00.000
+Practice & Review`}
+          language="text"
+          showLineNumbers={false}
+        />
+        <p className="text-sm text-muted-foreground">
+          O formato VTT de chapters usa <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">kind=&quot;chapters&quot;</code>. Cada cue define um intervalo de tempo e o titulo da secao.
+          No mobile, os chapters tambem funcionam nativamente via <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">DefaultVideoLayout</code> do Vidstack.
+        </p>
+      </section>
+
+      {/* Buffering */}
+      <section className="space-y-4">
+        <h3 className="text-xl font-semibold">Buffering Spinner</h3>
+        <p className="text-muted-foreground">
+          Indicador de loading exibido durante buffering. Ligado por padrao (<code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">showBuffering=true</code>).
+          Aparece automaticamente quando o video esta carregando ou bufferizando.
+        </p>
+        <CodeBlock
+          code={`// Ligado por padrao
+<VideoPlayer src="..." />
+
+// Para desligar:
+<VideoPlayer src="..." showBuffering={false} />`}
+          language="tsx"
+          showLineNumbers={false}
+        />
+      </section>
+
+      {/* Announcer */}
+      <section className="space-y-4">
+        <h3 className="text-xl font-semibold">Screen Reader Announcer</h3>
+        <p className="text-muted-foreground">
+          Componente invisivel que anuncia mudancas de estado para screen readers (play, pause, mute, seek, etc.).
+          Ligado por padrao (<code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">announcer=true</code>). Ajuda na conformidade com WCAG 2.1 AA.
+        </p>
+        <CodeBlock
+          code={`// Ligado por padrao (recomendado)
+<VideoPlayer src="..." />
+
+// Para desligar:
+<VideoPlayer src="..." announcer={false} />`}
+          language="tsx"
+          showLineNumbers={false}
+        />
+      </section>
+
+      {/* Tooltips */}
+      <section className="space-y-4">
+        <h3 className="text-xl font-semibold">Tooltips nos controles</h3>
+        <p className="text-muted-foreground">
+          No desktop, todos os botoes da barra de controles exibem tooltips ao hover com o nome da acao
+          (Reproduzir, Pausar, Retroceder 10s, Avançar 10s, Silenciar, Ativar som, Legendas, Velocidade, Qualidade, PiP, Tela cheia).
+          Os tooltips nao aparecem no mobile (sem hover).
+        </p>
+        <CodeBlock
+          code={`// Tooltips estao sempre ativos no desktop.
+// Nenhuma configuracao necessaria.
+<VideoPlayer src="..." />`}
+          language="tsx"
+          showLineNumbers={false}
+        />
+      </section>
+
+      {/* Live Indicator */}
+      <section className="space-y-4">
+        <h3 className="text-xl font-semibold">Live Indicator</h3>
+        <p className="text-muted-foreground">
+          Para streams ao vivo (HLS live), o player exibe automaticamente um indicador <strong>LIVE</strong> na barra de controles.
+          Quando o usuario esta no &quot;live edge&quot; (ponto mais recente), o indicador fica vermelho com pulso animado.
+          Se o usuario navegar para tras no timeline, o indicador fica cinza — clicar nele volta ao live edge.
+        </p>
+        <CodeBlock
+          code={`// Detectado automaticamente para streams HLS live.
+// Nenhuma configuracao necessaria.
+<VideoPlayer src="https://example.com/live-stream.m3u8" />`}
+          language="tsx"
+          showLineNumbers={false}
+        />
+      </section>
+
+      {/* Live Waiting */}
+      <section className="space-y-4">
+        <h3 className="text-xl font-semibold">Live Waiting</h3>
+        <p className="text-muted-foreground">
+          Tela de espera para aulas ao vivo com countdown em tempo real, informacoes do professor e topico.
+          Componente reutilizavel — funciona sozinho ou integrado ao <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">LiveContent</code>.
+        </p>
+        <div className="border border-border rounded-2xl overflow-hidden bg-background">
+          <LiveWaiting
+            scheduledAt={(() => { const d = new Date(); d.setHours(d.getHours() + 2); d.setMinutes(30); d.setSeconds(0); return d })()}
+            teacherName="Ana Oliveira"
+            topic="Conversação: Viagens e Turismo"
+          />
+        </div>
+        <CodeBlock
+          code={`<LiveWaiting
+  scheduledAt={new Date("2026-03-20T16:30:00")}
+  teacherName="Ana Oliveira"
+  teacherAvatar="https://example.com/avatar.jpg"
+  topic="Conversação: Viagens e Turismo"
+/>`}
+          language="tsx"
+          showLineNumbers
+        />
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="text-left p-3 font-medium">Prop</th>
+                <th className="text-left p-3 font-medium">Tipo</th>
+                <th className="text-left p-3 font-medium">Default</th>
+                <th className="text-left p-3 font-medium">Descricao</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">scheduledAt</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">Date</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3 text-muted-foreground">Data/hora agendada (countdown atualiza a cada segundo)</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">teacherName</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3 text-muted-foreground">Nome do professor</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">teacherAvatar</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3 text-muted-foreground">URL do avatar do professor</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">topic</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3 text-muted-foreground">Topico/assunto da aula</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       {/* API */}
       <section className="space-y-4">
         <h2 className="text-xl font-semibold">API Reference</h2>
@@ -144,6 +317,24 @@ function DeveloperDocs() {
                 <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
                 <td className="p-3 font-mono text-xs">—</td>
                 <td className="p-3 text-muted-foreground">URL do arquivo VTT de thumbnails (sprite sheet)</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">chapters</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3 text-muted-foreground">URL do arquivo VTT de chapters. Divide a seek bar em segmentos com titulos.</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">showBuffering</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">boolean</td>
+                <td className="p-3 font-mono text-xs">true</td>
+                <td className="p-3 text-muted-foreground">Exibir spinner durante buffering</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">announcer</td>
+                <td className="p-3 font-mono text-xs text-muted-foreground">boolean</td>
+                <td className="p-3 font-mono text-xs">true</td>
+                <td className="p-3 text-muted-foreground">Habilitar anuncios de acessibilidade para screen readers (WCAG 2.1 AA)</td>
               </tr>
               <tr className="border-b border-border">
                 <td className="p-3 font-mono text-xs">autoPlay</td>
@@ -224,7 +415,27 @@ function DeveloperDocs() {
           </p>
           <p className="text-sm text-muted-foreground flex gap-2">
             <span className="text-foreground shrink-0">•</span>
-            <strong>Seek feedback</strong> — indicador visual (icone + &quot;10s&quot;) ao fazer duplo clique nas laterais
+            <strong>Seek feedback</strong> — indicador visual (icone + &quot;10s&quot;) ao fazer duplo clique nas laterais (mobile e desktop)
+          </p>
+          <p className="text-sm text-muted-foreground flex gap-2">
+            <span className="text-foreground shrink-0">•</span>
+            <strong>Chapters</strong> — marcadores de secao no timeline (opcional, requer VTT)
+          </p>
+          <p className="text-sm text-muted-foreground flex gap-2">
+            <span className="text-foreground shrink-0">•</span>
+            <strong>Buffering spinner</strong> — indicador visual durante loading/buffering (ligado por padrao)
+          </p>
+          <p className="text-sm text-muted-foreground flex gap-2">
+            <span className="text-foreground shrink-0">•</span>
+            <strong>Screen reader announcer</strong> — acessibilidade WCAG 2.1 AA (ligado por padrao)
+          </p>
+          <p className="text-sm text-muted-foreground flex gap-2">
+            <span className="text-foreground shrink-0">•</span>
+            <strong>Tooltips</strong> — todos os botoes de controle exibem tooltip ao hover no desktop
+          </p>
+          <p className="text-sm text-muted-foreground flex gap-2">
+            <span className="text-foreground shrink-0">•</span>
+            <strong>Live indicator</strong> — indicador LIVE automatico para streams ao vivo (vermelho no edge, cinza fora)
           </p>
         </div>
       </section>
@@ -251,8 +462,9 @@ function DesignerDocs() {
             ["Captions overlay", "Legendas renderizadas sobre o video"],
             ["Controls overlay", "Gradiente escuro na parte inferior com controles"],
             ["Seek bar", "Barra de progresso com preview de thumbnails"],
-            ["Bottom bar (esquerda)", "Play, Seek -10s, Seek +10s, Volume, Tempo"],
+            ["Bottom bar (esquerda)", "Play, Seek -10s, Seek +10s, Volume, Tempo, Live (se live)"],
             ["Bottom bar (direita)", "Legendas, Velocidade, Qualidade, PiP, Fullscreen"],
+            ["Tooltips (desktop)", "Cada botao exibe tooltip ao hover com nome da acao"],
           ]}
         />
       </section>
@@ -287,6 +499,9 @@ function DesignerDocs() {
             ["Seek feedback icone", "Circulo 48px, bg-white/20, backdrop-blur-sm, icone sm (24px)"],
             ["Seek feedback texto", "text-xs, font-semibold, white, drop-shadow"],
             ["Seek feedback duracao", "700ms visivel, fade in/out 200ms, scale 75%→100%"],
+            ["Tooltip", "bg-black/90, rounded, px-2 py-1, text-xs font-medium white, placement top"],
+            ["Live indicator (edge)", "text-red-500, dot 8px bg-red-500 animate-pulse"],
+            ["Live indicator (fora)", "text-white/60, dot 8px bg-white/40, hover text-white"],
           ]}
         />
       </section>
@@ -336,7 +551,7 @@ function DesignerDocs() {
             ["Idle (nao iniciado)", "Poster visivel, overlay de play centralizado"],
             ["Playing", "Video rodando, controles ocultos (aparecem no hover)"],
             ["Paused", "Video parado, controles visiveis, overlay de play visivel"],
-            ["Buffering", "Loading indicator (nativo do browser)"],
+            ["Buffering", "Spinner SVG animado centralizado (size 64px, branco)"],
             ["Fullscreen", "Ocupa tela inteira, mesmos controles"],
             ["Picture-in-Picture", "Janela flutuante do browser"],
             ["Muted", "Icone de volume troca para VolumeX"],

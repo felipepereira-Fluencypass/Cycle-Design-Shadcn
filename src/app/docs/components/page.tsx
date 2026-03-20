@@ -8,8 +8,11 @@ import { FileCard } from "@/components/ui/file-card";
 import { Progress } from "@/components/ui/progress";
 import { ProgressStage } from "@/components/ui/progress-stage";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea"
+import { Toggle } from "@/components/ui/toggle";
 
 export default function ComponentsPage() {
   return (
@@ -56,6 +59,20 @@ export default function ComponentsPage() {
             <div className="flex flex-col gap-2">
               <Input inputSize="sm" placeholder="Small" className="max-w-[180px]" />
               <Input placeholder="Default" className="max-w-[180px]" />
+            </div>
+          </Link>
+
+          <Link
+            href="/docs/components/label"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">Label</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Rotulo acessivel para campos de formulario. Radix UI Label.
+            </p>
+            <div className="flex flex-col gap-2 max-w-[180px]">
+              <Label htmlFor="label-preview">Email</Label>
+              <Input id="label-preview" inputSize="sm" placeholder="email@exemplo.com" />
             </div>
           </Link>
 
@@ -114,6 +131,17 @@ export default function ComponentsPage() {
                 <TabsTrigger value="tab2">Inativa</TabsTrigger>
               </TabsList>
             </Tabs>
+          </Link>
+
+          <Link
+            href="/docs/components/textarea"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">Textarea</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Campo multi-linha. 3 tamanhos, estados de erro, suporte a temas.
+            </p>
+            <Textarea textareaSize="sm" placeholder="Digite sua mensagem..." className="max-w-[200px]" />
           </Link>
 
           <Link
@@ -234,6 +262,21 @@ export default function ComponentsPage() {
               Area de scroll customizada com scrollbar estilizado.
             </p>
           </Link>
+
+          <Link
+            href="/docs/components/toggle"
+            className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
+          >
+            <h3 className="heading-sm mb-2">Toggle</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Botao toggle (on/off). 2 variantes, 8 sizes, fill de icone no on.
+            </p>
+            <div className="flex items-center gap-2">
+              <Toggle size="sm">Off</Toggle>
+              <Toggle size="sm" defaultPressed>On</Toggle>
+              <Toggle size="sm" variant="outline" defaultPressed>Outline</Toggle>
+            </div>
+          </Link>
         </div>
       </section>
 
@@ -285,7 +328,7 @@ export default function ComponentsPage() {
             href="/docs/components/content-course"
             className="group rounded-lg border border-border p-6 shadow-sm hover:shadow-md hover:border-foreground/20 transition-all"
           >
-            <h3 className="heading-sm mb-2">Content Course</h3>
+            <h3 className="heading-sm mb-2">Course Content</h3>
             <p className="text-sm text-muted-foreground">
               Templates de conteudo do Class. Video, audio, quiz, etc. Responsivo com max-w-860px.
             </p>
@@ -305,7 +348,7 @@ export default function ComponentsPage() {
               Componentes base que podem ser instalados individualmente:
             </p>
             <div className="bg-muted rounded-lg p-4 text-sm font-mono overflow-x-auto space-y-1">
-              {["accordion", "audio-player", "badge", "button", "checkbox", "cycle-icon", "file-card", "input", "progress", "progress-stage", "radio-group", "scroll-area", "sheet", "slider", "switch", "tabs", "video-player"].map((name) => (
+              {["accordion", "audio-player", "badge", "button", "checkbox", "cycle-icon", "file-card", "input", "label", "like-dislike", "progress", "progress-stage", "radio-group", "scroll-area", "sheet", "slider", "switch", "tabs", "textarea", "toggle", "video-player"].map((name) => (
                 <p key={name}>
                   npx shadcn@latest add https://cycle-design.vercel.app/r/{name}.json
                 </p>
@@ -320,7 +363,7 @@ export default function ComponentsPage() {
               Blocos maiores que combinam primitives. As dependencias de primitives sao instaladas automaticamente.
             </p>
             <div className="bg-muted rounded-lg p-4 text-sm font-mono overflow-x-auto space-y-1">
-              {["header-class", "sidebar-course", "content-course"].map((name) => (
+              {["header-class", "sidebar-course", "course-content"].map((name) => (
                 <p key={name}>
                   npx shadcn@latest add https://cycle-design.vercel.app/r/{name}.json
                 </p>

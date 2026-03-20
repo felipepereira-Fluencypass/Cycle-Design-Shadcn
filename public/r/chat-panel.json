@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chat-panel",
+  "type": "registry:ui",
+  "title": "Chat Panel",
+  "description": "Painel de chat completo com lista de mensagens (ChatBubble), scroll automatico, e campo de input para envio. Usado no LiveContent.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "https://cycle-design.vercel.app/r/cycle-icon.json",
+    "https://cycle-design.vercel.app/r/button.json",
+    "https://cycle-design.vercel.app/r/scroll-area.json",
+    "https://cycle-design.vercel.app/r/chat-bubble.json"
+  ],
+  "files": [
+    {
+      "path": "components/ui/chat-panel.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { SendIcon } from \"lucide-react\"\nimport { CycleIcon } from \"@/components/icons/CycleIcon\"\nimport { Button } from \"@/components/ui/button\"\nimport { ScrollArea } from \"@/components/ui/scroll-area\"\nimport { ChatBubble, type ChatBubbleProps } from \"@/components/ui/chat-bubble\"\nimport { cn } from \"@/lib/utils\"\n\n/* ─── Types ─── */\n\nexport interface ChatMessage {\n  /** Unique message ID */\n  id: string\n  /** Author display name */\n  author: string\n  /** Avatar URL */\n  avatar?: string\n  /** Message text */\n  message: string\n  /** Timestamp label (e.g. \"14:32\") */\n  timestamp?: string\n  /** Message variant */\n  variant?: ChatBubbleProps[\"variant\"]\n}\n\nexport interface ChatPanelProps extends React.ComponentProps<\"div\"> {\n  /** Chat messages array */\n  messages: ChatMessage[]\n  /** Callback when the user sends a message */\n  onSendMessage?: (message: string) => void\n  /** Disable the input (e.g. when chat is read-only or ended) */\n  disabled?: boolean\n  /** Input placeholder text */\n  placeholder?: string\n  /** Title shown at the top of the panel */\n  title?: string\n}\n\n/* ─── Component ─── */\n\nfunction ChatPanel({\n  messages,\n  onSendMessage,\n  disabled = false,\n  placeholder = \"Envie uma mensagem...\",\n  title = \"Chat\",\n  className,\n  ...props\n}: ChatPanelProps) {\n  const [input, setInput] = React.useState(\"\")\n  const scrollRef = React.useRef<HTMLDivElement>(null)\n\n  /* Auto-scroll to bottom on new messages */\n  React.useEffect(() => {\n    const el = scrollRef.current\n    if (el) {\n      el.scrollTop = el.scrollHeight\n    }\n  }, [messages.length])\n\n  function handleSubmit(e: React.FormEvent) {\n    e.preventDefault()\n    const trimmed = input.trim()\n    if (!trimmed || disabled) return\n    onSendMessage?.(trimmed)\n    setInput(\"\")\n  }\n\n  return (\n    <div\n      data-slot=\"chat-panel\"\n      className={cn(\n        \"flex flex-col bg-background border-l border-border\",\n        className\n      )}\n      {...props}\n    >\n      {/* Header */}\n      <div className=\"shrink-0 flex items-center h-12 px-4 border-b border-border\">\n        <h3 className=\"text-sm font-semibold text-foreground\">{title}</h3>\n      </div>\n\n      {/* Messages */}\n      <ScrollArea className=\"flex-1 min-h-0\">\n        <div ref={scrollRef} className=\"flex flex-col gap-3 p-4\">\n          {messages.length === 0 && (\n            <p className=\"text-sm text-muted-foreground text-center py-8\">\n              Nenhuma mensagem ainda.\n            </p>\n          )}\n          {messages.map((msg) => (\n            <ChatBubble\n              key={msg.id}\n              author={msg.author}\n              avatar={msg.avatar}\n              message={msg.message}\n              timestamp={msg.timestamp}\n              variant={msg.variant}\n            />\n          ))}\n        </div>\n      </ScrollArea>\n\n      {/* Input */}\n      {onSendMessage && (\n        <form\n          onSubmit={handleSubmit}\n          className=\"shrink-0 flex items-center gap-2 p-3 border-t border-border\"\n        >\n          <input\n            type=\"text\"\n            value={input}\n            onChange={(e) => setInput(e.target.value)}\n            placeholder={placeholder}\n            disabled={disabled}\n            className=\"flex-1 min-w-0 h-9 rounded-lg border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed\"\n          />\n          <Button\n            type=\"submit\"\n            size=\"icon-sm\"\n            disabled={disabled || !input.trim()}\n            className=\"shrink-0\"\n          >\n            <CycleIcon icon={SendIcon} size=\"xs\" decorative />\n          </Button>\n        </form>\n      )}\n    </div>\n  )\n}\n\nexport { ChatPanel }\n",
+      "target": "components/ui/chat-panel.tsx"
+    }
+  ],
+  "meta": {
+    "version": "1.0.0",
+    "updatedAt": "2026-03-20"
+  }
+}

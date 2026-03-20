@@ -3,19 +3,19 @@
   "name": "input",
   "type": "registry:ui",
   "title": "Input",
-  "description": "Campo de entrada com 3 tamanhos, estados de erro, e suporte a temas de cor (.theme-*).",
+  "description": "Campo de entrada com 2 variantes (outline, filled), 3 tamanhos, estados de erro, e suporte a temas de cor (.theme-*).",
   "dependencies": [],
   "registryDependencies": [],
   "files": [
     {
       "path": "components/ui/input.tsx",
       "type": "registry:ui",
-      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface InputProps extends React.ComponentProps<\"input\"> {\n  inputSize?: \"sm\" | \"default\" | \"lg\"\n}\n\nfunction Input({ className, type, inputSize = \"default\", ...props }: InputProps) {\n  return (\n    <input\n      type={type}\n      data-slot=\"input\"\n      data-size={inputSize}\n      className={cn(\n        \"w-full min-w-0 rounded-lg border border-neutral-border bg-transparent text-neutral-foreground shadow-xs transition-[color,border-color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:border-0 file:bg-transparent file:font-medium file:text-neutral-foreground placeholder:text-neutral-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-input dark:bg-input/30 dark:shadow-none\",\n        \"hover:border-ring hover:bg-ring/5\",\n        \"focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:bg-ring/5\",\n        \"aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-invalid:hover:border-destructive dark:aria-invalid:ring-destructive/40\",\n        inputSize === \"sm\" && \"h-8 px-3 py-2 text-sm\",\n        inputSize === \"default\" && \"h-10 px-4 py-2 text-sm\",\n        inputSize === \"lg\" && \"h-12 px-4 py-3 text-base\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Input }\n",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface InputProps extends React.ComponentProps<\"input\"> {\n  inputSize?: \"sm\" | \"default\" | \"lg\"\n  /** Variante visual: outline (borda) ou filled (fundo preenchido) */\n  variant?: \"outline\" | \"filled\"\n}\n\nfunction Input({ className, type, inputSize = \"default\", variant = \"outline\", ...props }: InputProps) {\n  return (\n    <input\n      type={type}\n      data-slot=\"input\"\n      data-size={inputSize}\n      data-variant={variant}\n      className={cn(\n        // Base\n        \"w-full min-w-0 rounded-lg text-neutral-foreground transition-[color,border-color,box-shadow,background-color] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:border-0 file:bg-transparent file:font-medium file:text-neutral-foreground placeholder:text-neutral-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50\",\n        // Variant: outline\n        variant === \"outline\" && \"border border-neutral-border bg-transparent shadow-xs dark:border-neutral-border dark:bg-transparent dark:shadow-none\",\n        variant === \"outline\" && \"hover:border-ring hover:bg-ring/5\",\n        variant === \"outline\" && \"focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:bg-ring/5\",\n        // Variant: filled (mesmos tokens do Button outline: accent light, input dark)\n        variant === \"filled\" && \"border border-transparent bg-neutral-accent\",\n        variant === \"filled\" && \"hover:border-ring hover:bg-secondary\",\n        variant === \"filled\" && \"focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:bg-secondary\",\n        // Error (sempre visível, ambas variantes)\n        \"aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-invalid:hover:border-destructive dark:aria-invalid:border-destructive dark:aria-invalid:ring-destructive/40\",\n        // Sizes\n        inputSize === \"sm\" && \"h-8 px-3 py-2 text-sm\",\n        inputSize === \"default\" && \"h-10 px-4 py-2 text-sm\",\n        inputSize === \"lg\" && \"h-12 px-4 py-3 text-base\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Input }\n",
       "target": "components/ui/input.tsx"
     }
   ],
   "meta": {
-    "version": "1.0.0",
-    "updatedAt": "2026-03-17"
+    "version": "1.1.0",
+    "updatedAt": "2026-03-20"
   }
 }
